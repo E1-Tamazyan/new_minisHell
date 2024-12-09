@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tumolabs <tumolabs@student.42.fr>          +#+  +:+       +#+        */
+/*   By: algaboya <algaboya@student.42yerevan.am    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/24 20:33:37 by algaboya          #+#    #+#             */
-/*   Updated: 2024/11/30 18:40:48 by tumolabs         ###   ########.fr       */
+/*   Updated: 2024/12/09 19:52:31 by algaboya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,12 +17,13 @@ int	cd_builtin(t_shell *general)
 	int	status;
 
 	status = SUCCESS_EXIT;
-	if (!general->tok_lst->next || !general->tok_lst->next->next)
+	if (!general->cmd_lst->args[1])
 		status = change_home(general);
-	else if (general->tok_lst->next && ft_strcmp(general->tok_lst->next->next->context, "-") == 0)
+	else if (general->tok_lst->next
+		&& ft_strcmp(general->cmd_lst->args[1], "-") == 0)
 		status = change_prev_dir(general);
-	else if (general->tok_lst->next && general->tok_lst->next->next)
-		status = change_dir(general, general->tok_lst->next->next->context);
+	else if (general->tok_lst->next)
+		status = change_dir(general, general->cmd_lst->args[1]);
 	return (status);
 }
 
@@ -40,12 +41,10 @@ int	change_dir(t_shell *general, char *dir)
 		return (FAILURE_EXIT);
 	}
 	prev = getcwd(NULL, 0);
-	if (change_env_value(general->env_lst, "PWD", prev)
-		&& change_env_value(general->sorted_env_lst, "PWD", prev))
-		return (free(cwd), FAILURE_EXIT);
-	if (change_env_value(general->env_lst, "OLDPWD", cwd)
-		&& change_env_value(general->sorted_env_lst, "OLDPWD", cwd))
-		return (free(cwd), FAILURE_EXIT);
+	change_env_value(general->env_lst, "PWD", prev);
+	change_env_value(general->sorted_env_lst, "PWD", prev);
+	change_env_value(general->env_lst, "OLDPWD", cwd);
+	change_env_value(general->sorted_env_lst, "OLDPWD", cwd);
 	return (SUCCESS_EXIT);
 }
 
@@ -63,12 +62,10 @@ int	change_home(t_shell *general)
 		printf(" cd: %s: No such file or directory", home);
 		return (FAILURE_EXIT);
 	}
-	if (change_env_value(general->env_lst, "PWD", home)
-		&& change_env_value(general->sorted_env_lst, "PWD", home))
-		return (free(cwd), FAILURE_EXIT);
-	if (change_env_value(general->env_lst, "OLDPWD", cwd)
-		&& change_env_value(general->sorted_env_lst, "OLDPWD", cwd))
-		return (free(cwd), FAILURE_EXIT);
+	change_env_value(general->env_lst, "PWD", home);
+	change_env_value(general->sorted_env_lst, "PWD", home);
+	change_env_value(general->env_lst, "OLDPWD", cwd);
+	change_env_value(general->sorted_env_lst, "OLDPWD", cwd);
 	return (SUCCESS_EXIT);
 }
 
@@ -90,16 +87,14 @@ int	change_prev_dir(t_shell *general)
 		return (FAILURE_EXIT);
 	}
 	// cwd = getcwd(NULL, 0);
-	if (change_env_value(general->env_lst, "PWD", prev)
-		&& change_env_value(general->sorted_env_lst, "PWD", prev))
-		return (free(cwd), FAILURE_EXIT);
-	if (change_env_value(general->env_lst, "OLDPWD", cwd)
-		&& change_env_value(general->sorted_env_lst, "OLDPWD", cwd))
-		return (free(cwd), FAILURE_EXIT);
+	change_env_value(general->env_lst, "PWD", prev);
+	change_env_value(general->sorted_env_lst, "PWD", prev);
+	change_env_value(general->env_lst, "OLDPWD", cwd);
+	change_env_value(general->sorted_env_lst, "OLDPWD", cwd);
 	return (SUCCESS_EXIT);
 }
 
-char *get_value(t_shell *general, char *keyik)
+char	*get_value(t_shell *general, char *keyik)
 {
 	t_env	*tmp;
 

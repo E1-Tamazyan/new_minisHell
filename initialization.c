@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   initialization.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: etamazya <etamazya@student.42.fr>          +#+  +:+       +#+        */
+/*   By: algaboya <algaboya@student.42yerevan.am    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/24 19:38:08 by algaboya          #+#    #+#             */
-/*   Updated: 2024/12/09 17:33:12 by etamazya         ###   ########.fr       */
+/*   Updated: 2024/12/09 19:59:01 by algaboya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ t_env *init_env_nodes(char **env)
 	t_env	*list_env;
 	t_env	*tmp;
 	t_env	*new_node;
-	int i;
+	int		i;
 
 	i = 0;
 	list_env = NULL;

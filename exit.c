@@ -6,7 +6,7 @@
 /*   By: algaboya <algaboya@student.42yerevan.am    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/08 16:47:41 by algaboya          #+#    #+#             */
-/*   Updated: 2024/12/08 22:37:41 by algaboya         ###   ########.fr       */
+/*   Updated: 2024/12/09 19:57:15 by algaboya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,13 +31,10 @@ int	exit_statusik(char *arg)
 
 	if (arg)
 	{
-		// printf("%s\n", arg);
 		num = ft_atol(arg);
-		// printf("longnum = %ld\n", num);
 		exit = num % 256;
 		if (exit < 0)
-	{	printf("%d\n", exit);
-			exit += 256;}
+			exit += 256;
 		return (exit);
 	}
 	else
@@ -53,18 +50,10 @@ int	exit_builtin(t_shell *general)
 	exitik = 255;
 	write(2, "exit\n", 6);
 	if (is_valid(general->cmd_lst->args, count) == FAILURE_EXIT)
-	{
-		// write(1, "*\n", 2);
-		// free_general(general);
 		exit(exitik);
-	}
 	if (count > 3)
-	{
-		// printf("count = %d", count);
-		// write(1, "#\n", 2);
 		return (printf("minishell: exit: too many arguments\n"), FAILURE_EXIT);
-	}
-	exitik = exit_statusik(general->cmd_lst->args[2]);     // 1
+	exitik = exit_statusik(general->cmd_lst->args[1]);
 	// free_general(general);
 	exit(exitik);
 }

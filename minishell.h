@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: etamazya <etamazya@student.42.fr>          +#+  +:+       +#+        */
+/*   By: algaboya <algaboya@student.42yerevan.am    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/12 14:42:32 by etamazya          #+#    #+#             */
-/*   Updated: 2024/12/09 17:53:18 by etamazya         ###   ########.fr       */
+/*   Updated: 2024/12/09 20:03:39 by algaboya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ typedef enum s_ttype
 	// QUOTES = 7,		 // "" ''
 	// T_SGL_QUOTES = 7, // ''
 	// T_DBL_QUOTES = 8, // ""
-} t_ttype;
+}			t_ttype;
 
 typedef struct s_token
 {
@@ -74,9 +74,9 @@ typedef struct s_cmd_lst
 
 typedef struct s_dollar
 {
-	char *u_key;
-	char *value;
-	int	dollar_sign; // 1 = sgl_quote, 2 = dbl quote
+	char			*u_key;
+	char			*value;
+	int				dollar_sign; // 1 = sgl_quote, 2 = dbl quote
 	struct s_dollar	*next;
 
 }	t_dollar;
@@ -89,47 +89,45 @@ typedef struct s_shell
 	t_dollar	*doll_lst;
 	t_env		*sorted_env_lst; // for export, to not change the original env_lst above
 	int			shlvl;		     // check
-	int			args_count;
 	// char		pwd; // check
 	// char		*oldpwd; // check
-	
-} t_shell;
+}			t_shell;
 
 // ### NOW WORKING ###
 
 //**************************************
 
 // ***_____main_functions_____***
-int init_input(char *input, t_shell *gen, char **env);
-int check_cmd(char **env, t_shell *general);
-t_env *init_env_nodes(char **env);
+int		init_input(char *input, t_shell *gen, char **env);
+int		check_cmd(char **env, t_shell *general);
+t_env	*init_env_nodes(char **env);
 
 // ***____env_sorting_____***
-char **sort_env(char **env);
-void quick_sort(char **arr, int low, int high);
-int partition(char **arr, int low, int high);
-void swap(char **a, char **b);
+char	**sort_env(char **env);
+void	quick_sort(char **arr, int low, int high);
+int		partition(char **arr, int low, int high);
+void	swap(char **a, char **b);
 
 // ***_____utils_____***
-void print_env(t_env *lst, int flag);
-void print_tokens(t_token *head);
-int put_key(t_env *node, char *src);
-void put_value(t_env *node, char *src, int pos);
-int sgmnt_len(const char *str, int pos);
+void	print_env(t_env *lst, int flag);
+void	print_tokens(t_token *head);
+int		put_key(t_env *node, char *src);
+void	put_value(t_env *node, char *src, int pos);
+int		sgmnt_len(const char *str, int pos);
 void	my_list_iter(t_token *head);
-int check_print_dollar(const char *context, t_env *env_lst, int i);
-int create_env(char **env, t_shell *general);
+int		check_print_dollar(const char *context, t_env *env_lst, int i);
+int		create_env(char **env, t_shell *general);
 // t_cmd_lst	*exchange_to_commands(t_token *tok_lst, t_shell *general);
 
 // ***_____lib utils_____***
-void ft_strlcpy(char *dest, const char *src, int size, int pos, char limiter);
-t_env *ft_lstnew(char *context);
-void	 ft_lstadd_back(t_env *lst, t_env *node);
-int ft_strcmp(const char *s1, const char *s2);
-int ft_strlen(const char *str);
-char *my_substr(const char *s, unsigned int start, int len);
-int ft_strchr(const char *s, int c);
-char *ft_strdup(const char *s1);
+void	ft_strlcpy(char *dest, const char *src, int size, int pos, char limiter);
+t_env	*ft_lstnew(char *context);
+void	ft_lstadd_back(t_env *lst, t_env *node);
+int		ft_strcmp(const char *s1, const char *s2);
+int		ft_strlen(const char *str);
+char	*my_substr(const char *s, unsigned int start, int len);
+int		ft_strchr(const char *s, int c);
+char	*ft_strdup(const char *s1);
 
 // ***_____tokenization_____***
 short	init_tokens(const char *input, t_shell *general, int i);
@@ -145,12 +143,12 @@ short	del_t_node(t_token *lst);
 int		check_cut_quotes(const char *input, int start, int i, t_shell *general);
 
 // **************
-int	check_dollar_sign(char *input, int i, t_shell *general);
+int		check_dollar_sign(char *input, int i, t_shell *general);
 // int	exchange_to_cmd(t_shell *general);
 // int	counter_args(t_shell *general);
 
 // Alla's
-void lalala(t_shell *general);
+void	lalala(t_shell *general);
 void	free_cmd_lst(t_cmd_lst *cmd_lst);
 // builtins
 // void	builin(t_token *token_list);
@@ -177,7 +175,7 @@ int		print_export(char *new);
 t_env	*bubble_sort_lst(t_env *lst);
 void	swap_node(t_env	*a, t_env *b);
 int		change_home(t_shell *general);
-char 	*get_value(t_shell *general, char *keyik);
+char	*get_value(t_shell *general, char *keyik);
 int		change_env_value(t_env *lst, char *keyik, char *valik);
 int		change_prev_dir(t_shell *general);
 int		change_dir(t_shell *general, char *dir);
@@ -192,6 +190,6 @@ int		count_args(char **args);
 // void	print_exp_noargs(char *str);
 
 // archive
-char *ft_substr(char const *s, unsigned int start, int len);
+char	*ft_substr(char const *s, unsigned int start, int len);
 
 #endif

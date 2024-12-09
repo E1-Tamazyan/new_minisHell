@@ -6,7 +6,7 @@
 /*   By: algaboya <algaboya@student.42yerevan.am    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/08 21:27:06 by algaboya          #+#    #+#             */
-/*   Updated: 2024/12/08 22:30:51 by algaboya         ###   ########.fr       */
+/*   Updated: 2024/12/09 19:56:54 by algaboya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,8 +25,6 @@ static int	is_num(char *str)
 		return (FAILURE_EXIT);
 	while (str[i])
 	{
-		// printf("________________\n");
-		// printf("%c\n", str[i]);
 		if (str[i] < '0' || str[i] > '9')
 			return (FAILURE_EXIT);
 		i++;
@@ -50,15 +48,15 @@ int	is_valid(char **args, int count)
 {
 	if (!args)
 		return (FAILURE_EXIT);
-	if (count > 1 && is_num(args[2]) == FAILURE_EXIT)
+	if (count > 1 && is_num(args[1]) == FAILURE_EXIT)
 	{
 		write(1, "$\n", 2);
-		printf("minishell: exit: %s: numeric argument required", args[1]);
+		printf("minishell: exit: %s: numeric argument required\n", args[1]);
 		return (FAILURE_EXIT);
 	}
 	if (count > 1 && ft_strlen(args[1]) > 20)
 	{
-		printf("minishell: exit: %s: numeric argument required", args[1]);
+		printf("minishell: exit: %s: numeric argument required\n", args[1]);
 		return (FAILURE_EXIT);
 	}
 	return (SUCCESS_EXIT);

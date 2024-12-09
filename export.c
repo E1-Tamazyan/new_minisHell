@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: etamazya <etamazya@student.42.fr>          +#+  +:+       +#+        */
+/*   By: algaboya <algaboya@student.42yerevan.am    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/10 16:35:06 by algaboya          #+#    #+#             */
-/*   Updated: 2024/12/09 16:39:25 by etamazya         ###   ########.fr       */
+/*   Updated: 2024/12/09 18:47:23 by algaboya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,18 +26,18 @@ int	export_builtin(t_shell *general, char *command)
 		printf("sxtor\n");
 		return (print_env(general->env_lst, 1), 0);
 	}
-	if (export_valid(general->tok_lst->next->next) == FAILURE_EXIT)
+	if (export_valid(general->tok_lst->next) == FAILURE_EXIT)
 	{
 		printf("val err\n");
 		return (FAILURE_EXIT);
 	}
-	else if (ft_strchr(general->tok_lst->next->next->context, '=') >= 0)
+	else if (ft_strchr(general->tok_lst->next->context, '=') >= 0)
 	{
-		i = ft_strchr(general->tok_lst->next->next->context, '=');
-		add_env_lst_var(*general->tok_lst->next->next, general, i);
+		i = ft_strchr(general->tok_lst->next->context, '=');
+		add_env_lst_var(*general->tok_lst->next, general, i);
 	}
 	else
-		add_env_no_var(general->tok_lst->next->next->context, general);
+		add_env_no_var(general->tok_lst->next->context, general);
 	return (SUCCESS_EXIT);
 }
 
@@ -50,8 +50,8 @@ int	export_valid(t_token *token_list)
 	exit_status = 0;
 	while (token_list)
 	{
-		while (token_list && token_list->type == 9)
-			token_list = token_list->next;
+		// while (token_list && token_list->context == ' ')
+		// 	token_list = token_list->next;
 		if (!ft_isalpha(token_list->context[0])
 			|| ft_isdigit(token_list->context[0]))
 		{

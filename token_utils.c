@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   token_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: etamazya <etamazya@student.42.fr>          +#+  +:+       +#+        */
+/*   By: algaboya <algaboya@student.42yerevan.am    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/06 16:18:12 by etamazya          #+#    #+#             */
-/*   Updated: 2024/12/09 17:42:48 by etamazya         ###   ########.fr       */
+/*   Updated: 2024/12/09 20:06:37 by algaboya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,7 +99,7 @@ int	check_sgl_quote(const char *input, int *i)
 	return (0);
 }
 
-int check_quotes(const char *input, int i)
+int	check_quotes(const char *input, int i)
 {
 	if (!input)
 		return (-1);

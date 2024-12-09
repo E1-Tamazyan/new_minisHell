@@ -24,20 +24,20 @@ int	put_key(t_env *node, char	*src)
 	int	j;
 
 	i = 0;
-    j = 0;
-    while (src[j] && src[j] != '=')
-            j++;
-    node -> key = (char *)malloc(sizeof(char) * (j + 1));
-    if (!node-> key)
-        return (-1);
-    ft_strlcpy(node-> key, (const char *)src, j, 0, '=');
+	j = 0;
+	while (src[j] && src[j] != '=')
+			j++;
+	node -> key = (char *)malloc(sizeof(char) * (j + 1));
+	if (!node-> key)
+		return (-1);
+	ft_strlcpy(node-> key, (const char *)src, j, 0, '=');
 	// printf("key = %s\n", node->key);
-    if (!node-> key)
-        return (-1);
+	if (!node-> key)
+		return (-1);
 	return (j + 1);
 }
 
-void put_value(t_env *node, char *src, int pos)
+void	put_value(t_env *node, char *src, int pos)
 {
 	int	len;
 
@@ -55,16 +55,16 @@ void put_value(t_env *node, char *src, int pos)
 		return ;
 	ft_strlcpy(node -> value, src, len, pos, '\n');
 	// printf("value = %s\n", node->value);
-    if (!node -> value)
-        return ;
+	if (!node -> value)
+		return ;
 }
 
 int	sgmnt_len(const char *str, int pos)
 {
-	int counter;
+	int	counter;
 
 	counter = 0;
-	while(str[pos] && str[pos] != '\n')
+	while (str[pos] && str[pos] != '\n')
 	{
 		pos++;
 		counter++;
@@ -90,16 +90,16 @@ void	clean_list(t_token **list)
 // ************************
 // ******* FUR MICH *******
 // ************************
-void print_tokens(t_token *head)
+void	print_tokens(t_token *head)
 {
-    t_token *current; 
+	t_token *current; 
 
 	current = head;
-    while (current != NULL)
+	while (current != NULL)
 	{
-        printf("context: %s\n type: %d\n", current->context, current->type);
-        current = current->next;
-    }
+		printf("context: %s\n type: %d\n", current->context, current->type);
+		current = current->next;
+	}
 } 
 
 int	print_export(char *new)
@@ -213,7 +213,6 @@ void	print_env(t_env *new, int flag)
 
 	while (lst != NULL)
 	{
-		// printf("hoho\n");
 		if (flag == 1)
 		{
 			if (lst -> value == NULL)
@@ -266,7 +265,7 @@ void	print_env(t_env *new, int flag)
 	// 	node -> value = (char *)malloc(sizeof(char) * (n + 1)); //check thisss
 	// 	if (!node -> value)
 	// 		return ;
-    //     ft_strlcpy(node -> value, src, n, pos, '\n');
+	//     ft_strlcpy(node -> value, src, n, pos, '\n');
     //     if (!node -> value)
     //         return ;
     //     i++;
