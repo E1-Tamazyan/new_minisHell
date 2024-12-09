@@ -6,7 +6,7 @@
 /*   By: etamazya <etamazya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/05 17:11:10 by elen_t13          #+#    #+#             */
-/*   Updated: 2024/12/09 14:29:43 by etamazya         ###   ########.fr       */
+/*   Updated: 2024/12/09 15:34:27 by etamazya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,6 +115,7 @@ static t_cmd_lst *create_cmd_lst(t_token *token_lst)
 	}
 	return (cmd_lst);
 }
+
 
 void	free_cmd_lst(t_cmd_lst *cmd_lst)
 {
