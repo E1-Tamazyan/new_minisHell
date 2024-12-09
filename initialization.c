@@ -6,7 +6,7 @@
 /*   By: etamazya <etamazya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/24 19:38:08 by algaboya          #+#    #+#             */
-/*   Updated: 2024/12/09 13:51:19 by etamazya         ###   ########.fr       */
+/*   Updated: 2024/12/09 14:04:33 by etamazya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,7 @@ int	init_input(char *input, t_shell *general, char **env)
 		// init_general(general) // give every value of struct to it's corresponding one
 		general -> tok_lst = NULL;
 		init_tokens((const char *)input, general, 0);
+		lalala(general); // to print commands
 		//addd check_heredocs
 		// exchange_to_cmd(general);
 		if (check_cmd(env, general)) // if 1 error
@@ -202,7 +203,7 @@ int	init_op_token(const char *input, int i, t_token **token_list)
 			i++;
 		}
 		// else if (input[i + 1] == '>')
-		// 	printf(">");
+		// 	printf(">"); // ********************** try to understand do you need to implement this?  cmd:ls <> echo dasd (works only for existing file)
 		else if (input[i + 1] == '|')
 				return (printf("minisHell: syntax error near unexpected token `%c'\n", input[i + 1]), -1);
 		else

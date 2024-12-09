@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: elen_t13 <elen_t13@student.42.fr>          +#+  +:+       +#+        */
+/*   By: etamazya <etamazya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/12 14:42:32 by etamazya          #+#    #+#             */
-/*   Updated: 2024/12/05 18:08:10 by elen_t13         ###   ########.fr       */
+/*   Updated: 2024/12/09 14:29:04 by etamazya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,10 +54,11 @@ typedef struct s_env
 
 typedef struct s_cmd_lst
 {
-	char	*cmd;
-	char	**args;
-	int		std_in; // fd
-	int		std_out; // fd
+	char				*cmd;
+	char				**args;
+	struct s_cmd_lst	*next;
+	// int		std_in; // fd
+	// int		std_out; // fd
 	//Gaya's vers.
 	// char	*pipe;
 	// char	*redir_in;
@@ -79,7 +80,7 @@ typedef struct s_shell
 {
 	t_token		*tok_lst;
 	t_env		*env_lst;
-	t_cmd_lst	*cmd_list;
+	t_cmd_lst	*cmd_lst;
 	t_dollar	*doll_lst;
 	t_env		*sorted_env_lst; // for export, to not change the original env_lst above
 	int			shlvl;		     // check
@@ -141,8 +142,15 @@ int		check_cut_quotes(const char *input, int start, int i, t_shell *general);
 
 // **************
 int	check_dollar_sign(char *input, int i, t_shell *general);
-int	exchange_to_cmd(t_shell *general);
-int	counter_args(t_shell *general);
+// int	exchange_to_cmd(t_shell *general);
+// int	counter_args(t_shell *general);
+
+// Alla's
+void lalala(t_shell *general);
+void	free_cmd_lst(t_cmd_lst *cmd_lst);
+// static t_cmd_lst *create_cmd_lst(t_token *token_lst);
+// static int	count_mid_args(t_token *start, t_token *end);
+// char	*strdup(const char *__s1);
 
 // archive
 char *ft_substr(char const *s, unsigned int start, int len);
