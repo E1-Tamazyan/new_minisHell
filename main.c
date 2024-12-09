@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: etamazya <etamazya@student.42.fr>          +#+  +:+       +#+        */
+/*   By: algaboya <algaboya@student.42yerevan.am    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/12 14:42:13 by etamazya          #+#    #+#             */
-/*   Updated: 2024/10/26 11:24:58 by etamazya         ###   ########.fr       */
+/*   Updated: 2024/11/18 19:58:58 by algaboya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ int main(int argc, char **argv, char **env)
     input = NULL;
     general = malloc(sizeof(t_shell));
     if (!general)
-        return (1);
+        return (1); 
     if (argc == 1)
     {
         if (init_input(input, general, env)) // if 1 error
