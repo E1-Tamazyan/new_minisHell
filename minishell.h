@@ -6,13 +6,17 @@
 /*   By: etamazya <etamazya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/12 14:42:32 by etamazya          #+#    #+#             */
-/*   Updated: 2024/12/09 14:29:04 by etamazya         ###   ########.fr       */
+/*   Updated: 2024/12/09 17:53:18 by etamazya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MINISHELL_H
 #define MINISHELL_H
 
+# define SUCCESS_EXIT 0
+# define FAILURE_EXIT 1
+# define EXPORT 1
+# define ENV 0
 // # include <std.h> // exit(),
 #include <stdio.h>			   // readline(), perror()
 #include <stdlib.h>			   // exit(),
@@ -22,6 +26,7 @@
 #include <sys/wait.h>		   // wait(), waitpid(), wait3(),
 #include <sys/resource.h>	   // (struct rusage *rusage),
 #include <signal.h>			   //signal(),
+# include <limits.h>
 
 typedef enum s_ttype
 {
@@ -39,18 +44,18 @@ typedef enum s_ttype
 
 typedef struct s_token
 {
-	char *context;
-	t_ttype type;
-	struct s_token *next;
-} t_token;
+	char			*context;
+	t_ttype			type;
+	struct s_token	*next;
+}					t_token;
 
 //**************************************
 typedef struct s_env
 {
-	char *key;
-	char *value;
-	struct s_env *next;
-} t_env;
+	char			*key;
+	char			*value;
+	struct s_env	*next;
+}					t_env;
 
 typedef struct s_cmd_lst
 {
@@ -111,21 +116,20 @@ void print_tokens(t_token *head);
 int put_key(t_env *node, char *src);
 void put_value(t_env *node, char *src, int pos);
 int sgmnt_len(const char *str, int pos);
-// void	my_list_iter(t_token *head);
+void	my_list_iter(t_token *head);
 int check_print_dollar(const char *context, t_env *env_lst, int i);
 int create_env(char **env, t_shell *general);
-t_cmd_lst	*exchange_to_commands(t_token *tok_lst, t_shell *general);
+// t_cmd_lst	*exchange_to_commands(t_token *tok_lst, t_shell *general);
 
 // ***_____lib utils_____***
 void ft_strlcpy(char *dest, const char *src, int size, int pos, char limiter);
 t_env *ft_lstnew(char *context);
-void ft_lstadd_back(t_env **lst, t_env *node);
+void	 ft_lstadd_back(t_env *lst, t_env *node);
 int ft_strcmp(const char *s1, const char *s2);
 int ft_strlen(const char *str);
 char *my_substr(const char *s, unsigned int start, int len);
 int ft_strchr(const char *s, int c);
 char *ft_strdup(const char *s1);
-char *ft_strjoin(char *s1, char *s2);
 
 // ***_____tokenization_____***
 short	init_tokens(const char *input, t_shell *general, int i);
@@ -148,9 +152,44 @@ int	check_dollar_sign(char *input, int i, t_shell *general);
 // Alla's
 void lalala(t_shell *general);
 void	free_cmd_lst(t_cmd_lst *cmd_lst);
-// static t_cmd_lst *create_cmd_lst(t_token *token_lst);
-// static int	count_mid_args(t_token *start, t_token *end);
-// char	*strdup(const char *__s1);
+// builtins
+// void	builin(t_token *token_list);
+int		export_valid(t_token *token_list);
+int		pwd_builtin(t_shell *general);
+int		echo_builtin(t_shell *general);
+int		cd_builtin(t_shell *general);
+int		export_builtin(t_shell *general, char *command);
+void	error_message(char *var);
+void	free_ptr(void *ptr);
+int		ft_isdigit(int c);
+int		ft_isalpha(int c);
+t_env	**add_env_lst_var(t_token cur_node, t_shell *general, int i);
+t_env	**add_env_no_var(char *context, t_shell *general);
+int		count_lst_len(t_env *env_lst);
+char	*str_join(char const *s1, char const *s2); //ft_strjoin => str_join
+char	**list_to_array(t_env *env);
+size_t	my_strlcpy(char *dst, const char *src, size_t dstsize);
+void	free_array(char **arr);
+t_env	*my_lstnew(char *key, char *value);
+// int	is_same_key(t_env *env_lst, char *key);
+// t_env	**remove_node(t_shell *general, t_env *tmp);
+int		print_export(char *new);
+t_env	*bubble_sort_lst(t_env *lst);
+void	swap_node(t_env	*a, t_env *b);
+int		change_home(t_shell *general);
+char 	*get_value(t_shell *general, char *keyik);
+int		change_env_value(t_env *lst, char *keyik, char *valik);
+int		change_prev_dir(t_shell *general);
+int		change_dir(t_shell *general, char *dir);
+int		unset_builtin(t_shell *general);
+int		unset_exp_var(t_shell *general, char *new);
+int		delete_exp_node(t_env **lst, t_env *nodik);
+void	free_node(t_env *node);
+int		exit_builtin(t_shell *general);
+int		is_valid(char **args, int count);
+long	ft_atol(char *str);
+int		count_args(char **args);
+// void	print_exp_noargs(char *str);
 
 // archive
 char *ft_substr(char const *s, unsigned int start, int len);

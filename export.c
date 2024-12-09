@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: algaboya <algaboya@student.42yerevan.am    +#+  +:+       +#+        */
+/*   By: etamazya <etamazya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/10 16:35:06 by algaboya          #+#    #+#             */
-/*   Updated: 2024/11/24 21:19:17 by algaboya         ###   ########.fr       */
+/*   Updated: 2024/12/09 16:39:25 by etamazya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -128,8 +128,8 @@ char	**list_to_array(t_env *env)
 	env_temp = env;
 	while (env_temp)
 	{
-		tmp = ft_strjoin(env_temp->key, "=");
-		str[i] = ft_strjoin(tmp, env_temp->value);
+		tmp = str_join(env_temp->key, "=");
+		str[i] = str_join(tmp, env_temp->value);
 		free(tmp);
 		if (!str[i])
 			return (free_array(str), NULL);

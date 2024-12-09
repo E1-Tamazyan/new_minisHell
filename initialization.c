@@ -6,7 +6,7 @@
 /*   By: etamazya <etamazya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/24 19:38:08 by algaboya          #+#    #+#             */
-/*   Updated: 2024/12/09 14:04:33 by etamazya         ###   ########.fr       */
+/*   Updated: 2024/12/09 17:33:12 by etamazya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,7 @@ t_env *init_env_nodes(char **env)
 			tmp = list_env;
 		}
 		else
-			ft_lstadd_back(&tmp, new_node);
+			ft_lstadd_back(tmp, new_node);
 		i++;
 	}
 	return (list_env);
