@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cmd_utils.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: elen_t13 <elen_t13@student.42.fr>          +#+  +:+       +#+        */
+/*   By: etamazya <etamazya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/05 17:11:10 by elen_t13          #+#    #+#             */
-/*   Updated: 2024/12/05 18:19:55 by elen_t13         ###   ########.fr       */
+/*   Updated: 2024/12/09 11:18:20 by etamazya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ int	exchange_to_cmd(t_shell *general)
         tmp_tok = general->tok_lst;
         general-> args_count = counter_args(general);
         // if (general-> args_count < 0) // -2 error
-        printf("dddd = %d, %s\n", general->args_count, general->tok_lst->context);
+        // printf("dddd = %d, %s\n", general->args_count, general->tok_lst->context);
         // general->cmd_list->args = (char **)malloc(sizeof(char *) * (general->args_count + 1));
         // ete tesav nshana kanchum a funckia ov cmd sarqi, sarqeluc heto pointery araj a talis
     }

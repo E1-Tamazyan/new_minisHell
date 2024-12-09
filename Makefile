@@ -35,12 +35,10 @@ SRCS_NAME =	main.c mini_utils.c \
 OBJS = $(addprefix $(OBJS_DIR), $(OBJS_NAME))
 OBJS_NAME = $(SRCS_NAME:.c=.o)
 
-
-
 all: $(LIBS_DIR)/$(READLINE) $(NAME)
 
 $(NAME): $(OBJS)
-	@echo "${BLUE}Compiling $<.${RESET}"
+	@echo "${GREEN}Compiled $<.${RESET}"
 	@$(CC) $(CFLAGS) $^ -o $@ -l$(READLINE) -L$(READLINE_LIB_PATH) -lncurses > /dev/null
 
 $(OBJS_DIR)%.o: %.c $(HEADERS) Makefile

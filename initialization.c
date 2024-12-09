@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   initialization.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: elen_t13 <elen_t13@student.42.fr>          +#+  +:+       +#+        */
+/*   By: etamazya <etamazya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/24 19:38:08 by algaboya          #+#    #+#             */
-/*   Updated: 2024/12/05 17:49:12 by elen_t13         ###   ########.fr       */
+/*   Updated: 2024/12/09 11:18:09 by etamazya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,9 @@ int	init_input(char *input, t_shell *general, char **env)
 			return (1);
 		// init_general(general) // give every value of struct to it's corresponding one
 		general -> tok_lst = NULL;
+		// printf("aaaaaaaaa\n");
 		init_tokens((const char *)input, general, 0);
+		// printf("bbbbbbbb\n");
 		//addd check_heredocs
 		exchange_to_cmd(general);
 		if (check_cmd(env, general)) // if 1 error

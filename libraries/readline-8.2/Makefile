@@ -31,7 +31,7 @@ PACKAGE_TARNAME = readline
 srcdir = .
 
 top_srcdir = .
-BUILD_DIR = /Users/tumolabs/Desktop/minishell_42/libraries/readline-8.2
+BUILD_DIR = /Users/etamazya/Desktop/new_minisHell/libraries/readline-8.2
 
 INSTALL = /usr/bin/install -c
 INSTALL_PROGRAM = ${INSTALL}
@@ -48,7 +48,7 @@ MV = mv
 
 SHELL = /bin/sh
 
-prefix = /Users/tumolabs/Desktop/minishell_42/libraries/readline
+prefix = /Users/etamazya/Desktop/new_minisHell/libraries/readline
 exec_prefix = ${prefix}
 
 datarootdir = ${prefix}/share
