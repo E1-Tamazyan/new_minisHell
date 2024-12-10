@@ -6,7 +6,7 @@
 /*   By: algaboya <algaboya@student.42yerevan.am    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/12 14:42:32 by etamazya          #+#    #+#             */
-/*   Updated: 2024/12/09 20:03:39 by algaboya         ###   ########.fr       */
+/*   Updated: 2024/12/09 22:24:15 by algaboya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -152,9 +152,9 @@ void	lalala(t_shell *general);
 void	free_cmd_lst(t_cmd_lst *cmd_lst);
 // builtins
 // void	builin(t_token *token_list);
-int		export_valid(t_token *token_list);
+int		export_valid(char *arg);
 int		pwd_builtin(t_shell *general);
-int		echo_builtin(t_shell *general);
+// int		echo_builtin(t_shell *general);
 int		cd_builtin(t_shell *general);
 int		export_builtin(t_shell *general, char *command);
 void	error_message(char *var);
