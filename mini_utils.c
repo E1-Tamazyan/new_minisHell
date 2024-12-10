@@ -189,26 +189,6 @@ t_env	*bubble_sort_lst(t_env *lst)
 
 void	print_env(t_env *new, int flag)
 {
-	// char	**new;
-	// int		i;
-	// int		j;
-
-	// i = 0;
-	// j = 0;
-	// new = sort_env(list_to_array(lst));
-	// while (new[i])
-	// {
-	// 	if (flag == EXPORT)
-	// 	{
-	// 		print_export(new[i]);
-	// 	}
-	// 	else
-	// 	{
-	// 		printf("olala %s\n", new[i]);
-	// 		// i++;
-	// 	}
-	// 		i++;
-	// }
 	t_env *lst = bubble_sort_lst(new);
 
 	while (lst != NULL)
@@ -234,63 +214,3 @@ void	print_env(t_env *new, int flag)
 // ************************
 // ******* FUR MICH *******
 // ************************
-
-
-// **** ARCHIVE ****
-
-// void put_value(t_env *node, char *src)
-// {
-	// int	i;
-	// int	n;
-	// int	pos;
-	// int	counter;
-
-	// i = 0;
-	// counter = 0;
-		// printf("start_***\n");
-	// while(i < len && src[j])
-	// {
-	// 	printf("%c", src[j]);
-	// 	i++;
-	// 	j++;
-	// } // correct
-	// printf("\nend_***\n");
-	// while (src[i] && src[i] != '\n')
-	// {
-	// 	// here is the main problem
-	// 	n = sgmnt_len((const char *)src, &pos);
-	// 	printf("1_hii\n"); //doesn't reach here
-	// 	if (n == -1)
-	// 		return ;
-	// 	node -> value = (char *)malloc(sizeof(char) * (n + 1)); //check thisss
-	// 	if (!node -> value)
-	// 		return ;
-	//     ft_strlcpy(node -> value, src, n, pos, '\n');
-    //     if (!node -> value)
-    //         return ;
-    //     i++;
-	// }
-// }
-
-
-// int	sgmnt_len(const char *str, int *pos)
-// {
-// 	// int	i;
-// 	// int	counter;
-
-// 	// i = 0;
-// 	// counter = 0;
-// 	// if (!str)
-// 	// 	return (-1);
-// 	// // while (str[i] != '=')
-// 	// // 	i++;
-// 	// // if (str[i] == '=') // only once
-// 	// // 	i++;
-// 	// *pos = i;
-// 	// while (str[i] && str[i] != '\n')
-// 	// {
-// 	// 	i++;
-// 	// 	counter++;
-// 	// }
-// 	// return (counter);
-// }

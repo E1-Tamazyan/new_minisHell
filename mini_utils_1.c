@@ -3,39 +3,30 @@
 /*                                                        :::      ::::::::   */
 /*   mini_utils_1.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: algaboya <algaboya@student.42yerevan.am    +#+  +:+       +#+        */
+/*   By: etamazya <etamazya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/06 11:50:05 by etamazya          #+#    #+#             */
-/*   Updated: 2024/12/09 20:00:27 by algaboya         ###   ########.fr       */
+/*   Updated: 2024/12/10 19:36:50 by etamazya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	check_print_dollar(const char *context, t_env *env_lst, int i)
+// check_print
+char	*check_env_var(t_env *env_lst, const char *context)
 {
-	int		end;
-	char	*var;
 	t_env	*tmp;
 
-	end = i;
 	tmp = env_lst;
-	if (!context)
-		return (-1);
-	while (context[end] && (context[end] != ' '
-			&& (context[end] < 9 || context[end] > 13 || context[end] != '$')))
-		end++;
-	var = ft_substr(context, (unsigned int)i, (end - i));
-	if (!var)
-		return (1);
+	if (*context)
+		context++;
 	while (tmp)
 	{
-		if (ft_strcmp(tmp->key, var) == 0)
-			return (printf("%s\n", tmp->value), 0);
+		if (ft_strcmp(tmp->key, context) == 0)
+			return (ft_strdup(tmp->value));
 		tmp = tmp->next;
 	}
-	free(var);
-	return (1);
+	return (NULL);
 }
 
 short	del_t_node(t_token *lst)

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   initialization.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: algaboya <algaboya@student.42yerevan.am    +#+  +:+       +#+        */
+/*   By: etamazya <etamazya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/24 19:38:08 by algaboya          #+#    #+#             */
-/*   Updated: 2024/12/09 19:59:01 by algaboya         ###   ########.fr       */
+/*   Updated: 2024/12/10 17:56:13 by etamazya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,6 @@ int	init_input(char *input, t_shell *general, char **env)
 		init_tokens((const char *)input, general, 0);
 		lalala(general); // to print commands
 		//addd check_heredocs
-		// exchange_to_cmd(general);
 		if (check_cmd(env, general)) // if 1 error
 			return (free(input), clean_list(&general->tok_lst), 1);
 		clean_list(&general->tok_lst);
@@ -108,40 +107,6 @@ short	init_tokens(const char *input, t_shell *general, int i)
 	return (0);
 }
 
-// ***************
-// ***************
-// ***************
-
-//voch te type-n e command ayl inqy avelanum e cmd-neri cankin vory struct-i popoxakan e
-// t_cmd_lst *exchange_to_commands(t_token *tok_lst, t_shell *general)
-// {
-// 	(void)tok_lst;
-// 	(void)general;
-	// add the cmd_token in general
-    // t_token *tmp;
-	// t_cmd_lst	*temp;
-
-	// tmp = tok_lst;
-	// temp = general->cmd_list;
-    // if (tok_lst)
-    //     tok_lst->type = "COMMAND";
-    // while (tok_lst && tok_lst->next)
-    // {
-    //     if (tok_lst->type == 1)
-    //     {
-    //         if (tok_lst->next)
-    //             tok_lst->next->type = "COMMAND";
-    //     }
-	// 	tok_lst->type = "WORD"
-    //     tok_lst = tok_lst->next;
-    // }
-    // return tmp;
-// }
-
-// ***************
-// ***************
-// ***************
-
 int	init_op_token(const char *input, int i, t_token **token_list)
 {
 	if (!input || !token_list)
@@ -154,7 +119,6 @@ int	init_op_token(const char *input, int i, t_token **token_list)
 		if (input[i + 1] == '|')
 			return (printf("minisHell: syntax error near unexpected token `||'\n"), -1);
 		add_token_list(token_list, my_substr(input, i, 1), 1);
-		// i += 1; // try to do this //at the end of function
 	}
 	else if (input[i] && input[i] == '>')
 	{
@@ -203,7 +167,7 @@ int	init_op_token(const char *input, int i, t_token **token_list)
 			i++;
 		}
 		// else if (input[i + 1] == '>')
-		// 	printf(">"); // ********************** try to understand do you need to implement this?  cmd:ls <> echo dasd (works only for existing file)
+		// 	printf(">"); // ⛔️⛔️⛔️⛔️⛔️⛔️⛔️ try to understand do you need to implement this?  cmd:ls <> echo dasd (works only for existing file)
 		else if (input[i + 1] == '|')
 				return (printf("minisHell: syntax error near unexpected token `%c'\n", input[i + 1]), -1);
 		else
@@ -226,32 +190,3 @@ int	create_env(char **env, t_shell *general)
 // *********************
 // ****** ARCHIVE ******
 // *********************
-
-
-// init_op_token ---- shorten formmm maybe completed and maybe will be "needable"
-// else if (input[i] == '>') // >
-// {
-//     if (!input[i + 1] || (input[i + 1] != '<' && !input[i + 2])) // Newline or invalid following token
-//         return printf("minisHell: syntax error near unexpected token `newline'\n"), -1;
-//     if (input[i + 1] == '>') // >>
-//     {
-//         if ((input[i + 2] && ((input[i + 2] == '>' && input[i + 3] == '>') || (input[i + 2] == '<' && (input[i + 3] == '<' || input[i + 3] == '|')))) ||
-//             (input[i + 2] && (input[i + 2] == '>' || input[i + 2] == '<' || input[i + 2] == '|')))
-//             return printf("minisHell: syntax error near unexpected token `%c%c'\n", input[i + 2], input[i + 3]), -1;
-//         add_token_list(token_list, my_substr(input, i, 2), 4);
-//         i += 2;
-//     }
-//     else if (input[i + 1] == '<') // ><
-//     {
-//         if ((input[i + 2] && input[i + 2] == '<' && input[i + 3] == '<') || (input[i + 2] && (input[i + 2] == '>' || input[i + 2] == '<')))
-//             return printf("minisHell: syntax error near unexpected token `%c%c%c'\n", input[i + 1], input[i + 2], input[i + 3]), -1;     
-//         return printf("minisHell: syntax error near unexpected token `%c'\n", input[i + 1]), -1;
-//     }
-//     else if ((input[i + 1] == '|') || !input[i + 2]) // handle pipes and end of input
-//     {
-//         if (input[i + 2] && input[i + 3] && (input[i + 2] == '>' || input[i + 2] == '<' || input[i + 2] == '|'))
-//             return printf("minisHell: syntax error near unexpected token `%c'\n", input[i + 2]), -1;       
-//         return printf("minisHell: syntax error near unexpected token `%c'\n", input[i + 1]), -1;
-//     }
-//     add_token_list(token_list, my_substr(input, i, 1), 3);
-// }

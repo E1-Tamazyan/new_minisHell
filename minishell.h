@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: algaboya <algaboya@student.42yerevan.am    +#+  +:+       +#+        */
+/*   By: etamazya <etamazya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/12 14:42:32 by etamazya          #+#    #+#             */
-/*   Updated: 2024/12/09 20:03:39 by algaboya         ###   ########.fr       */
+/*   Updated: 2024/12/10 17:57:10 by etamazya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,10 +36,6 @@ typedef enum s_ttype
 	REDIR_OUT = 3,	 	// '>'
 	REDIR_APPEND = 4,	 // '>>'
 	REDIR_HEREDOC = 5, // '<<'
-	// ENV_VAR = 6,		 // ENV
-	// QUOTES = 7,		 // "" ''
-	// T_SGL_QUOTES = 7, // ''
-	// T_DBL_QUOTES = 8, // ""
 }			t_ttype;
 
 typedef struct s_token
@@ -49,7 +45,6 @@ typedef struct s_token
 	struct s_token	*next;
 }					t_token;
 
-//**************************************
 typedef struct s_env
 {
 	char			*key;
@@ -87,15 +82,11 @@ typedef struct s_shell
 	t_env		*env_lst;
 	t_cmd_lst	*cmd_lst;
 	t_dollar	*doll_lst;
-	t_env		*sorted_env_lst; // for export, to not change the original env_lst above
+	t_env		*sorted_env_lst;
 	int			shlvl;		     // check
 	// char		pwd; // check
 	// char		*oldpwd; // check
 }			t_shell;
-
-// ### NOW WORKING ###
-
-//**************************************
 
 // ***_____main_functions_____***
 int		init_input(char *input, t_shell *gen, char **env);
@@ -109,15 +100,13 @@ int		partition(char **arr, int low, int high);
 void	swap(char **a, char **b);
 
 // ***_____utils_____***
-void	print_env(t_env *lst, int flag);
+void	print_env(t_env *new, int flag);
 void	print_tokens(t_token *head);
 int		put_key(t_env *node, char *src);
 void	put_value(t_env *node, char *src, int pos);
 int		sgmnt_len(const char *str, int pos);
-void	my_list_iter(t_token *head);
-int		check_print_dollar(const char *context, t_env *env_lst, int i);
+char	*check_env_var(t_env *env_lst, const char *context);
 int		create_env(char **env, t_shell *general);
-// t_cmd_lst	*exchange_to_commands(t_token *tok_lst, t_shell *general);
 
 // ***_____lib utils_____***
 void	ft_strlcpy(char *dest, const char *src, int size, int pos, char limiter);
@@ -128,6 +117,8 @@ int		ft_strlen(const char *str);
 char	*my_substr(const char *s, unsigned int start, int len);
 int		ft_strchr(const char *s, int c);
 char	*ft_strdup(const char *s1);
+int		ft_isalnum(int arg);
+
 
 // ***_____tokenization_____***
 short	init_tokens(const char *input, t_shell *general, int i);
@@ -144,17 +135,13 @@ int		check_cut_quotes(const char *input, int start, int i, t_shell *general);
 
 // **************
 int		check_dollar_sign(char *input, int i, t_shell *general);
-// int	exchange_to_cmd(t_shell *general);
-// int	counter_args(t_shell *general);
 
 // Alla's
 void	lalala(t_shell *general);
 void	free_cmd_lst(t_cmd_lst *cmd_lst);
 // builtins
-// void	builin(t_token *token_list);
 int		export_valid(t_token *token_list);
 int		pwd_builtin(t_shell *general);
-int		echo_builtin(t_shell *general);
 int		cd_builtin(t_shell *general);
 int		export_builtin(t_shell *general, char *command);
 void	error_message(char *var);
@@ -169,8 +156,6 @@ char	**list_to_array(t_env *env);
 size_t	my_strlcpy(char *dst, const char *src, size_t dstsize);
 void	free_array(char **arr);
 t_env	*my_lstnew(char *key, char *value);
-// int	is_same_key(t_env *env_lst, char *key);
-// t_env	**remove_node(t_shell *general, t_env *tmp);
 int		print_export(char *new);
 t_env	*bubble_sort_lst(t_env *lst);
 void	swap_node(t_env	*a, t_env *b);
@@ -187,7 +172,6 @@ int		exit_builtin(t_shell *general);
 int		is_valid(char **args, int count);
 long	ft_atol(char *str);
 int		count_args(char **args);
-// void	print_exp_noargs(char *str);
 
 // archive
 char	*ft_substr(char const *s, unsigned int start, int len);
