@@ -3,20 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   builtin_utils.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: algaboya <algaboya@student.42yerevan.am    +#+  +:+       +#+        */
+/*   By: etamazya <etamazya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/10 17:30:40 by algaboya          #+#    #+#             */
-/*   Updated: 2024/12/08 16:01:04 by algaboya         ###   ########.fr       */
+/*   Updated: 2024/12/11 11:48:58 by etamazya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-// void	builin(t_token *token_list)
-// {
-// 	if (ft_strcmp(token_list->context, "export") == 0)
-// 		export_builtin(token_list->next->next);
-// }
 
 void	error_message(char *var)
 {

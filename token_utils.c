@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   token_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: algaboya <algaboya@student.42yerevan.am    +#+  +:+       +#+        */
+/*   By: etamazya <etamazya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/06 16:18:12 by etamazya          #+#    #+#             */
-/*   Updated: 2024/12/09 20:06:37 by algaboya         ###   ########.fr       */
+/*   Updated: 2024/12/11 11:45:51 by etamazya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,8 +76,7 @@ t_token	*create_token(char *value, t_ttype type)
 
 	j = ft_strlen(value);
 	new = (t_token *)malloc(sizeof(t_token));
-	if (new == NULL)
-		return (NULL);
+	check_malloc(new);
 	new->context = my_substr(value, 0, j);
 	new->type = type;
 	new->next = NULL;

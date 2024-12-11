@@ -6,7 +6,7 @@
 /*   By: etamazya <etamazya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/06 11:50:05 by etamazya          #+#    #+#             */
-/*   Updated: 2024/12/10 19:36:50 by etamazya         ###   ########.fr       */
+/*   Updated: 2024/12/11 12:19:02 by etamazya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,8 +18,6 @@ char	*check_env_var(t_env *env_lst, const char *context)
 	t_env	*tmp;
 
 	tmp = env_lst;
-	if (*context)
-		context++;
 	while (tmp)
 	{
 		if (ft_strcmp(tmp->key, context) == 0)

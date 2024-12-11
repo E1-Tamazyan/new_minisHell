@@ -6,7 +6,7 @@
 /*   By: etamazya <etamazya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/18 14:45:48 by etamazya          #+#    #+#             */
-/*   Updated: 2024/12/09 17:35:19 by etamazya         ###   ########.fr       */
+/*   Updated: 2024/12/11 11:45:00 by etamazya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,8 +23,7 @@ t_env	*ft_lstnew(char *context) // contains blabla = blabla=bla
 	t_env	*node;
 
 	node = malloc(sizeof(t_env));
-	if (!node)
-		return (NULL);
+	check_malloc(node);
 	pos = put_key(node, context);	
 	put_value(node, context, pos);
 	node -> next = NULL;
@@ -36,8 +35,7 @@ t_env	*my_lstnew(char *key, char *value) // contains blabla = blabla=bla
 	t_env	*node;
 
 	node = malloc(sizeof(t_env));
-	if (!node)
-		return (NULL);
+	check_malloc(node);
 	node->key = key;
 	node->value = value;
 	node -> next = NULL;

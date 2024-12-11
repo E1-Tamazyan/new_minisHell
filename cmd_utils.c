@@ -6,7 +6,7 @@
 /*   By: etamazya <etamazya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/05 17:11:10 by elen_t13          #+#    #+#             */
-/*   Updated: 2024/12/10 15:00:29 by etamazya         ###   ########.fr       */
+/*   Updated: 2024/12/11 11:50:34 by etamazya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,8 +68,7 @@ static t_cmd_lst *create_cmd_lst(t_token *token_lst)
 	while (token_lst)
 	{
 		new_cmd = malloc(sizeof(t_cmd_lst));
-		if (!new_cmd)
-			return (NULL);
+		check_malloc(new_cmd);
 		new_cmd->cmd = NULL;
 		new_cmd->args = NULL;
 		new_cmd->next = NULL;
@@ -80,8 +79,7 @@ static t_cmd_lst *create_cmd_lst(t_token *token_lst)
 		if (token_count > 0)
 		{
 			new_cmd->args = malloc(sizeof(char *) * (token_count + 1));
-			if (!new_cmd->args)
-				return (NULL);
+			check_malloc(new_cmd->args);
 			current_token = start;
 			if (ft_strcmp(current_token->context, " ") == 0)
 			{
@@ -93,7 +91,6 @@ static t_cmd_lst *create_cmd_lst(t_token *token_lst)
 				new_cmd->cmd = strdup(current_token->context);
 				new_cmd->args[0] = strdup(current_token->context);
 			}
-			// printf("new_cmd->arg = %s[0]\n", new_cmd->args[0]);
 			current_token = start->next;
 			while (i < token_count)
 			{
@@ -102,9 +99,7 @@ static t_cmd_lst *create_cmd_lst(t_token *token_lst)
 				i++;
 			}
 			new_cmd->args[token_count] = NULL;
-		// fill_cmd_token(new_cmd, cmd_start, token_count);
 		}
-
 		if (!cmd_lst)
 			cmd_lst = new_cmd;
 		else

@@ -6,7 +6,7 @@
 /*   By: etamazya <etamazya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/18 11:14:51 by etamazya          #+#    #+#             */
-/*   Updated: 2024/12/09 17:28:09 by etamazya         ###   ########.fr       */
+/*   Updated: 2024/12/11 11:44:30 by etamazya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,8 +65,7 @@ char	*str_join(char const *s1, char const *s2)
 	if (!s1 || !s2)
 		return (NULL);
 	ptr = (char *)malloc(sizeof(char) * (ft_strlen(s1) + ft_strlen(s2) + 1));
-	if (!ptr)
-		return (NULL);
+	check_malloc(ptr);
 	my_strlcpy(ptr, s1, ft_strlen(s1) + 1);
 	my_strlcpy(ptr + ft_strlen(s1), s2, (ft_strlen(s2) + 1));
 	ptr[ft_strlen(s1) + ft_strlen(s2)] = '\0';

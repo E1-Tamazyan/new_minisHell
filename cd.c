@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: algaboya <algaboya@student.42yerevan.am    +#+  +:+       +#+        */
+/*   By: etamazya <etamazya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/24 20:33:37 by algaboya          #+#    #+#             */
-/*   Updated: 2024/12/09 19:52:31 by algaboya         ###   ########.fr       */
+/*   Updated: 2024/12/11 10:35:48 by etamazya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -126,4 +126,4 @@ int	change_env_value(t_env *lst, char *keyik, char *valik)
 		tmp = tmp->next;
 	}
 	return (SUCCESS_EXIT);
-}
+} 
