@@ -6,7 +6,7 @@
 /*   By: etamazya <etamazya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/12 14:42:32 by etamazya          #+#    #+#             */
-/*   Updated: 2024/12/11 11:19:11 by etamazya         ###   ########.fr       */
+/*   Updated: 2024/12/11 12:59:32 by etamazya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -140,8 +140,10 @@ int		check_dollar_sign(char *input, int i, t_shell *general);
 void	lalala(t_shell *general);
 void	free_cmd_lst(t_cmd_lst *cmd_lst);
 // builtins
+// void	builin(t_token *token_list);
 int		export_valid(t_token *token_list);
 int		pwd_builtin(t_shell *general);
+int		echo_builtin(t_shell *general);
 int		cd_builtin(t_shell *general);
 int		export_builtin(t_shell *general, char *command);
 void	error_message(char *var);
