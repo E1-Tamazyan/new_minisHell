@@ -6,7 +6,7 @@
 /*   By: etamazya <etamazya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/12 14:42:32 by etamazya          #+#    #+#             */
-/*   Updated: 2024/12/11 12:59:32 by etamazya         ###   ########.fr       */
+/*   Updated: 2024/12/11 17:03:03 by etamazya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -178,6 +178,5 @@ int		count_args(char **args);
 // archive
 char	*ft_substr(char const *s, unsigned int start, int len);
 void	check_malloc(void *str);
-// void	error_handle(void);
 
 #endif
