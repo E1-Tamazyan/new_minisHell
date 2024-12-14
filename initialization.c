@@ -111,7 +111,7 @@ int	init_op_token(const char *input, int i, t_token **token_list)
 {
 	if (!input || !token_list)
 		return i;
-	if (input[i] && input[i] == '|') // ❗️
+	if (input[i] && input[i] == '|') // ❗️❗️
 	{
 		if (!input[i + 1] || (!input[i + 2] && input[i + 1] != '|')) // change this part later
 			return (printf("minisHell: syntax error near unexpected token `newline'\n"), -1);

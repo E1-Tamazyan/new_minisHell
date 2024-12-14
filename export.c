@@ -43,15 +43,11 @@ int	export_builtin(t_shell *general, char *command)
 
 int	export_valid(t_token *token_list)
 {
-	int	i;
 	int	exit_status;
 
-	i = 0;
 	exit_status = 0;
 	while (token_list)
 	{
-		// while (token_list && token_list->context == ' ')
-		// 	token_list = token_list->next;
 		if (!ft_isalpha(token_list->context[0])
 			|| ft_isdigit(token_list->context[0]))
 		{

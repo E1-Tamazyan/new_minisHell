@@ -31,6 +31,7 @@ int	ft_isdigit(int c)
 
 void	free_ptr(void *ptr)
 {
+	
 	if (ptr != NULL)
 	{
 		free(ptr);

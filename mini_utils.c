@@ -20,10 +20,8 @@
 
 int	put_key(t_env *node, char	*src)
 {
-	int	i;
 	int	j;
 
-	i = 0;
 	j = 0;
 	while (src[j] && src[j] != '=')
 			j++;
@@ -31,7 +29,6 @@ int	put_key(t_env *node, char	*src)
 	if (!node-> key)
 		return (-1);
 	ft_strlcpy(node-> key, (const char *)src, j, 0, '=');
-	// printf("key = %s\n", node->key);
 	if (!node-> key)
 		return (-1);
 	return (j + 1);
@@ -54,7 +51,6 @@ void	put_value(t_env *node, char *src, int pos)
 	if (!node -> value)
 		return ;
 	ft_strlcpy(node -> value, src, len, pos, '\n');
-	// printf("value = %s\n", node->value);
 	if (!node -> value)
 		return ;
 }
@@ -104,10 +100,8 @@ void	print_tokens(t_token *head)
 
 int	print_export(char *new)
 {
-	int		i;
 	int		j;
 
-	i = 0;
 	j = 0;
 	// printf("sxtorik\n");
 	printf("declare -x ");

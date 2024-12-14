@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lib_utils_1.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: etamazya <etamazya@student.42.fr>          +#+  +:+       +#+        */
+/*   By: elen_t13 <elen_t13@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/06 16:11:43 by etamazya          #+#    #+#             */
-/*   Updated: 2024/12/11 11:44:11 by etamazya         ###   ########.fr       */
+/*   Updated: 2024/12/12 18:55:16 by elen_t13         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,5 +103,6 @@ char	*ft_strdup(const char *s1)
 		i++;
 	}
 	s1_dup[i] = '\0';
+	printf("ft_strdup, s1_dup = %s, s1[0] = %c\n", s1_dup, s1_dup[0]);
 	return ((char *)s1_dup);
 }
