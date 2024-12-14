@@ -6,7 +6,7 @@
 /*   By: etamazya <etamazya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/24 19:38:08 by algaboya          #+#    #+#             */
-/*   Updated: 2024/12/10 17:56:13 by etamazya         ###   ########.fr       */
+/*   Updated: 2024/12/14 16:02:41 by etamazya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,10 +36,10 @@ int	init_input(char *input, t_shell *general, char **env)
 		// init_general(general) // give every value of struct to it's corresponding one
 		general -> tok_lst = NULL;
 		init_tokens((const char *)input, general, 0);
-		lalala(general); // to print commands
+		// lalala(general); // to print commands
 		//addd check_heredocs
-		if (check_cmd(env, general)) // if 1 error
-			return (free(input), clean_list(&general->tok_lst), 1);
+		// if (check_cmd(env, general)) // if 1 error
+		// 	return (free(input), clean_list(&general->tok_lst), 1);
 		clean_list(&general->tok_lst);
 		free(input);
 	}

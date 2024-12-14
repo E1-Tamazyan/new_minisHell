@@ -46,88 +46,149 @@ int	check_cmd(char **env, t_shell *general)
 	return (0);
 }
 
+char    *open_dollar(char   *input, int i)
+{
+    char    *dup;
+    int     j;
 
-
-
-
-
-
+    j = 0;
+    dup = (char *)malloc((ft_strlen(input) + 1) * sizeof(char));
+    while (input[i] && input[i] != '$' || input[i] != '\"')
+        dup[j++] == input[i++];
+    
+}
 int check_cut_quotes(const char *input, int start, int i, t_shell *general)
 {
-    int flag_db_quote = 0;
-    int flag_single_quote = 0;
-    int st;
-    char *temp;
-    char *env_var;
-    char *dup_inp;
-    int len;
-    int j;
-
-    dup_inp = malloc(strlen(input) + 1);
-    check_malloc(dup_inp);
-    i = start;
-    len = 0;
+    int     flag_db_quote = 0;
+    int     flag_single_quote = 0;
+    char    *temp;
+  
     while (input[i]) 
     {
+        printf("0.5 len = %d, dup_inp[len] = %c\n", len, dup_inp[len]);
         if (input[i] == '\"' && !flag_single_quote)
             flag_db_quote = !flag_db_quote;
         else if (input[i] == '\'' && !flag_db_quote)
             flag_single_quote = !flag_single_quote;
         else if ((input[i] == ' ' || input[i] == '|' || input[i] == '>' || input[i] == '<') && !flag_db_quote && !flag_single_quote)
         {
-            // printf("1_input[i] = %c, i = %d\n", input[i], i);
-            if (len > 0)
-            {
-                dup_inp[len] = '\0';
-                printf("dup = %s, i = %d\n", dup_inp, i);
-                add_token_list(&general->tok_lst, dup_inp, 7);
-                len = 0;
-            }
+            // add_token_list(&general->tok_lst, dup_inp, 7);
+            // qani der quote-ic durs e
             if (input[i] && (input[i] == '|' || input[i] == '>' || input[i] == '<' || input[i] == ' '))
-            {
-                printf("input = %s, i = %d\n", input, i);
                 return (init_op_token(input, i, &general->tok_lst));
-            }
         }
         if (flag_db_quote && input[i] == '$') 
         {
-            st = i;
-            i++;
-            printf("inside db quote. input[i] = %c, i = %d\n", input[i], i);
-            while (input[i] && isalnum(input[i])) 
-                i++;
-            printf("inside db quote. input[i] = %c, i = %d\n", input[i], i);
-            temp = my_substr(input, st + 1, i - st - 1);
-            printf("st = %d, temp. input[i] = %c, i = %d\n", st, input[i], i);
-            printf("temp = %s. input[i] = %c, i = %d\n", temp, input[i], i);
-            if (general->env_lst && temp) 
-            {
-                env_var = check_env_var(general->env_lst, temp);
-                printf("temp = %s. input[i] = %c, i = %d, env_var = %s\n", temp, input[i], i, env_var);
-                if (env_var)
-                {
-                    j = 0;
-                    printf("here env_var[j] = %c\n", env_var[j]);
-                    while (env_var[j] != '\0')
-                        dup_inp[len++] = env_var[j++];
-                }
-                else
-                {
-                    printf("why dup_inp\n");
-                    dup_inp[len++] = '$';
-                }
-            } 
-            else 
-                return (free(temp), free(dup_inp), -1);
-            free(temp);
-        } 
-        else
-            dup_inp[len++] = input[i++];
+            // make the dup of input line
+            temp = open_dollar(input, i);
+            // ""-i $gtnvec
+        }
     }
     if (flag_db_quote || flag_single_quote)
-        return (free(dup_inp), printf("Error: Unclosed quotes found in input.\n"), -1);
-    dup_inp[len] = '\0';
+        return (printf("Error: Unclosed quotes found in input.\n"), -1);
+    // dup_inp[len] = '\0';
     if (len > 0)
         add_token_list(&general->tok_lst, dup_inp, 7);
     return (free(dup_inp), i);
 }
+
+
+
+
+// int check_cut_quotes(const char *input, int start, int i, t_shell *general)
+// {
+//     int flag_db_quote = 0;
+//     int flag_single_quote = 0;
+//     int st;
+//     char *temp;
+//     char *env_var;
+//     char *dup_inp;
+//     int len;
+//     int j;
+
+//     dup_inp = malloc(ft_strlen(input) + 1);
+//     check_malloc(dup_inp);
+//     i = start;
+//     len = 0;
+//     while (input[i]) 
+//     {
+//         printf("0.5 len = %d, dup_inp[len] = %c\n", len, dup_inp[len]);
+//         if (input[i] == '\"' && !flag_single_quote)
+//             flag_db_quote = !flag_db_quote;
+//         else if (input[i] == '\'' && !flag_db_quote)
+//             flag_single_quote = !flag_single_quote;
+//         else if ((input[i] == ' ' || input[i] == '|' || input[i] == '>' || input[i] == '<') && !flag_db_quote && !flag_single_quote)
+//         {
+//             printf("1_len = %d\n", len);
+//             // printf("1_input[i] = %c, i = %d\n", input[i], i);
+//             if (len > 0)
+//             {
+//                 printf("2_len = %d\n", len);
+//                 dup_inp[len] = '\0';
+//                 // printf("dup = %s, i = %d\n", dup_inp, i);
+//                 add_token_list(&general->tok_lst, dup_inp, 7);
+//                 len = 0;
+//                 printf("3_len = %d\n", len);
+//             }
+//             if (input[i] && (input[i] == '|' || input[i] == '>' || input[i] == '<' || input[i] == ' '))
+//             {
+//                 printf("4_len = %d\n", len);
+//                 // printf("input = %s, i = %d\n", input, i);
+//                 return (init_op_token(input, i, &general->tok_lst));
+//             }
+//         }
+//         printf("4.5 len = %d\n", len);
+//         if (flag_db_quote && input[i] == '$') 
+//         {
+//             st = i;
+//             i++;
+//             printf("5_len = %d\n", len);
+//             // printf("inside db quote. input[i] = %c, i = %d\n", input[i], i);
+//             while (input[i] && isalnum(input[i])) 
+//                 i++;
+//             // printf("inside db quote. input[i] = %c, i = %d\n", input[i], i);
+//             temp = my_substr(input, st + 1, i - st - 1);
+//             // printf("st = %d, temp. input[i] = %c, i = %d\n", st, input[i], i);
+//             // printf("temp = %s. input[i] = %c, i = %d\n", temp, input[i], i);
+//             if (general->env_lst && temp) 
+//             {
+//                 env_var = check_env_var(general->env_lst, temp);
+//                 // printf("temp = %s. input[i] = %c, i = %d, env_var = %s\n", temp, input[i], i, env_var);
+//                 if (env_var)
+//                 {
+//                     j = 0;
+//                     printf("6_len = %d\n", len);
+//                     printf("here env_var[j] = %c\n", env_var[j]);
+//                     printf("####### len = %d\n", len);
+//                     while (env_var[j] != '\0')
+//                     {
+//                         printf("7_len = %d\n", len);
+//                         dup_inp[len++] = env_var[j++];
+//                         printf("*** env_var[j] = %c, dup[len] = %c, len = %d*\n", env_var[j], dup_inp[len], len);
+//                     }
+//                 }
+//                 else
+//                 {
+//                     printf("____________why dup_inp\n");
+//                     dup_inp[len++] = '$';
+//                 }
+//             } 
+//             else 
+//                 return (free(temp), free(dup_inp), -1);
+//             free(temp);
+//         } 
+//         else
+//         {
+//             printf("$$$$%c = %c\n", dup_inp[len], input[i]);
+//             dup_inp[len] = input[i];
+//             len++;
+//             i++;
+//         }
+//     }
+//     if (flag_db_quote || flag_single_quote)
+//         return (free(dup_inp), printf("Error: Unclosed quotes found in input.\n"), -1);
+//     dup_inp[len] = '\0';
+//     if (len > 0)
+//         add_token_list(&general->tok_lst, dup_inp, 7);
+//     return (free(dup_inp), i);
+// }
