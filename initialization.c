@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   initialization.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: etamazya <etamazya@student.42.fr>          +#+  +:+       +#+        */
+/*   By: elen_t13 <elen_t13@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/24 19:38:08 by algaboya          #+#    #+#             */
-/*   Updated: 2024/12/14 16:02:41 by etamazya         ###   ########.fr       */
+/*   Updated: 2024/12/16 01:09:01 by elen_t13         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ int	init_input(char *input, t_shell *general, char **env)
 		// init_general(general) // give every value of struct to it's corresponding one
 		general -> tok_lst = NULL;
 		init_tokens((const char *)input, general, 0);
-		// lalala(general); // to print commands
+		lalala(general); // to print commands
 		//addd check_heredocs
 		// if (check_cmd(env, general)) // if 1 error
 		// 	return (free(input), clean_list(&general->tok_lst), 1);
@@ -92,7 +92,7 @@ short	init_tokens(const char *input, t_shell *general, int i)
 				&& input[i] != ' ' && input[i] != 34 && input[i] != 39)
 				i++;
 			if (i >= 0 && (input[i] == 39 || input[i] == 34))
-				i = check_cut_quotes(input,  start,  i, general); // and added dollar sign here check_cut_quotes
+				i = check_cut_quotes(input,  start, i, general); // and added dollar sign here check_cut_quotes
 			else if (i > start)
 				add_token_list(&general->tok_lst, my_substr(input, start, i - start), 0);
 			i--;

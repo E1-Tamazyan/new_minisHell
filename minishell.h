@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: etamazya <etamazya@student.42.fr>          +#+  +:+       +#+        */
+/*   By: elen_t13 <elen_t13@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/12 14:42:32 by etamazya          #+#    #+#             */
-/*   Updated: 2024/12/11 17:03:03 by etamazya         ###   ########.fr       */
+/*   Updated: 2024/12/15 16:31:07 by elen_t13         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -131,10 +131,12 @@ void	printStrings(char **strings);
 void	clean_list(t_token **list);
 void	clean_env_list(t_env **list);
 short	del_t_node(t_token *lst);
-int		check_cut_quotes(const char *input, int start, int i, t_shell *general);
+// int		check_cut_quotes(const char *input, int start, int i, t_shell *general);
+int check_cut_quotes(const char *input, int start, int i, t_shell *general);
 
 // **************
-int		check_dollar_sign(char *input, int i, t_shell *general);
+// int		check_dollar_sign(char *input, int i, t_shell *general);
+char	*open_dollar(char *input, int *i, t_env *env_lst);
 
 // Alla's
 void	lalala(t_shell *general);
