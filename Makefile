@@ -43,7 +43,7 @@ OBJS_NAME = $(SRCS_NAME:.c=.o)
 all: $(LIBS_DIR)/$(READLINE) $(NAME)
 
 $(NAME): $(OBJS)
-	@echo "${GREEN}Compiled $<.${RESET}"
+	@echo "${GREEN}Compiled $<.${DEFAULT}"
 	@$(CC) $(CFLAGS) $^ -o $@ -l$(READLINE) -L$(READLINE_LIB_PATH) -lncurses > /dev/null
 
 $(OBJS_DIR)%.o: %.c $(HEADERS) Makefile

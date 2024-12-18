@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cmd_utils.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: etamazya <etamazya@student.42.fr>          +#+  +:+       +#+        */
+/*   By: elen_t13 <elen_t13@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/05 17:11:10 by elen_t13          #+#    #+#             */
-/*   Updated: 2024/12/11 11:50:34 by etamazya         ###   ########.fr       */
+/*   Updated: 2024/12/17 16:45:04 by elen_t13         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -137,7 +137,7 @@ void	free_cmd_lst(t_cmd_lst *cmd_lst)
 	}
 }
 
-void lalala(t_shell *general)
+void create_print_cmd(t_shell *general)
 {
 	// t_cmd_lst *commands = NULL;
 	general->cmd_lst = create_cmd_lst(general->tok_lst);

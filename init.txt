@@ -1,12 +1,16 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   initialization.c                                   :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: elen_t13 <elen_t13@student.42.fr>          +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/09/24 19:38:08 by algaboya          #+#    #+#             */
-/*   Updated: 2024/12/18 18:25:23 by elen_t13         ###   ########.fr       */
+# **************************************************************************** #
+#                                                                              #
+#                                                         :::      ::::::::    #
+#    init.txt                                           :+:      :+:    :+:    #
+#                                                     +:+ +:+         +:+      #
+#    By: elen_t13 <elen_t13@student.42.fr>          +#+  +:+       +#+         #
+#                                                 +#+#+#+#+#+   +#+            #
+#    Created: Invalid date        by                   #+#    #+#              #
+#    Updated: 2024/12/17 16:45:04 by elen_t13         ###   ########.fr        #
+#                                                                              #
+# **************************************************************************** #
+
+/*   Updated: 2024/12/16 01:09:01 by elen_t13         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,45 +22,6 @@
 // ***************************
 // ****** WARNING FULL *******
 // ***************************
-
-// t_control	init(int ac, char **av, char **env)
-// {
-// 	t_control	ctl;
-// 	char		*filename;
-
-// 	(void)av;
-// 	if (ac != 1)
-// 	{
-// 		ft_dprintf(STDERR_FILENO, "minishell: non-interactive mode is not
-// supported.\n");
-// 		exit(EXIT_FAILURE);
-// 	}
-// 	print_logo();
-// 	rl_readline_name = "Minishell";
-// 	ctl.cur_pid = -42;
-// 	ctl.estat = &g_estat;
-// 	ctl.execute = 0;
-// 	ctl.in_dup = dup(STDIN_FILENO);
-// 	ctl.out_dup = dup(STDOUT_FILENO);
-// 	ctl.var_list = env_init(env);
-// 	ctl.built_ins = builtin_init();
-// 	filename = lst_get_by_key(ctl.var_list, "HISTFILE")->value;
-// 	ctl.hist_fd = open(filename, O_CREAT | O_RDWR | O_APPEND, 0666);
-// 	sig_init();
-// 	return (ctl);
-// }
-
-void init_general(t_shell *general)
-{
-	general->tok_lst = NULL;
-	general->env_lst = NULL;
-	general->cmd_lst = NULL;
-	general->doll_lst = (t_dollar *)malloc(sizeof(t_dollar));
-	general->sorted_env_lst = NULL;
-	general->shlvl = -1;
-	general->sg_quote = 0; //no quote
-	general->db_quote = 0; // no quote
-}
 
 int	init_input(char *input, t_shell *general, char **env)
 {
@@ -72,13 +37,13 @@ int	init_input(char *input, t_shell *general, char **env)
 			add_history(input);
 		if (!input)
 			return (1);
-		init_general(general); // give every value of struct to it's corresponding one
+		// init_general(general) // give every value of struct to it's corresponding one
 		general -> tok_lst = NULL;
 		init_tokens((const char *)input, general, 0);
 		create_print_cmd(general); // to print commands
 		//addd check_heredocs
-		if (check_cmd(env, general)) // if 1 error
-			return (free(input), clean_list(&general->tok_lst), 1);
+		// if (check_cmd(env, general)) // if 1 error
+		// 	return (free(input), clean_list(&general->tok_lst), 1);
 		clean_list(&general->tok_lst);
 		free(input);
 	}
@@ -116,39 +81,32 @@ t_env *init_env_nodes(char **env)
 short	init_tokens(const char *input, t_shell *general, int i)
 {
 	int	start;
-	int flag;
-	// t_token *head;
 
-	// head = general->tok_lst;
-	flag = 0;
 	while ((input[i] >= 9 && input[i] <= 13) || input[i] == 32)
 		i++;
-	while (flag >= 0 && input[i] != '\0')
+	while (i >= 0 && input[i] != '\0')
 	{
-		if (flag >= 0 && input[i] && (input[i] == '|' || input[i] == '>'
+		if (i >= 0 && input[i] && (input[i] == '|' || input[i] == '>'
 			|| input[i] == '<' || input[i] == ' ' || input[i] == '$')) // added dollar sign - init_op_token
 				i = init_op_token(input, i, &general->tok_lst);
 		else
 		{
 			start = i;
-			while (flag >= 0 && input[i] && input[i] != '|' && input[i] != '>' && input[i] != '<'
+			while (i >= 0 && input[i] && input[i] != '|' && input[i] != '>' && input[i] != '<'
 				&& input[i] != ' ' && input[i] != 34 && input[i] != 39)
 				i++;
-			if (flag >= 0 && (input[i] == 39 || input[i] == 34))
-				flag = check_cut_quotes(general, input, &i, start); // and added dollar sign here check_cut_quotes
+			if (i >= 0 && (input[i] == 39 || input[i] == 34))
+				i = check_cut_quotes(input,  start, i, general); // and added dollar sign here check_cut_quotes
 			else if (i > start)
 				add_token_list(&general->tok_lst, my_substr(input, start, i - start), 0);
 			i--;
 		}
-		if(flag < 0)
+		if(i < 0)
 			return (clean_list(&general->tok_lst), -1);
 		if (input[i])
 			i++;
 	}
-	// general->tok_lst= head;
-	printf("****\n");
 	print_tokens(general->tok_lst);
-	printf("****\n");
 	// general->tok_lst = exchange_to_commands(general->tok_lst, general);
 	return (0);
 }

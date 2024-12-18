@@ -6,7 +6,7 @@
 /*   By: elen_t13 <elen_t13@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/12 14:42:32 by etamazya          #+#    #+#             */
-/*   Updated: 2024/12/15 16:31:07 by elen_t13         ###   ########.fr       */
+/*   Updated: 2024/12/18 17:54:47 by elen_t13         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@
 #include <sys/wait.h>		   // wait(), waitpid(), wait3(),
 #include <sys/resource.h>	   // (struct rusage *rusage),
 #include <signal.h>			   //signal(),
-# include <limits.h>
+#include <limits.h>
 
 typedef enum s_ttype
 {
@@ -71,7 +71,7 @@ typedef struct s_dollar
 {
 	char			*u_key;
 	char			*value;
-	int				dollar_sign; // 1 = sgl_quote, 2 = dbl quote
+	// int				dollar_sign; // 1 = sgl_quote, 2 = dbl quote
 	struct s_dollar	*next;
 
 }	t_dollar;
@@ -84,11 +84,14 @@ typedef struct s_shell
 	t_dollar	*doll_lst;
 	t_env		*sorted_env_lst;
 	int			shlvl;		     // check
+	int			sg_quote;
+	int			db_quote;
 	// char		pwd; // check
 	// char		*oldpwd; // check
 }			t_shell;
 
 // ***_____main_functions_____***
+void	init_general(t_shell *general);
 int		init_input(char *input, t_shell *gen, char **env);
 int		check_cmd(char **env, t_shell *general);
 t_env	*init_env_nodes(char **env);
@@ -119,7 +122,6 @@ int		ft_strchr(const char *s, int c);
 char	*ft_strdup(const char *s1);
 int		ft_isalnum(int arg);
 
-
 // ***_____tokenization_____***
 short	init_tokens(const char *input, t_shell *general, int i);
 int		init_op_token(const char *input, int i, t_token **token_list);
@@ -132,14 +134,18 @@ void	clean_list(t_token **list);
 void	clean_env_list(t_env **list);
 short	del_t_node(t_token *lst);
 // int		check_cut_quotes(const char *input, int start, int i, t_shell *general);
-int check_cut_quotes(const char *input, int start, int i, t_shell *general);
+// int check_cut_quotes(const char *input, int start, int i, t_shell *general);
+int	check_cut_quotes(t_shell *general, const char *input,  int *i, int start);
+
 
 // **************
 // int		check_dollar_sign(char *input, int i, t_shell *general);
-char	*open_dollar(char *input, int *i, t_env *env_lst);
+char	*open_dollar(t_shell *general, const char *input, int *i, int start);
+char *sgmnt_cpy(const char *input, int *i);
+
 
 // Alla's
-void	lalala(t_shell *general);
+void	create_print_cmd(t_shell *general);
 void	free_cmd_lst(t_cmd_lst *cmd_lst);
 // builtins
 // void	builin(t_token *token_list);
