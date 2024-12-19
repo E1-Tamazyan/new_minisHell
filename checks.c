@@ -49,8 +49,8 @@ int check_cmd(char **env, t_shell *general)
 char *sgmnt_cpy(const char *input, int *i)
 {
     char    *result;
-    int     j;
-    int length;
+    int  j;
+    int  length;
 
     length = 0;
     while (input[*i + length] && input[*i + length] != ' ' \
@@ -71,17 +71,26 @@ char *sgmnt_cpy(const char *input, int *i)
 char *open_dollar(t_shell *general, const char *input, int *i, int start)
 {
     char    *new_inp;
-    
+        
     (void)start;
-    if (input[*i] == '$')
+    new_inp = NULL;
+
+    // unclosed quote because of this function
+    if (input[*i] && input[*i] == '$')
     {
         (*i)++;
         general->doll_lst->u_key = sgmnt_cpy(input, i);
         general->doll_lst->value = check_env_var(general->env_lst, general->doll_lst->u_key);
-        (void)new_inp;
+        // printf("hereee = %s, %s\n", general->doll_lst->u_key, general->doll_lst->value);
+        // join anel valuen u sharunakutyuny
+        // return (general->doll_lst->value); 
     }
+    new_inp = ft_strcpy(new_inp, general->doll_lst->value, start, input);
+    // create function that will copy every till $ sign to this input
+    // and then put here the doll_lst->value and then continue to copy till db_quote
+    // new_inp = function();
     return (NULL);
-}
+} // sadf ba"rev $USER jan"
 
 int check_cut_quotes(t_shell *general, const char *input, int *i, int start)
 {

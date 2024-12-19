@@ -12,7 +12,7 @@
 
 #include "minishell.h"
 
-// 1 function
+// 4 function
 
 size_t	my_strlcpy(char *dst, const char *src, size_t dstsize)
 {
@@ -84,3 +84,19 @@ void	free_array(char **arr)
 	}
 	free(arr);
 }
+
+char    *ft_strcpy(char *s1, char *s2, int start, const char *inp)
+  {
+      int i;
+ 
+      i = 0;
+	  (void)inp;
+      while (s2[i])
+	  {
+        s1[i] = s2[i];
+		i++;
+		start++;
+	  }
+      s1[i] = '\0';
+      return (s1);
+  }

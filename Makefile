@@ -5,7 +5,9 @@ YELLOW = \033[38m;5;226m
 DIM = \033[2m
 BLUE    =       \033[34m
 RED = \033[38;5;196m
-INFO = \033[36m
+INFO_B = \033[36m
+INFO_Y = \033[38;5;226m
+INFO_YD = \033[38;5;214m
 
 CC = cc
 
@@ -50,10 +52,10 @@ $(NAME): $(OBJS)
 $(OBJS_DIR)%.o: %.c $(HEADERS) Makefile
 	@mkdir -p $(OBJS_DIR)
 	@$(CC) $(CFLAGS) -c $< -o $@ > /dev/null
-	@echo "${BLUE}Executable file is getting ready.${DEFAULT}"
+	@echo "${INFO_Y}FYI: ${INFO_YD}Linking is in progress...${DEFAULT}"
 
 $(LIBS_DIR)/$(READLINE):
-	@echo "${INFO}Loading required libraries...${DEFAULT}"
+	@echo "${INFO_B}Loading required libraries...${DEFAULT}"
 	@./$(LIBS_DIR)/config_readline readline > /dev/null
 
 clean:

@@ -120,7 +120,9 @@ int		ft_strlen(const char *str);
 char	*my_substr(const char *s, unsigned int start, int len);
 int		ft_strchr(const char *s, int c);
 char	*ft_strdup(const char *s1);
-int		ft_isalnum(int arg);
+char    *ft_strcpy(char *s1, char *s2, int start, const char *inp);
+// int		ft_strcpy();
+// int		ft_isalnum(int arg);
 
 // ***_____tokenization_____***
 short	init_tokens(const char *input, t_shell *general, int i);
