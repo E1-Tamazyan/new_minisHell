@@ -15,7 +15,7 @@
 // ************************
 // *** CAUTION *** FULL ***
 // ************************
-// 2 function
+// 4 function
 
 int check_cmd(char **env, t_shell *general)
 {
@@ -53,7 +53,8 @@ char *sgmnt_cpy(const char *input, int *i)
     int length;
 
     length = 0;
-    while (input[*i + length] && input[*i + length] != ' ' && input[*i + length] != '$' && input[*i + length] != '"')
+    while (input[*i + length] && input[*i + length] != ' ' \
+        && input[*i + length] != '$' && input[*i + length] != '"')
         length++;
     result = (char *)malloc((length + 1) * sizeof(char));
     j = 0;
@@ -76,10 +77,7 @@ char *open_dollar(t_shell *general, const char *input, int *i, int start)
     {
         (*i)++;
         general->doll_lst->u_key = sgmnt_cpy(input, i);
-        printf("-->%s<--\n", general->doll_lst->u_key);
         general->doll_lst->value = check_env_var(general->env_lst, general->doll_lst->u_key);
-        printf("_-->%s<--\n", general->doll_lst->value);
-        // printf("env = %s\n", temp);
         (void)new_inp;
     }
     return (NULL);
@@ -102,7 +100,8 @@ int check_cut_quotes(t_shell *general, const char *input, int *i, int start)
             dup = open_dollar(general, input, i, start);
             //don't forget to free dup in the function below
             // dup = 
-            (void)dup;
+            printf("dup = %s\n", dup);
+            // (void)dup;
             // ..here should be while to take the part of dollar sign
             //open return or not return the add_token value
             

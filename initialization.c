@@ -19,33 +19,6 @@
 // ****** WARNING FULL *******
 // ***************************
 
-// t_control	init(int ac, char **av, char **env)
-// {
-// 	t_control	ctl;
-// 	char		*filename;
-
-// 	(void)av;
-// 	if (ac != 1)
-// 	{
-// 		ft_dprintf(STDERR_FILENO, "minishell: non-interactive mode is not
-// supported.\n");
-// 		exit(EXIT_FAILURE);
-// 	}
-// 	print_logo();
-// 	rl_readline_name = "Minishell";
-// 	ctl.cur_pid = -42;
-// 	ctl.estat = &g_estat;
-// 	ctl.execute = 0;
-// 	ctl.in_dup = dup(STDIN_FILENO);
-// 	ctl.out_dup = dup(STDOUT_FILENO);
-// 	ctl.var_list = env_init(env);
-// 	ctl.built_ins = builtin_init();
-// 	filename = lst_get_by_key(ctl.var_list, "HISTFILE")->value;
-// 	ctl.hist_fd = open(filename, O_CREAT | O_RDWR | O_APPEND, 0666);
-// 	sig_init();
-// 	return (ctl);
-// }
-
 void init_general(t_shell *general)
 {
 	general->tok_lst = NULL;
@@ -61,6 +34,7 @@ void init_general(t_shell *general)
 int	init_input(char *input, t_shell *general, char **env)
 {
 	input = "";
+	init_general(general); // give every value of struct to it's corresponding one
 	create_env(env, general);
 	// print_env(general->env_lst, 1);
 	while (input)
@@ -73,7 +47,6 @@ int	init_input(char *input, t_shell *general, char **env)
 			add_history(input);
 		if (!input)
 			return (1);
-		init_general(general); // give every value of struct to it's corresponding one
 		general -> tok_lst = NULL;
 		init_tokens((const char *)input, general, 0);
 		create_print_cmd(general); // to print commands

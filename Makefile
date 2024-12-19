@@ -5,6 +5,7 @@ YELLOW = \033[38m;5;226m
 DIM = \033[2m
 BLUE    =       \033[34m
 RED = \033[38;5;196m
+INFO = \033[36m
 
 CC = cc
 
@@ -52,8 +53,8 @@ $(OBJS_DIR)%.o: %.c $(HEADERS) Makefile
 	@echo "${BLUE}Executable file is getting ready.${DEFAULT}"
 
 $(LIBS_DIR)/$(READLINE):
+	@echo "${INFO}Loading required libraries...${DEFAULT}"
 	@./$(LIBS_DIR)/config_readline readline > /dev/null
-
 
 clean:
 	@echo "${DIM}Cleaning...${DEFAULT}"
