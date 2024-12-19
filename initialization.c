@@ -6,7 +6,7 @@
 /*   By: elen_t13 <elen_t13@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/24 19:38:08 by algaboya          #+#    #+#             */
-/*   Updated: 2024/12/18 18:25:23 by elen_t13         ###   ########.fr       */
+/*   Updated: 2024/12/18 18:58:57 by elen_t13         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ void init_general(t_shell *general)
 	general->tok_lst = NULL;
 	general->env_lst = NULL;
 	general->cmd_lst = NULL;
-	general->doll_lst = (t_dollar *)malloc(sizeof(t_dollar));
+	general->doll_lst = (t_dollar *)malloc(sizeof(t_dollar)); // check this later
 	general->sorted_env_lst = NULL;
 	general->shlvl = -1;
 	general->sg_quote = 0; //no quote
@@ -62,6 +62,7 @@ int	init_input(char *input, t_shell *general, char **env)
 {
 	input = "";
 	create_env(env, general);
+	// print_env(general->env_lst, 1);
 	while (input)
 	{
 		input = readline("\033[38;5;51m\033[48;5;16mminisHell:\033[0m "); //neon
@@ -77,8 +78,8 @@ int	init_input(char *input, t_shell *general, char **env)
 		init_tokens((const char *)input, general, 0);
 		create_print_cmd(general); // to print commands
 		//addd check_heredocs
-		if (check_cmd(env, general)) // if 1 error
-			return (free(input), clean_list(&general->tok_lst), 1);
+		// if (check_cmd(env, general)) // if 1 error
+		// 	return (free(input), clean_list(&general->tok_lst), 1);
 		clean_list(&general->tok_lst);
 		free(input);
 	}

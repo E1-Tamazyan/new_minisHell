@@ -6,7 +6,7 @@
 /*   By: elen_t13 <elen_t13@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/17 13:18:10 by elen_t13          #+#    #+#             */
-/*   Updated: 2024/12/18 18:22:01 by elen_t13         ###   ########.fr       */
+/*   Updated: 2024/12/18 18:58:01 by elen_t13         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,6 +100,8 @@ int check_cut_quotes(t_shell *general, const char *input, int *i, int start)
         else if (input[(*i)] == '$' && general->db_quote)
         {
             dup = open_dollar(general, input, i, start);
+            //don't forget to free dup in the function below
+            // dup = 
             (void)dup;
             // ..here should be while to take the part of dollar sign
             //open return or not return the add_token value
