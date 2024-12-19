@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lib_utils_2.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: etamazya <etamazya@student.42.fr>          +#+  +:+       +#+        */
+/*   By: elen_t13 <elen_t13@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/18 11:14:51 by etamazya          #+#    #+#             */
-/*   Updated: 2024/12/11 11:44:30 by etamazya         ###   ########.fr       */
+/*   Updated: 2024/12/19 19:45:39 by elen_t13         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,3 +100,30 @@ char    *ft_strcpy(char *s1, char *s2, int start, const char *inp)
       s1[i] = '\0';
       return (s1);
   }
+
+  char	*ft_strjoin(char *s1, char *s2)
+{
+	char	*res;
+	size_t	len;
+	size_t	i;
+	size_t	j;
+
+	printf("****\n");
+	len = ft_strlen(s1) + ft_strlen(s2);
+	printf("len = %ld\n", len);
+	res = (char *)malloc((len + 1) * sizeof(char));
+	if (!res)
+		return (NULL);
+	i = 0;
+	while (s1 && s1[i])
+	{
+		res[i] = s1[i];
+		i++;
+	}
+	j = 0;
+	while (s2 && s2[j])
+		res[i++] = s2[j++];
+	res[i] = '\0';
+	free(s1);
+	return (res);
+}

@@ -6,7 +6,7 @@
 /*   By: elen_t13 <elen_t13@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/12 14:42:32 by etamazya          #+#    #+#             */
-/*   Updated: 2024/12/18 17:54:47 by elen_t13         ###   ########.fr       */
+/*   Updated: 2024/12/19 19:35:02 by elen_t13         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,6 +121,8 @@ char	*my_substr(const char *s, unsigned int start, int len);
 int		ft_strchr(const char *s, int c);
 char	*ft_strdup(const char *s1);
 char    *ft_strcpy(char *s1, char *s2, int start, const char *inp);
+char	*ft_strjoin(char *s1, char *s2);
+
 // int		ft_strcpy();
 // int		ft_isalnum(int arg);
 

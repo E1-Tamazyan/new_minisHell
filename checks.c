@@ -6,7 +6,7 @@
 /*   By: elen_t13 <elen_t13@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/17 13:18:10 by elen_t13          #+#    #+#             */
-/*   Updated: 2024/12/18 18:58:01 by elen_t13         ###   ########.fr       */
+/*   Updated: 2024/12/19 20:56:11 by elen_t13         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,26 +70,23 @@ char *sgmnt_cpy(const char *input, int *i)
 
 char *open_dollar(t_shell *general, const char *input, int *i, int start)
 {
-    char    *new_inp;
+    // char    *new_inp;
         
     (void)start;
-    new_inp = NULL;
+    // new_inp = NULL;
 
-    // unclosed quote because of this function
+    // this iterates one character more
     if (input[*i] && input[*i] == '$')
     {
+		printf("------");
         (*i)++;
         general->doll_lst->u_key = sgmnt_cpy(input, i);
+        // printf("segment = %s\n", general->doll_lst->u_key);
         general->doll_lst->value = check_env_var(general->env_lst, general->doll_lst->u_key);
-        // printf("hereee = %s, %s\n", general->doll_lst->u_key, general->doll_lst->value);
-        // join anel valuen u sharunakutyuny
-        // return (general->doll_lst->value); 
+        // general->doll_lst->value = ft_strjoin(general->doll_lst->value, check_env_var(general->env_lst, general->doll_lst->u_key));
     }
-    new_inp = ft_strcpy(new_inp, general->doll_lst->value, start, input);
-    // create function that will copy every till $ sign to this input
-    // and then put here the doll_lst->value and then continue to copy till db_quote
-    // new_inp = function();
-    return (NULL);
+    return (general->doll_lst->value); 
+    // return (NULL);
 } // sadf ba"rev $USER jan"
 
 int check_cut_quotes(t_shell *general, const char *input, int *i, int start)
@@ -97,23 +94,29 @@ int check_cut_quotes(t_shell *general, const char *input, int *i, int start)
     char    *dup;
 
     dup = NULL;
+	printf("---- %c %d\n", input[*(i)], *(i));
     while (input[*(i)])
     {
+		printf("bbbb %c\n", input[*(i)]);
         // printf("0.5 len = %d, dup_inp[len] = %c\n", len, dup_inp[len]);
-        if (input[*(i)] == '\"' && !general->sg_quote)
+        if (input[*(i)] == '\"')
+		{
             general->db_quote = !general->db_quote;
-        else if (input[*(i)] == '\'' && !general->db_quote)
+			printf("ov a");
+		}
+        else if (input[*(i)] == '\'' && !general->sg_quote)
             general->sg_quote = !general->sg_quote;
         else if (input[(*i)] == '$' && general->db_quote)
         {
             dup = open_dollar(general, input, i, start);
+            
             //don't forget to free dup in the function below
-            // dup = 
             printf("dup = %s\n", dup);
             // (void)dup;
             // ..here should be while to take the part of dollar sign
             //open return or not return the add_token value
-            
+            //mkamki--;
+            (*i)--;
         }
         else if ((input[*(i)] == ' ' || input[*(i)] == '|' || input[*(i)] == '>' || input[*(i)] == '<') && !general->db_quote && !general->sg_quote)
         {
@@ -124,6 +127,7 @@ int check_cut_quotes(t_shell *general, const char *input, int *i, int start)
         }
         (*i)++;
     }
+	printf("aaaa %d - %d\n", general->db_quote, general->sg_quote);
     if (general->db_quote || general->sg_quote)
         return (printf("Error: Unclosed quotes found in input.\n"), -1);
     return (0);
