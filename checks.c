@@ -6,7 +6,7 @@
 /*   By: elen_t13 <elen_t13@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/17 13:18:10 by elen_t13          #+#    #+#             */
-/*   Updated: 2024/12/21 14:05:52 by elen_t13         ###   ########.fr       */
+/*   Updated: 2024/12/22 16:26:06 by elen_t13         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,11 +79,38 @@ char *open_dollar(t_shell *general, const char *input, int *i, int start)
 	return (general->doll_lst->value);
 } // sadf ba"rev $USER jan"
 
+int check_inp_quotes(t_shell *general, const char *input, int i, int start)
+{
+	int flag_sg;
+	int flag_db;
+
+	flag_sg = 0;
+	flag_db = 0;
+	i = start;
+	(void)general;
+	while (input[i])
+	{
+		if (input[i] == '\"')
+			flag_db = !flag_db;
+		else if (input[i] == '\'')
+			flag_sg = !flag_sg;
+		i++;
+	}
+	if (flag_db || flag_sg)
+		return (printf("Error: Unclosed quotes found in input.\n"), -1);
+	return (0);
+}
+
+// change to double pointer input, change the value of intire input
+//  that will be seen from parent function,
+// with replacing just opened $USER. Remeber this case (m$: e"ch"o abc"etamazy$USER" ab)
 int check_cut_quotes(t_shell *general, const char *input, int *i, int start)
 {
 	char *dup;
 
 	dup = NULL;
+	if (check_inp_quotes(general, input, *i, start) == -1)
+		return (-1);
 	while (input[*(i)])
 	{
 		if (input[*(i)] == '\"')
@@ -93,9 +120,9 @@ int check_cut_quotes(t_shell *general, const char *input, int *i, int start)
 		else if (input[(*i)] == '$' && general->db_quote)
 		{
 			dup = open_dollar(general, input, i, start);
-			// don't forget to free dup in the function below
-			printf("dup = %s\n", dup);
-			// can you write here the function that will replace the dup value
+			// correct thisss i think it not gonna work $USER$USER
+			input = expand_var(input, general, start);
+			printf("______dup = %s\n", dup);
 			(*i)--;
 		}
 		else if ((input[*(i)] == ' ' || input[*(i)] == '|' || input[*(i)] == '>' || input[*(i)] == '<') && !general->db_quote && !general->sg_quote)
@@ -106,66 +133,87 @@ int check_cut_quotes(t_shell *general, const char *input, int *i, int start)
 		}
 		(*i)++;
 	}
-	// printf("aaaa %d - %d\n", general->db_quote, general->sg_quote);
-	if (general->db_quote || general->sg_quote)
-		return (printf("Error: Unclosed quotes found in input.\n"), -1);
 	return (0);
 }
 
-// handle this function later
-char *expand_var(const char *input)
+char *expand_var(const char *input, t_shell *general, int start)
 {
-	int i = 0, j = 0;
-	int len = strlen(input);
-	char *expanded = malloc(len + 1); // Allocate memory for the expanded string
-	if (!expanded)
-	{
-		perror("malloc failed");
-		return NULL;
-	}
+	int		len;
+	char	*expanded;
 
-	while (i < len)
-	{
-		// If it's a '$' and we're inside double quotes
-		if (input[i] == '$')
-		{
-			i++; // Move past the '$'
-			int var_start = i;
-
-			// Find the end of the variable name (until space, another $, or end of string)
-			while (i < len && (input[i] != ' ' && input[i] != '$' && input[i] != '"' && input[i] != '\''))
-			{
-				i++;
-			}
-
-			int var_len = i - var_start;
-			char *var_name = strndup(input + var_start, var_len); // Extract the variable name
-
-			// Get the value of the variable (could be an environment variable lookup, etc.)
-			char *var_value = get_env_var(var_name);
-			if (var_value)
-			{
-				// Copy the value of the variable into expanded
-				strcpy(expanded + j, var_value);
-				j += strlen(var_value);
-			}
-			else
-			{
-				// If the variable is not found, copy the "$" as is
-				expanded[j++] = '$';
-				strcpy(expanded + j, var_name);
-				j += var_len;
-			}
-
-			free(var_name); // Don't forget to free the variable name
-		}
-		else
-		{
-			// Copy the character as is when it's not a '$'
-			expanded[j++] = input[i++];
-		}
-	}
-
-	expanded[j] = '\0'; // Null-terminate the expanded string
-	return expanded;
+	len = 0;
+	expanded = countcpy_len(input, start, len, general);
+	printf("expanded = %s, %d\n", expanded, len);
+	// special_len = spec_len(input, len);
+	// len = ft_strlen();
+	return (expanded);
 }
+int	spec_len(const char *input, int start)
+{
+	int	i;
+
+	i = 0;
+	while (input[start] && input[start] != '\"')
+	{
+		start++;
+		i++;
+	}
+	return (i);
+}
+char *countcpy_len(const char *input, int start, int l, t_shell *general)
+{
+	int		i;
+	char	*copy;
+	int		len;
+	int		val_len;
+
+	len = 0;
+	i = start;
+	while (input[start] && input[start] != '$')
+	{
+		start++;
+		len++;
+	}
+	l = len + ft_strlen(general->doll_lst->u_key);
+	val_len = 0;
+	while (general->doll_lst->value[val_len])
+		val_len++;
+	copy = (char *)malloc(sizeof(char) * (val_len + len + spec_len(input, l) + 1));
+	check_malloc(copy);
+	ft_strcpy(copy, input, i, len);
+	ft_strcpy_2(copy, general->doll_lst->value, len, val_len);
+	copy[val_len + len] = '\0';
+	// ft_strcpy_3(copy, input, (val_len + len), (len + l));
+	return (copy);
+} 
+
+// save the previous logic
+// 
+// char *countcpy_len(const char *input, int start, int l, t_shell *general)
+// {
+// 	int		i;
+// 	char	*copy;
+// 	int		len;
+// 	int		val_len;
+	
+// 	len = 0;
+// 	i = start;
+// 	while (input[start] && input[start] != '$')
+// 	{
+// 		start++;
+// 		len++;
+// 	}
+// 	val_len = 0;
+// 	while (general->doll_lst->value[val_len])
+// 		val_len++;
+// 	// *length += spec_len(input, l);
+// 	copy = (char *)malloc(sizeof(char) * (val_len + len + 1));
+// 	check_malloc(copy);
+// 	ft_strcpy(copy, input, i, len);
+// 	ft_strcpy_2(copy, general->doll_lst->value, len, val_len);
+// 	copy[val_len + len] = '\0';
+// 	return (copy);
+// } 
+// sdfsd dfs"sdfs $USER jan"
+// handle this function later
+

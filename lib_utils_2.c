@@ -6,7 +6,7 @@
 /*   By: elen_t13 <elen_t13@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/18 11:14:51 by etamazya          #+#    #+#             */
-/*   Updated: 2024/12/19 19:45:39 by elen_t13         ###   ########.fr       */
+/*   Updated: 2024/12/21 20:24:37 by elen_t13         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,21 +85,48 @@ void	free_array(char **arr)
 	free(arr);
 }
 
-char    *ft_strcpy(char *s1, char *s2, int start, const char *inp)
-  {
-      int i;
+void	ft_strcpy(char *s1, const char *s2, int start, int len)
+{
+	int	i;
  
-      i = 0;
-	  (void)inp;
-      while (s2[i])
-	  {
-        s1[i] = s2[i];
+	i = 0;
+	while (s2[start] && len > 0)
+	{
+		s1[i] = s2[start];
 		i++;
 		start++;
-	  }
-      s1[i] = '\0';
-      return (s1);
-  }
+		len--;
+	}
+}
+void	ft_strcpy_2(char *s1, const char *s2, int start, int len)
+{
+	int	i;
+ 
+	i = 0;	
+	while (s2[i] && i < len)
+	{
+		s1[start] = s2[i];
+		i++;
+		start++;
+	}
+}
+
+void	ft_strcpy_3(char *s1, const char *s2, int start_s1, int start_s2)
+{
+	while (s2[start_s2] && s2[start_s2] != '\"')
+	{
+		s1[start_s1] = s2[start_s2];
+		start_s1++;
+		start_s2++;
+	}
+	s1[start_s1] = s2[start_s2];
+}
+// int	special_len(input, start)
+// {
+// 	int	i;
+
+// 	i = 0
+// }
 
   char	*ft_strjoin(char *s1, char *s2)
 {
@@ -108,9 +135,7 @@ char    *ft_strcpy(char *s1, char *s2, int start, const char *inp)
 	size_t	i;
 	size_t	j;
 
-	printf("****\n");
 	len = ft_strlen(s1) + ft_strlen(s2);
-	printf("len = %ld\n", len);
 	res = (char *)malloc((len + 1) * sizeof(char));
 	if (!res)
 		return (NULL);

@@ -6,7 +6,7 @@
 /*   By: elen_t13 <elen_t13@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/12 14:42:32 by etamazya          #+#    #+#             */
-/*   Updated: 2024/12/19 19:35:02 by elen_t13         ###   ########.fr       */
+/*   Updated: 2024/12/22 15:39:41 by elen_t13         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,11 +90,18 @@ typedef struct s_shell
 	// char		*oldpwd; // check
 }			t_shell;
 
+
+char	*expand_var(const char *input, t_shell *general, int start);
+char	*countcpy_len(const char *input, int start, int l, t_shell *general);
+int		spec_len(const char *input, int start);
+int		check_inp_quotes(t_shell *general, const char *input, int i, int start);
+
 // ***_____main_functions_____***
 void	init_general(t_shell *general);
 int		init_input(char *input, t_shell *gen, char **env);
 int		check_cmd(char **env, t_shell *general);
 t_env	*init_env_nodes(char **env);
+
 
 // ***____env_sorting_____***
 char	**sort_env(char **env);
@@ -120,7 +127,9 @@ int		ft_strlen(const char *str);
 char	*my_substr(const char *s, unsigned int start, int len);
 int		ft_strchr(const char *s, int c);
 char	*ft_strdup(const char *s1);
-char    *ft_strcpy(char *s1, char *s2, int start, const char *inp);
+void	ft_strcpy(char *s1, const char *s2, int start, int len);
+void	ft_strcpy_2(char *s1, const char *s2, int start, int len);
+void	ft_strcpy_3(char *s1, const char *s2, int start_s1, int start_s2);
 char	*ft_strjoin(char *s1, char *s2);
 
 // int		ft_strcpy();
