@@ -6,7 +6,7 @@
 /*   By: elen_t13 <elen_t13@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/12 14:42:32 by etamazya          #+#    #+#             */
-/*   Updated: 2024/12/22 15:39:41 by elen_t13         ###   ########.fr       */
+/*   Updated: 2024/12/22 18:04:59 by elen_t13         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,10 +91,10 @@ typedef struct s_shell
 }			t_shell;
 
 
-char	*expand_var(const char *input, t_shell *general, int start);
-char	*countcpy_len(const char *input, int start, int l, t_shell *general);
-int		spec_len(const char *input, int start);
-int		check_inp_quotes(t_shell *general, const char *input, int i, int start);
+char	*expand_var(char **input, t_shell *general, int start);
+char	*countcpy_len(char *input, int start, int l, t_shell *general);
+int		spec_len(char *input, int start);
+int		check_inp_quotes(t_shell *general, char *input, int i, int start);
 
 // ***_____main_functions_____***
 void	init_general(t_shell *general);
@@ -136,8 +136,8 @@ char	*ft_strjoin(char *s1, char *s2);
 // int		ft_isalnum(int arg);
 
 // ***_____tokenization_____***
-short	init_tokens(const char *input, t_shell *general, int i);
-int		init_op_token(const char *input, int i, t_token **token_list);
+short	init_tokens(char *input, t_shell *general, int i);
+int		init_op_token(char *input, int i, t_token **token_list);
 void	add_token_list(t_token **list, char *content, t_ttype type);
 t_token	*create_token(char *content, t_ttype type);
 
@@ -146,15 +146,13 @@ void	printStrings(char **strings);
 void	clean_list(t_token **list);
 void	clean_env_list(t_env **list);
 short	del_t_node(t_token *lst);
-// int		check_cut_quotes(const char *input, int start, int i, t_shell *general);
-// int check_cut_quotes(const char *input, int start, int i, t_shell *general);
-int	check_cut_quotes(t_shell *general, const char *input,  int *i, int start);
+int		check_cut_quotes(t_shell *general, char **input,  int *i, int start);
 
 
 // **************
 // int		check_dollar_sign(char *input, int i, t_shell *general);
-char	*open_dollar(t_shell *general, const char *input, int *i, int start);
-char *sgmnt_cpy(const char *input, int *i);
+char	*open_dollar(t_shell *general, char *input, int *i, int start);
+char *sgmnt_cpy(char *input, int *i);
 
 
 // Alla's

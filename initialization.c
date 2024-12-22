@@ -6,7 +6,7 @@
 /*   By: elen_t13 <elen_t13@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/24 19:38:08 by algaboya          #+#    #+#             */
-/*   Updated: 2024/12/21 12:35:44 by elen_t13         ###   ########.fr       */
+/*   Updated: 2024/12/22 18:00:40 by elen_t13         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ int	init_input(char *input, t_shell *general, char **env)
 		if (input[0] != '\0')
 			add_history(input);
 		general -> tok_lst = NULL;
-		init_tokens((const char *)input, general, 0);
+		init_tokens(input, general, 0);
 		create_print_cmd(general); // to print commands
 		//addd check_heredocs
 		// if (check_cmd(env, general)) // if 1 error
@@ -86,7 +86,7 @@ t_env *init_env_nodes(char **env)
 }
 
 //the dollar sign should be oneend in tis function
-short	init_tokens(const char *input, t_shell *general, int i)
+short	init_tokens(char *input, t_shell *general, int i)
 {
 	int	start;
 	int flag;
@@ -108,9 +108,9 @@ short	init_tokens(const char *input, t_shell *general, int i)
 				&& input[i] != ' ' && input[i] != 34 && input[i] != 39)
 				i++;
 			if (input[i] && flag >= 0 && (input[i] == 39 || input[i] == 34))
-				flag = check_cut_quotes(general, input, &i, start); // and added dollar sign here check_cut_quotes
+				flag = check_cut_quotes(general, &input, &i, start); // and added dollar sign here check_cut_quotes
 			else if (i > start)
-				add_token_list(&general->tok_lst, my_substr(input, start, i - start), 0);
+				add_token_list(&general->tok_lst, my_substr((const char *)input, start, i - start), 0);
 			i--;
 		}
 		if(flag < 0)
@@ -126,7 +126,7 @@ short	init_tokens(const char *input, t_shell *general, int i)
 	return (0);
 }
 
-int	init_op_token(const char *input, int i, t_token **token_list)
+int	init_op_token(char *input, int i, t_token **token_list)
 {
 	if (!input || !token_list)
 		return i;

@@ -6,7 +6,7 @@
 /*   By: elen_t13 <elen_t13@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/18 11:14:51 by etamazya          #+#    #+#             */
-/*   Updated: 2024/12/21 20:24:37 by elen_t13         ###   ########.fr       */
+/*   Updated: 2024/12/22 19:41:44 by elen_t13         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,8 +113,9 @@ void	ft_strcpy_2(char *s1, const char *s2, int start, int len)
 
 void	ft_strcpy_3(char *s1, const char *s2, int start_s1, int start_s2)
 {
-	while (s2[start_s2] && s2[start_s2] != '\"')
+	while (s2[start_s2])
 	{
+		// printf("s1[i] = %c, s2[i] = %c\n", s1[start_s1], s2[start_s2]);
 		s1[start_s1] = s2[start_s2];
 		start_s1++;
 		start_s2++;

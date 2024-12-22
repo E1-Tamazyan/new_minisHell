@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   token_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: etamazya <etamazya@student.42.fr>          +#+  +:+       +#+        */
+/*   By: elen_t13 <elen_t13@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/06 16:18:12 by etamazya          #+#    #+#             */
-/*   Updated: 2024/12/11 11:45:51 by etamazya         ###   ########.fr       */
+/*   Updated: 2024/12/22 17:48:40 by elen_t13         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@
 // ************************
 // **** 4 functions ****
 
-// int	check_sgl_quote(const char *input, int *i)
+// int	check_sgl_quote(char *input, int *i)
 // {
 // 	if (input[*i] == '\'')
 // 	{
@@ -32,7 +32,7 @@
 // 	return (0);
 // }
 
-// int check_sgl_quote(const char *input, int i)
+// int check_sgl_quote(char *input, int i)
 // {
 // 	if (!input)
 // 		return (-1);
@@ -83,7 +83,7 @@ t_token	*create_token(char *value, t_ttype type)
 	return (new);
 }
 
-int	check_sgl_quote(const char *input, int *i)
+int	check_sgl_quote(char *input, int *i)
 {
 	if (input[*i] == '\'')
 	{
@@ -98,7 +98,7 @@ int	check_sgl_quote(const char *input, int *i)
 	return (0);
 }
 
-int	check_quotes(const char *input, int i)
+int	check_quotes(char *input, int i)
 {
 	if (!input)
 		return (-1);
