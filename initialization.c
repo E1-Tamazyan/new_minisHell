@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   initialization.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: elen_t13 <elen_t13@student.42.fr>          +#+  +:+       +#+        */
+/*   By: algaboya <algaboya@student.42yerevan.am    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/24 19:38:08 by algaboya          #+#    #+#             */
-/*   Updated: 2024/12/22 18:00:40 by elen_t13         ###   ########.fr       */
+/*   Updated: 2024/12/23 17:33:55 by algaboya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,8 +50,8 @@ int	init_input(char *input, t_shell *general, char **env)
 		init_tokens(input, general, 0);
 		create_print_cmd(general); // to print commands
 		//addd check_heredocs
-		// if (check_cmd(env, general)) // if 1 error
-		// 	return (free(input), clean_list(&general->tok_lst), 1);
+		if (check_cmd(env, general)) // if 1 error
+			return (free(input), clean_list(&general->tok_lst), 1);
 		clean_list(&general->tok_lst);
 		free(input);
 	}

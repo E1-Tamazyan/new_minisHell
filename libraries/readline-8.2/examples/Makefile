@@ -21,7 +21,7 @@ RL_LIBRARY_VERSION = 8.2
 SHELL = /bin/sh
 RM = rm -f
 
-prefix = /home/elen_t13/projects/new_minisHell/libraries/readline
+prefix = /home/algaboya/Desktop/new_minka/libraries/readline
 exec_prefix = ${prefix}
 
 datarootdir = ${prefix}/share
@@ -32,7 +32,7 @@ datadir = ${datarootdir}
 
 top_srcdir = ..
 #BUILD_DIR = .
-BUILD_DIR = /home/elen_t13/projects/new_minisHell/libraries/readline-8.2
+BUILD_DIR = /home/algaboya/Desktop/new_minka/libraries/readline-8.2
 installdir = $(datadir)/readline
 
 INSTALL = /usr/bin/install -c
