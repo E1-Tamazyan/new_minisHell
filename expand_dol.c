@@ -6,7 +6,7 @@
 /*   By: elen_t13 <elen_t13@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/22 17:13:47 by elen_t13          #+#    #+#             */
-/*   Updated: 2024/12/23 16:30:55 by elen_t13         ###   ########.fr       */
+/*   Updated: 2024/12/23 17:37:46 by elen_t13         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,4 +100,3 @@ int check_cut_quotes(t_shell *general, char **input, int *i, int start)
 } // ec ba"rev $USER jan"
 
 // just save the previous version
-
