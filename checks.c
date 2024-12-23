@@ -6,7 +6,7 @@
 /*   By: elen_t13 <elen_t13@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/17 13:18:10 by elen_t13          #+#    #+#             */
-/*   Updated: 2024/12/22 17:48:40 by elen_t13         ###   ########.fr       */
+/*   Updated: 2024/12/23 15:39:45 by elen_t13         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,6 +60,7 @@ char *sgmnt_cpy(char *input, int *i)
 	while (input[*i] && input[*i] != ' ' && input[*i] != '$' && input[*i] != '"')
 	{
 		result[j++] = input[*i];
+		
 		(*i)++;
 	}
 	result[j] = '\0';

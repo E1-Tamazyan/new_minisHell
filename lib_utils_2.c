@@ -6,7 +6,7 @@
 /*   By: elen_t13 <elen_t13@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/18 11:14:51 by etamazya          #+#    #+#             */
-/*   Updated: 2024/12/22 19:41:44 by elen_t13         ###   ########.fr       */
+/*   Updated: 2024/12/23 15:54:42 by elen_t13         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,12 +90,14 @@ void	ft_strcpy(char *s1, const char *s2, int start, int len)
 	int	i;
  
 	i = 0;
-	while (s2[start] && len > 0)
+	// printf("len = %d\n", len);
+	while (s2[start] && i < len)
 	{
 		s1[i] = s2[start];
+		// printf("1_%c, 1_%c\n", s1[ i], s2[start]);
 		i++;
 		start++;
-		len--;
+		// len--;
 	}
 }
 void	ft_strcpy_2(char *s1, const char *s2, int start, int len)
@@ -103,9 +105,12 @@ void	ft_strcpy_2(char *s1, const char *s2, int start, int len)
 	int	i;
  
 	i = 0;	
+	// printf("****%d\n", len);
+	// printf("len = %d\n", len);
 	while (s2[i] && i < len)
 	{
 		s1[start] = s2[i];
+		// printf("2_%c, 2_%c\n", s1[start], s2[i]);
 		i++;
 		start++;
 	}
@@ -115,19 +120,12 @@ void	ft_strcpy_3(char *s1, const char *s2, int start_s1, int start_s2)
 {
 	while (s2[start_s2])
 	{
-		// printf("s1[i] = %c, s2[i] = %c\n", s1[start_s1], s2[start_s2]);
 		s1[start_s1] = s2[start_s2];
 		start_s1++;
 		start_s2++;
 	}
 	s1[start_s1] = s2[start_s2];
 }
-// int	special_len(input, start)
-// {
-// 	int	i;
-
-// 	i = 0
-// }
 
   char	*ft_strjoin(char *s1, char *s2)
 {
