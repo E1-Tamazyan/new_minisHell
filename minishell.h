@@ -6,7 +6,7 @@
 /*   By: elen_t13 <elen_t13@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/12 14:42:32 by etamazya          #+#    #+#             */
-/*   Updated: 2024/12/22 18:04:59 by elen_t13         ###   ########.fr       */
+/*   Updated: 2024/12/23 21:31:17 by elen_t13         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,12 +30,12 @@
 
 typedef enum s_ttype
 {
-	WORD = 0,			 // commands and arguments
-	PIPE = 1,			 // '|'
-	REDIR_IN = 2,		 // '<'
+	WORD = 0,			// commands and arguments
+	PIPE = 1,			// '|'
+	REDIR_IN = 2,		// '<'
 	REDIR_OUT = 3,	 	// '>'
-	REDIR_APPEND = 4,	 // '>>'
-	REDIR_HEREDOC = 5, // '<<'
+	REDIR_APPEND = 4,	// '>>'
+	REDIR_HEREDOC = 5,	// '<<'
 }			t_ttype;
 
 typedef struct s_token
@@ -91,8 +91,8 @@ typedef struct s_shell
 }			t_shell;
 
 
-char	*expand_var(char **input, t_shell *general, int start);
-char	*countcpy_len(char *input, int start, int l, t_shell *general);
+void	expand_var(char **input, t_shell *general, int *start, int *i);
+char	*countcpy_len(char *input, int start, int *l, t_shell *general);
 int		spec_len(char *input, int start);
 int		check_inp_quotes(t_shell *general, char *input, int i, int start);
 

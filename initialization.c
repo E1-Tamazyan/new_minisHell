@@ -6,7 +6,7 @@
 /*   By: elen_t13 <elen_t13@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/24 19:38:08 by algaboya          #+#    #+#             */
-/*   Updated: 2024/12/23 17:44:41 by elen_t13         ###   ########.fr       */
+/*   Updated: 2024/12/24 13:07:24 by elen_t13         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,15 +48,15 @@ int	init_input(char *input, t_shell *general, char **env)
 			add_history(input);
 		general -> tok_lst = NULL;
 		init_tokens(input, general, 0);
-		create_print_cmd(general); // to print commands
+		// create_print_cmd(general); // to print commands
 		//addd check_heredocs
-		if (check_cmd(env, general)) // if 1 error
-			return (free(input), clean_list(&general->tok_lst), 1);
+		// if (check_cmd(env, general)) // if 1 error
+		// 	return (free(input), clean_list(&general->tok_lst), 1);
 		clean_list(&general->tok_lst);
 		free(input);
 	}
 	return (printf("exit\n"), 0);
-}
+} // echo ba"rev $USER$USER jan" vonc es
 
 t_env *init_env_nodes(char **env)
 {
@@ -99,18 +99,25 @@ short	init_tokens(char *input, t_shell *general, int i)
 	while (flag >= 0 && input[i] != '\0')
 	{
 		if (flag >= 0 && input[i] && (input[i] == '|' || input[i] == '>'
-			|| input[i] == '<' || input[i] == ' ' || input[i] == '$')) // added dollar sign - init_op_token
-				i = init_op_token(input, i, &general->tok_lst);
+			|| input[i] == '<' || input[i] == ' ')) // added dollar sign - init_op_token
+				flag = init_op_token(input, i, &general->tok_lst);
 		else
 		{
+			// printf("aaaaaaaaaaa = %d, %d\n", i, start);
 			start = i;
 			while (flag >= 0 && input[i] && input[i] != '|' && input[i] != '>' && input[i] != '<'
-				&& input[i] != ' ' && input[i] != 34 && input[i] != 39)
+				&& input[i] != ' ' && input[i] != '$' && input[i] != 34 && input[i] != 39)
 				i++;
-			if (input[i] && flag >= 0 && (input[i] == 39 || input[i] == 34))
+			if (flag >= 0 && input[i] && (input[i] == '|' || input[i] == '>'
+				|| input[i] == '<' || input[i] == ' ')) // added dollar sign - init_op_token
+				flag = init_op_token(input, i, &general->tok_lst);
+			if (input[i] && flag >= 0)
 				flag = check_cut_quotes(general, &input, &i, start); // and added dollar sign here check_cut_quotes
 			else if (i > start)
+			{
+				printf("bbb = %d, %d\n", i, start);
 				add_token_list(&general->tok_lst, my_substr((const char *)input, start, i - start), 0);
+			}
 			i--;
 		}
 		if(flag < 0)
@@ -208,7 +215,4 @@ int	create_env(char **env, t_shell *general)
 
 // *********************
 // ****** ARCHIVE ******
-// *********************
-// *********************
-// *********************
 // *********************

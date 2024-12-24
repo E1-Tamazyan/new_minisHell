@@ -1,4 +1,4 @@
-prefix=/home/algaboya/Desktop/new_minka/libraries/readline
+prefix=/home/elen_t13/projects/new_minisHell/libraries/readline
 exec_prefix=${prefix}
 libdir=${exec_prefix}/lib
 includedir=${prefix}/include

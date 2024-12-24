@@ -6,7 +6,7 @@
 /*   By: elen_t13 <elen_t13@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/06 16:11:43 by etamazya          #+#    #+#             */
-/*   Updated: 2024/12/23 14:37:26 by elen_t13         ###   ########.fr       */
+/*   Updated: 2024/12/23 19:23:21 by elen_t13         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,8 @@ int	ft_strlen(const char *str)
 	int	i;
 
 	i = 0;
+	if (!str)
+		return (-1);
 	while (str[i])
 	{
 		// printf("str[i] = %c\n", str[i]);	
