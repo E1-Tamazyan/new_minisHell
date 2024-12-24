@@ -6,7 +6,7 @@
 /*   By: elen_t13 <elen_t13@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/17 13:18:10 by elen_t13          #+#    #+#             */
-/*   Updated: 2024/12/24 13:39:37 by elen_t13         ###   ########.fr       */
+/*   Updated: 2024/12/24 17:00:30 by elen_t13         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,9 +120,14 @@ int check_inp_quotes(t_shell *general, char *input, int i, int start)
 			flag_sg = !flag_sg;
 		i++;
 	}
-	if (flag_db || flag_sg)
+	if (!flag_db || !flag_sg)
 		return (printf("Error: Unclosed quotes found in input.\n"), -1);
 	return (0);
 }
 // SIGSEGV
 // echo ba"rev $USER' $USERecho ba"rev $USER' $USER 'jan"$USER dff -a | $$
+
+// should make 3 tokens
+// echo ba"rev $USER' $USERecho ba"rev
+// $USER' $USER 'jan"$USER
+// dff -a | $$

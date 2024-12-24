@@ -6,7 +6,7 @@
 /*   By: elen_t13 <elen_t13@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/22 17:13:47 by elen_t13          #+#    #+#             */
-/*   Updated: 2024/12/24 13:18:20 by elen_t13         ###   ########.fr       */
+/*   Updated: 2024/12/24 15:53:56 by elen_t13         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,6 @@ int spec_len(char *input, int start)
 	int i;
 
 	i = 0;
-	// while (input[start] && input[start] != '\"')
 	while (input[start])
 	{
 		start++;
