@@ -6,7 +6,7 @@
 /*   By: elen_t13 <elen_t13@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/24 19:38:08 by algaboya          #+#    #+#             */
-/*   Updated: 2024/12/24 13:07:24 by elen_t13         ###   ########.fr       */
+/*   Updated: 2024/12/24 13:40:01 by elen_t13         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,7 +115,7 @@ short	init_tokens(char *input, t_shell *general, int i)
 				flag = check_cut_quotes(general, &input, &i, start); // and added dollar sign here check_cut_quotes
 			else if (i > start)
 			{
-				printf("bbb = %d, %d\n", i, start);
+				// printf("bbb = %d, %d\n", i, start);
 				add_token_list(&general->tok_lst, my_substr((const char *)input, start, i - start), 0);
 			}
 			i--;

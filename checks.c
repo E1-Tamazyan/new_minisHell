@@ -6,7 +6,7 @@
 /*   By: elen_t13 <elen_t13@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/17 13:18:10 by elen_t13          #+#    #+#             */
-/*   Updated: 2024/12/24 13:38:08 by elen_t13         ###   ########.fr       */
+/*   Updated: 2024/12/24 13:39:37 by elen_t13         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,24 +82,24 @@ char *open_dollar(t_shell *general, char *input, int *i, int start)
 			general->doll_lst->value = (char *)malloc(sizeof(char) * 2);
 			check_malloc(general->doll_lst->value);
 			general->doll_lst->value[0] = '$'; 
-			printf("u_key = %s\n", general->doll_lst->u_key);
+			// printf("u_key = %s\n", general->doll_lst->u_key);
 			general->doll_lst->value[1] = '\0'; 
 		}
 		else
 		{
 			
-			printf("-_-\n");
+			// printf("-_-\n");
 			general->doll_lst->value = check_env_var(general->env_lst, general->doll_lst->u_key);
 		}
 		if (!general->doll_lst->value)
 		{	
-			printf("T-T\n");
+			// printf("T-T\n");
 			general->doll_lst->value = (char *)malloc(sizeof(char) * 1);
 			check_malloc(general->doll_lst->value);
 			general->doll_lst->value[0] = '\0'; 
 		}
 	}
-	printf("veeeeerj\n");
+	// printf("veeeeerj\n");
 	return (general->doll_lst->value);
 } // echo ba"rev $USER$USER jan" vonc es
 
