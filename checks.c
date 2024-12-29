@@ -6,7 +6,7 @@
 /*   By: elen_t13 <elen_t13@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/17 13:18:10 by elen_t13          #+#    #+#             */
-/*   Updated: 2024/12/29 17:45:30 by elen_t13         ###   ########.fr       */
+/*   Updated: 2024/12/29 18:05:06 by elen_t13         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -147,3 +147,9 @@ int check_inp_quotes(t_shell *general, char *input, int i, int start)
 // dff -a | $$
 
 // echo ba"rev $USER' $USERecho ba"rev $USER' $USER 'jan"$USER"
+
+
+
+
+
+
