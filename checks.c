@@ -6,7 +6,7 @@
 /*   By: elen_t13 <elen_t13@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/17 13:18:10 by elen_t13          #+#    #+#             */
-/*   Updated: 2024/12/24 17:12:19 by elen_t13         ###   ########.fr       */
+/*   Updated: 2024/12/29 17:45:30 by elen_t13         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,6 @@
 
 int check_cmd(char **env, t_shell *general)
 {
-	// int		index;
-	// int		j;
 	t_token *tmp;
 
 	tmp = general->tok_lst;
@@ -53,9 +51,13 @@ char *sgmnt_cpy(char *input, int *i)
 	int length;
 
 	length = 0;
-	// while (input[*i + length] && input[*i + length] != ' ' && input[*i + length] != '$' && input[*i + length] != '"')
+	// $? $0 $$;
 	while (input[*i + length] && input[*i + length] != ' ' && input[*i + length] != '"')
+	{
+		printf("anyyy = %c\n", input[*i + length]);
 		length++;
+	}
+	printf("aaaaa\n");
 	result = (char *)malloc((length + 1) * sizeof(char));
 	check_malloc(result);
 	j = 0;
@@ -68,34 +70,50 @@ char *sgmnt_cpy(char *input, int *i)
 	return (result);
 }
 // echo ba"rev $USER$USER jan" vonc es
+//sa anel i skzbane, env sarqeluc
+char *get_pid(void)
+{
+	char	*name;
+	pid_t	pid;
+	int		status;
+	
+	pid = fork();
+	if (pid == 0)
+		exit(0);
+	else
+	{
+		wait(&status);
+		name = ft_itoa((int)pid - 1);
+	}
+	return (name);
+}
 
 char *open_dollar(t_shell *general, char *input, int *i, int start)
 {
 	(void)start;
 	if (input[*i] && input[*i] == '$')
-	{		
+	{
 		(*i)++;
+		// here symbol should be $, ? whether 0
+		if (ft_strcmp(general->doll_lst->u_key, "$") == 0)
+			exit(write(1, "hellooooooo\n", 12));
 		general->doll_lst->u_key = sgmnt_cpy(input, i);
-		// try to change this part later into ft_Strdup (two ifs)
 		if (!general->doll_lst->u_key[0])
-		{	
+		{
 			general->doll_lst->value = (char *)malloc(sizeof(char) * 2);
 			check_malloc(general->doll_lst->value);
 			general->doll_lst->value[0] = '$'; 
-			general->doll_lst->value[1] = '\0'; 
+			general->doll_lst->value[1] = '\0';
 		}
 		else
-		{
 			general->doll_lst->value = check_env_var(general->env_lst, general->doll_lst->u_key);
-		}
 		if (!general->doll_lst->value)
-		{	
+		{
 			general->doll_lst->value = (char *)malloc(sizeof(char) * 1);
 			check_malloc(general->doll_lst->value);
 			general->doll_lst->value[0] = '\0'; 
 		}
 	}
-	// printf("veeeeerj\n");
 	return (general->doll_lst->value);
 } // echo ba"rev $USER$USER jan" vonc es
 
@@ -125,5 +143,7 @@ int check_inp_quotes(t_shell *general, char *input, int i, int start)
 
 // should make 3 tokens
 // echo ba"rev $USER' $USERecho ba"rev
-// $USER' $USER 'jan"$USER
+// $USER' $USER 'jan"$USER"
 // dff -a | $$
+
+// echo ba"rev $USER' $USERecho ba"rev $USER' $USER 'jan"$USER"

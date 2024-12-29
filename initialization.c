@@ -6,7 +6,7 @@
 /*   By: elen_t13 <elen_t13@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/24 19:38:08 by algaboya          #+#    #+#             */
-/*   Updated: 2024/12/24 17:11:09 by elen_t13         ###   ########.fr       */
+/*   Updated: 2024/12/29 17:13:56 by elen_t13         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,7 @@ void init_general(t_shell *general)
 int	init_input(char *input, t_shell *general, char **env)
 {
 	input = "";
+	general->name = get_pid();
 	init_general(general); // give every value of struct to it's corresponding one
 	create_env(env, general);
 	while (input)
@@ -48,10 +49,10 @@ int	init_input(char *input, t_shell *general, char **env)
 			add_history(input);
 		general -> tok_lst = NULL;
 		init_tokens(input, general, 0);
-		// create_print_cmd(general); // to print commands
+		create_print_cmd(general); // to print commands
 		//addd check_heredocs
-		// if (check_cmd(env, general)) // if 1 error
-		// 	return (free(input), clean_list(&general->tok_lst), 1);
+		if (check_cmd(env, general)) // if 1 error
+			return (free(input), clean_list(&general->tok_lst), 1);
 		clean_list(&general->tok_lst);
 		free(input);
 	}
@@ -70,7 +71,7 @@ t_env *init_env_nodes(char **env)
 	tmp = NULL;
 	while (env[i] != NULL)
 	{
-		new_node = ft_lstnew(env[i]);
+		new_node = ft_lstnew(env[i], 1);
 		if (!new_node) 
 			return NULL;
 		if (list_env == NULL)
@@ -85,38 +86,51 @@ t_env *init_env_nodes(char **env)
 	return (list_env);
 }
 
+t_env *add_env_dol(char *context)
+{
+	t_env	*list_env;
+	t_env	*tmp;
+	t_env	*new_node;
+
+	list_env = NULL;
+	tmp = NULL;
+	new_node = spec_lstnew(context, 0);
+	if (!new_node) 
+		return NULL;
+	if (list_env == NULL)
+	{
+		list_env = new_node;
+		tmp = list_env;
+	}
+	else
+		ft_lstadd_back(tmp, new_node);
+	return (list_env);
+}
+
 //the dollar sign should be oneend in tis function
 short	init_tokens(char *input, t_shell *general, int i)
 {
 	int	start;
 	int flag;
-	// t_token *head;
 
-	// head = general->tok_lst;
 	flag = 0;
 	while ((input[i] >= 9 && input[i] <= 13) || input[i] == 32)
 		i++;
 	while (flag >= 0 && input[i] != '\0')
 	{
 		if (flag >= 0 && input[i] && (input[i] == '|' || input[i] == '>'
-			|| input[i] == '<' || input[i] == ' ')) // added dollar sign - init_op_token
-				flag = init_op_token(input, i, &general->tok_lst);
+			|| input[i] == '<' || input[i] == ' ' || (input[i] == '$' && input[i + 1] && input[i + 1] == '$'))) // added dollar sign - init_op_token
+				flag = init_op_token(input, &i, &general->tok_lst);
 		else
 		{
 			start = i;
 			while (flag >= 0 && input[i] && input[i] != '|' && input[i] != '>' && input[i] != '<'
 				&& input[i] != ' ' && input[i] != '$' && input[i] != 34 && input[i] != 39)
 				i++;
-			if (flag >= 0 && input[i] && (input[i] == '|' || input[i] == '>'
-				|| input[i] == '<' || input[i] == ' ')) // added dollar sign - init_op_token
-				flag = init_op_token(input, i, &general->tok_lst);
 			if (input[i] && flag >= 0)
 				flag = check_cut_quotes(general, &input, &i, start); // and added dollar sign here check_cut_quotes
 			else if (i > start)
-			{
-				// printf("bbb = %d, %d\n", i, start);
 				add_token_list(&general->tok_lst, my_substr((const char *)input, start, i - start), 0);
-			}
 			i--;
 		}
 		if(flag < 0)
@@ -124,81 +138,71 @@ short	init_tokens(char *input, t_shell *general, int i)
 		if (input[i])
 			i++;
 	}
-	// general->tok_lst= head;
 	printf("****\n");
 	print_tokens(general->tok_lst);
 	printf("****\n");
-	// general->tok_lst = exchange_to_commands(general->tok_lst, general);
 	return (0);
 }
 
-int	init_op_token(char *input, int i, t_token **token_list)
+
+int init_op_token(char *input, int *i, t_token **token_list)
 {
 	if (!input || !token_list)
-		return i;
-	if (input[i] && input[i] == '|') // ❗️❗️
+		return -1;
+	// Check for '$' character
+	if (input[*i] && input[*i] == '$')
 	{
-		if (!input[i + 1] || (!input[i + 2] && input[i + 1] != '|')) // change this part later
+		if (input[*i + 1] && input[*i + 1] == '$')
+			add_token_list(token_list, my_substr(input, *i, 2), 4);
+		(*i)++;
+	}
+	// Check for '|' character
+	if (input[*i] && input[*i] == '|')
+	{
+		if (!input[*i + 1] || (input[*i + 1] != '|' && !input[*i + 2])) // Handle syntax error
 			return (printf("minisHell: syntax error near unexpected token `newline'\n"), -1);
-		// if (input[i] == '|') // ❗️❗️❗️ try to handle  bash-3.2$ | ls => bash: syntax error near unexpected token `|'
-		if (input[i + 1] == '|')
+
+		if (input[*i + 1] == '|')
 			return (printf("minisHell: syntax error near unexpected token `||'\n"), -1);
-		add_token_list(token_list, my_substr(input, i, 1), 1);
+
+		add_token_list(token_list, my_substr(input, *i, 1), 1);
 	}
-	else if (input[i] && input[i] == '>')
+	else if (input[*i] && input[*i] == '>')
 	{
-		if (!input[i + 1] || (input[i + 1] != '<' && !input[i + 2])) // DONEEEE
+		// Handle '>' and '>>' tokens
+		if (!input[*i + 1] || (input[*i + 1] != '<' && !input[*i + 2])) // Handle error
 			return (printf("minisHell: syntax error near unexpected token `newline'\n"), -1);
-		if (input[i + 1] && input[i + 1] == '>') // DONEEE
+		
+		if (input[*i + 1] && input[*i + 1] == '>')
 		{
-			// make this line shorter ⬇️ exchanging with the above one
-			if ((input[i + 2] && input[i + 2] == '>' && (input[i + 3] && input[i + 3] == '>')) || ((input[i + 2] && input[i + 2] == '<') && (input[i + 3] && (input[i + 3] == '<' || input[i + 3] == '|'))))
-				return (printf("minisHell: syntax error near unexpected token `%c%c'\n", input[i + 2], input[i + 3]), -1);
-			if (input[i + 2] && (input[i + 2] == '>' || input[i + 2] == '<' || input[i + 2] == '|'))
-				return (printf("minisHell: syntax error near unexpected token `%c'\n", input[i + 2]), -1);
-			add_token_list(token_list, my_substr(input, i, 2), 4);
-			i++;
+			if (input[*i + 2] && (input[*i + 2] == '>' || input[*i + 2] == '<' || input[*i + 2] == '|'))
+				return (printf("minisHell: syntax error near unexpected token `%c%c'\n", input[*i + 2], input[*i + 3]), -1);
+			add_token_list(token_list, my_substr(input, *i, 2), 4);
+			(*i)++;
 		}
-		else if (input[i + 1] && (input[i + 1] == '<')) // DONE
+		else if (input[*i + 1] && input[*i + 1] == '<')
+			return (printf("minisHell: syntax error near unexpected token `%c%c'\n", input[*i + 1], input[*i + 2]), -1); //Handle error for invalid combinations like '><' or '<|'
+		else
+			add_token_list(token_list, my_substr(input, *i, 1), 3);
+	}
+	else if (input[*i] && input[*i] == '<')
+	{
+		// Handle '<' and '<<' tokens
+		if (!input[*i + 1] || (input[*i + 1] != '>' && !input[*i + 2])) // Handle error
+			return (printf("minisHell: syntax error near unexpected token `newline'\n"), -1);
+		
+		if (input[*i + 1] && input[*i + 1] == '<')
 		{
-			if (input[i + 2] && input[i + 2] == '<' && input[i + 3] && input[i + 3] == '<') // ><> ><|
-				return (printf("minisHell: syntax error near unexpected token `%c%c%c'\n", input[i + 1], input[i + 2], input[i + 3]), -1);
-			if (input[i + 2] && (input[i + 2] == '>' || input[i + 2] == '<')) // ><> ><|
-				return (printf("minisHell: syntax error near unexpected token `%c%c'\n", input[i + 1], input[i + 2]), -1);
-			return (printf("minisHell: syntax error near unexpected token `%c'\n", input[i + 1]), -1);
-		}
-		else if ((input[i + 1] && input[i + 1] == '|') || !input[i + 2]) // added this part //DONEEEEEEE
-		{
-			//  grel pipe-i tramabanakan sharunakutyuny
-			if (input[i + 2] && input[i + 3] && (input[i + 2] == '>' || input[i + 2] == '<' || input[i + 2] == '|')) // >|<, >|>, >||: // added this part
-				return (printf("minisHell: syntax error near unexpected token `%c'\n", input[i + 2]), -1); // added this part
-			else
-				return (printf("minisHell: syntax error near unexpected token `%c'\n", input[i + 1]), -1); // added this part
+			if (input[*i + 2] && (input[*i + 2] == '>' || input[*i + 2] == '<'))
+				return (printf("minisHell: syntax error near unexpected token `%c%c'\n", input[*i + 2], input[*i + 3]), -1);
+			add_token_list(token_list, my_substr(input, *i, 2), 5);
+			(*i)++;
 		}
 		else
-			add_token_list(token_list, my_substr(input, i, 1), 3);
+			add_token_list(token_list, my_substr(input, *i, 1), 2);
 	}
-	else if (input[i] && input[i] == '<') // ⛔️⛔️⛔️⛔️⛔️⛔️⛔️     <> <*|
-	{
-		if (!input[i + 1] || (input[i + 1] != '>' && !input[i + 2]))
-			return (printf("minisHell: syntax error near unexpected token `newline'\n"), -1);
-		if (input[i + 1] && input[i + 1] == '<')
-		{
-			if ((input[i + 2] && input[i + 2] == '>') && (input[i + 3] && (input[i + 3] == '>' ||  input[i + 3] == '|')))
-				return (printf("minisHell: syntax error near unexpected token `%c%c'\n", input[i + 2], input[i + 3]), -1);
-			if (input[i + 1] == '|' || (input[i + 2] && (input[i + 2] == '<' || input[i + 2] == '>' || input[i + 2] == '|')))
-				return (printf("minisHell: syntax error near unexpected token `%c'\n", input[i + 2]), -1);
-			add_token_list(token_list, my_substr(input, i, 2), 5);
-			i++;
-		}
-		// else if (input[i + 1] == '>')
-		// 	printf(">"); // ⛔️⛔️⛔️⛔️⛔️⛔️⛔️ try to understand do you need to implement this?  cmd:ls <> echo dasd (works only for existing file)
-		else if (input[i + 1] == '|')
-				return (printf("minisHell: syntax error near unexpected token `%c'\n", input[i + 1]), -1);
-		else
-			add_token_list(token_list, my_substr(input, i, 1), 2);
-	}
-	return (i);
+
+	return (*i);
 }
 
 int	create_env(char **env, t_shell *general)
@@ -207,6 +211,10 @@ int	create_env(char **env, t_shell *general)
 
 	general -> env_lst = init_env_nodes(env);
 	sorted = sort_env(env);
+	// add here $$ $? $0
+	general -> env_lst = add_env_dol("$");
+	general -> env_lst = add_env_dol("?");
+	general -> env_lst = add_env_dol("0");
 	general -> sorted_env_lst = init_env_nodes(sorted);
 	return (0);
 }

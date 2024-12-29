@@ -6,7 +6,7 @@
 /*   By: elen_t13 <elen_t13@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/12 14:42:32 by etamazya          #+#    #+#             */
-/*   Updated: 2024/12/23 21:31:17 by elen_t13         ###   ########.fr       */
+/*   Updated: 2024/12/29 17:08:05 by elen_t13         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,7 @@ typedef struct s_env
 {
 	char			*key;
 	char			*value;
+	int				is_print;
 	struct s_env	*next;
 }					t_env;
 
@@ -86,15 +87,20 @@ typedef struct s_shell
 	int			shlvl;		     // check
 	int			sg_quote;
 	int			db_quote;
+	char		*name;
 	// char		pwd; // check
 	// char		*oldpwd; // check
 }			t_shell;
 
-
+// Elena's
+char	*get_pid(void);
+char	*ft_itoa(int n); 
 void	expand_var(char **input, t_shell *general, int *start, int *i);
 char	*countcpy_len(char *input, int start, int *l, t_shell *general);
 int		spec_len(char *input, int start);
 int		check_inp_quotes(t_shell *general, char *input, int i, int start);
+t_env	*add_env_dol(char *context);
+t_env	*spec_lstnew(char *context, int printable);
 
 // ***_____main_functions_____***
 void	init_general(t_shell *general);
@@ -120,7 +126,7 @@ int		create_env(char **env, t_shell *general);
 
 // ***_____lib utils_____***
 void	ft_strlcpy(char *dest, const char *src, int size, int pos, char limiter);
-t_env	*ft_lstnew(char *context);
+t_env	*ft_lstnew(char *context, int printable);
 void	ft_lstadd_back(t_env *lst, t_env *node);
 int		ft_strcmp(const char *s1, const char *s2);
 int		ft_strlen(const char *str);
@@ -137,7 +143,7 @@ char	*ft_strjoin(char *s1, char *s2);
 
 // ***_____tokenization_____***
 short	init_tokens(char *input, t_shell *general, int i);
-int		init_op_token(char *input, int i, t_token **token_list);
+int		init_op_token(char *input, int *i, t_token **token_list);
 void	add_token_list(t_token **list, char *content, t_ttype type);
 t_token	*create_token(char *content, t_ttype type);
 

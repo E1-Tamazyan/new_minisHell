@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lib_utils.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: etamazya <etamazya@student.42.fr>          +#+  +:+       +#+        */
+/*   By: elen_t13 <elen_t13@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/18 14:45:48 by etamazya          #+#    #+#             */
-/*   Updated: 2024/12/11 11:45:00 by etamazya         ###   ########.fr       */
+/*   Updated: 2024/12/29 17:09:21 by elen_t13         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@
 // ************************
 // **5 functions already **
 
-t_env	*ft_lstnew(char *context) // contains blabla = blabla=bla
+t_env	*ft_lstnew(char *context, int printable) // contains blabla = blabla=bla
 {
 	int	pos;
 	t_env	*node;
@@ -26,6 +26,21 @@ t_env	*ft_lstnew(char *context) // contains blabla = blabla=bla
 	check_malloc(node);
 	pos = put_key(node, context);	
 	put_value(node, context, pos);
+	node->is_print = printable;
+	node -> next = NULL;
+	return (node);
+}
+
+
+t_env	*spec_lstnew(char *context, int printable) // contains blabla = blabla=bla
+{
+	t_env	*node;
+
+	node = malloc(sizeof(t_env));
+	check_malloc(node);
+	node->key = ft_strdup(context);
+	node->value = NULL;
+	node->is_print = printable;
 	node -> next = NULL;
 	return (node);
 }
@@ -47,20 +62,15 @@ void	ft_lstadd_back(t_env *lst, t_env *node)
 	t_env	*current;
 
 	if (!node)
-		return ;
+		return;
 	if (!lst)
 	{
 		lst = node;
-		return ;
+		return;
 	}
 	current = lst;
-	// printf("mine_env %s%s\n", node->key, node->value);
 	while (current -> next)
 		current = current -> next;
-	// printf("%s\n", current->key);
-	// printf("%s\n", current->value);
-	// printf("%s\n", node->key);
-	// printf("%s\n", node->value);
 	current->next = node;
 }
 

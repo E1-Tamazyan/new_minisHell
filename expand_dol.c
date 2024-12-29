@@ -6,7 +6,7 @@
 /*   By: elen_t13 <elen_t13@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/22 17:13:47 by elen_t13          #+#    #+#             */
-/*   Updated: 2024/12/24 15:53:56 by elen_t13         ###   ########.fr       */
+/*   Updated: 2024/12/29 17:40:58 by elen_t13         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,8 @@
 
 void	expand_var(char **input, t_shell *general, int *start, int *i)
 {
-	int len;
+	int	len;
+
 	len = 0;
 	*input = countcpy_len(*input, *start, &len, general);
 	*start = 0;
@@ -75,20 +76,15 @@ int	check_cut_quotes(t_shell *general, char **input, int *i, int start)
 			general->sg_quote = !general->sg_quote;
 		else if ((*input)[*i] == '$' && !general->sg_quote)
 		{
+			printf("aaaaaaaaaaaaaaaaaaaaaaa\n");
 			open_dollar(general, *input, i, start);
 			expand_var(input, general, &start, i);
 			(--*i);
 		}
-		else if (((*input)[*i] == ' ' || (*input)[*i] == '|' || (*input)[*i] == '>' || (*input)[*i] == '<') && !general->db_quote && !general->sg_quote)
-		{
-			if ((*input)[*i] == ' ')
-				return (add_token_list(&general->tok_lst, my_substr(*input, start, (*i - start)), 0), 0);
-			*i = init_op_token(*input, *i, &general->tok_lst);
-		}
+		else if (((*input)[*i] == ' ' || (*input)[*i] == '|' || (*input)[*i] == '>' || (*input)[*i] == '<' || (*input)[*i] == '$') && !general->db_quote && !general->sg_quote)
+			return (add_token_list(&general->tok_lst, my_substr(*input, start, (*i - start)), 0), 0);
 		(*i)++;
 	}
 	add_token_list(&general->tok_lst, my_substr(*input, start, (*i - start)), 0);
 	return (0);
 } // echo ba"rev $USER jan" vonc es
-
-// just save the previous version

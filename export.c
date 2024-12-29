@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: etamazya <etamazya@student.42.fr>          +#+  +:+       +#+        */
+/*   By: elen_t13 <elen_t13@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/10 16:35:06 by algaboya          #+#    #+#             */
-/*   Updated: 2024/12/11 12:58:57 by etamazya         ###   ########.fr       */
+/*   Updated: 2024/12/29 17:14:39 by elen_t13         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,12 +18,12 @@ int	export_builtin(t_shell *general, char *command)
 
 	if (ft_strcmp(command, "env") == 0 && !general->tok_lst->next)
 	{
-		printf("sxtor\n");
+		// printf("sxtor\n");
 		return (print_env(general->sorted_env_lst, 0), 0);
 	}
 	if (ft_strcmp(command, "export") == 0 && !general->tok_lst->next)
 	{
-		printf("sxtor\n");
+		// printf("sxtor\n");
 		return (print_env(general->env_lst, 1), 0);
 	}
 	if (export_valid(general->tok_lst->next) == FAILURE_EXIT)
