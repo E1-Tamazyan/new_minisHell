@@ -6,7 +6,7 @@
 /*   By: elen_t13 <elen_t13@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/12 14:42:32 by etamazya          #+#    #+#             */
-/*   Updated: 2024/12/29 17:08:05 by elen_t13         ###   ########.fr       */
+/*   Updated: 2025/01/15 20:47:18 by elen_t13         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,8 +99,8 @@ void	expand_var(char **input, t_shell *general, int *start, int *i);
 char	*countcpy_len(char *input, int start, int *l, t_shell *general);
 int		spec_len(char *input, int start);
 int		check_inp_quotes(t_shell *general, char *input, int i, int start);
-t_env	*add_env_dol(char *context);
-t_env	*spec_lstnew(char *context, int printable);
+t_env	*add_env_dol(t_shell *general, char *context, char *value);
+t_env	*spec_lstnew(char *context, char *value, int printable);
 
 // ***_____main_functions_____***
 void	init_general(t_shell *general);
@@ -137,9 +137,13 @@ void	ft_strcpy(char *s1, const char *s2, int start, int len);
 void	ft_strcpy_2(char *s1, const char *s2, int start, int len);
 void	ft_strcpy_3(char *s1, const char *s2, int start_s1, int start_s2);
 char	*ft_strjoin(char *s1, char *s2);
+void	*ft_calloc(size_t count, size_t size);
+void	*ft_memset(void *str, int c, size_t n);
 
 // int		ft_strcpy();
-// int		ft_isalnum(int arg);
+int		ft_isalnum(int arg);
+// t_token	*remove_extra_quotes(t_shell *general);
+t_token *remove_extra_quotes(t_shell *general);
 
 // ***_____tokenization_____***
 short	init_tokens(char *input, t_shell *general, int i);
@@ -157,8 +161,8 @@ int		check_cut_quotes(t_shell *general, char **input,  int *i, int start);
 
 // **************
 // int		check_dollar_sign(char *input, int i, t_shell *general);
-char	*open_dollar(t_shell *general, char *input, int *i, int start);
-char *sgmnt_cpy(char *input, int *i);
+int		open_dollar(t_shell *general, char *input, int *i, int start);
+char	*sgmnt_cpy(char *input, int *i);
 
 
 // Alla's

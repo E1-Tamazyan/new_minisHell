@@ -6,7 +6,7 @@
 /*   By: elen_t13 <elen_t13@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/17 13:18:10 by elen_t13          #+#    #+#             */
-/*   Updated: 2024/12/29 18:05:06 by elen_t13         ###   ########.fr       */
+/*   Updated: 2025/01/13 22:07:30 by elen_t13         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,33 +44,44 @@ int check_cmd(char **env, t_shell *general)
 	return (0);
 }
 
-char *sgmnt_cpy(char *input, int *i)
+char* sgmnt_cpy(char* input, int* i)
 {
-	char *result;
-	int j;
-	int length;
-
-	length = 0;
-	// $? $0 $$;
-	while (input[*i + length] && input[*i + length] != ' ' && input[*i + length] != '"')
+	char	*key;
+	int		start;
+	int		len;
+	int		j;
+	
+	(*i)++;
+	start = *i;
+	if (input[*i] == '$' || input[*i] == '?' || input[*i] == '0')
 	{
-		printf("anyyy = %c\n", input[*i + length]);
-		length++;
-	}
-	printf("aaaaa\n");
-	result = (char *)malloc((length + 1) * sizeof(char));
-	check_malloc(result);
-	j = 0;
-	while (input[*i] && input[*i] != ' ' && input[*i] != '$' && input[*i] != '\"' && input[*i] != '\'')
-	{
-		result[j++] = input[*i];
+		key = (char*)malloc(3 * sizeof(char));
+		if (key == NULL)
+			return NULL;
+		key[0] = '$';
+		key[1] = input[*i];
+		key[2] = '\0';
 		(*i)++;
+		return (key);
 	}
-	result[j] = '\0';
-	return (result);
+	while (ft_isalnum(input[*i]) || input[*i] == '_')
+		(*i)++;
+	len = *i - start;
+	if (len == 0)
+		return NULL;
+	key = (char*)malloc((len + 1) * sizeof(char));
+	if (key == NULL)
+		return NULL;
+	j = 0;
+	while (j < len)
+	{
+		key[j] = input[start + j];
+		j++;	
+	}
+	key[len] = '\0';
+	return (key);
 }
-// echo ba"rev $USER$USER jan" vonc es
-//sa anel i skzbane, env sarqeluc
+
 char *get_pid(void)
 {
 	char	*name;
@@ -88,17 +99,16 @@ char *get_pid(void)
 	return (name);
 }
 
-char *open_dollar(t_shell *general, char *input, int *i, int start)
+int	open_dollar(t_shell *general, char *input, int *i, int start)
 {
 	(void)start;
 	if (input[*i] && input[*i] == '$')
 	{
-		(*i)++;
-		// here symbol should be $, ? whether 0
-		if (ft_strcmp(general->doll_lst->u_key, "$") == 0)
-			exit(write(1, "hellooooooo\n", 12));
 		general->doll_lst->u_key = sgmnt_cpy(input, i);
-		if (!general->doll_lst->u_key[0])
+		printf("*************\n");
+		if (general->doll_lst->u_key == NULL)
+			general->doll_lst->value = NULL;
+		else if (!general->doll_lst->u_key[0])
 		{
 			general->doll_lst->value = (char *)malloc(sizeof(char) * 2);
 			check_malloc(general->doll_lst->value);
@@ -114,7 +124,7 @@ char *open_dollar(t_shell *general, char *input, int *i, int start)
 			general->doll_lst->value[0] = '\0'; 
 		}
 	}
-	return (general->doll_lst->value);
+	return (1);
 } // echo ba"rev $USER$USER jan" vonc es
 
 int check_inp_quotes(t_shell *general, char *input, int i, int start)
@@ -147,9 +157,3 @@ int check_inp_quotes(t_shell *general, char *input, int i, int start)
 // dff -a | $$
 
 // echo ba"rev $USER' $USERecho ba"rev $USER' $USER 'jan"$USER"
-
-
-
-
-
-

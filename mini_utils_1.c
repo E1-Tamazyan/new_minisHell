@@ -6,11 +6,13 @@
 /*   By: elen_t13 <elen_t13@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/06 11:50:05 by etamazya          #+#    #+#             */
-/*   Updated: 2024/12/23 19:26:57 by elen_t13         ###   ########.fr       */
+/*   Updated: 2025/01/14 01:15:56 by elen_t13         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+// 4 functionsss
 
 // check_print
 char	*check_env_var(t_env *env_lst, const char *context)

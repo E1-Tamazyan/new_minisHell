@@ -6,7 +6,7 @@
 /*   By: elen_t13 <elen_t13@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/24 19:38:08 by algaboya          #+#    #+#             */
-/*   Updated: 2024/12/29 18:05:29 by elen_t13         ###   ########.fr       */
+/*   Updated: 2025/01/14 21:10:29 by elen_t13         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,17 +44,17 @@ int	init_input(char *input, t_shell *general, char **env)
 		// input = readline("\033[38;5;129m\033[48;5;233m minisShell:\033[38;5;81m\033[0m "); //bright purples and blues with a dark background 
 		// input = readline("\033[38;5;51m\033[48;5;16m minisShell:\033[0m "); // cyan neon
 		if (!input)
-			exit (1); // change later
+			exit (1); // change later with exit status
 		if (input[0] != '\0')
 			add_history(input);
 		general -> tok_lst = NULL;
 		init_tokens(input, general, 0);
 		create_print_cmd(general); // to print commands
-		//addd check_heredocs
+		//add check_heredocs
 		if (check_cmd(env, general)) // if 1 error
 			return (free(input), clean_list(&general->tok_lst), 1);
 		clean_list(&general->tok_lst);
-		free(input);
+		// free(input);
 	}
 	return (printf("exit\n"), 0);
 } // echo ba"rev $USER$USER jan" vonc es
@@ -86,25 +86,17 @@ t_env *init_env_nodes(char **env)
 	return (list_env);
 }
 
-t_env *add_env_dol(char *context)
+t_env *add_env_dol(t_shell *general, char *key, char *value)
 {
-	t_env	*list_env;
-	t_env	*tmp;
 	t_env	*new_node;
+	t_env	*tmp_env;
 
-	list_env = NULL;
-	tmp = NULL;
-	new_node = spec_lstnew(context, 0);
+	tmp_env = general->env_lst;
+	new_node = spec_lstnew(key, value, 0);
 	if (!new_node) 
 		return NULL;
-	if (list_env == NULL)
-	{
-		list_env = new_node;
-		tmp = list_env;
-	}
-	else
-		ft_lstadd_back(tmp, new_node);
-	return (list_env);
+	ft_lstadd_back(general->env_lst, new_node);
+	return (tmp_env);
 }
 
 //the dollar sign should be oneend in tis function
@@ -119,7 +111,7 @@ short	init_tokens(char *input, t_shell *general, int i)
 	while (flag >= 0 && input[i] != '\0')
 	{
 		if (flag >= 0 && input[i] && (input[i] == '|' || input[i] == '>'
-			|| input[i] == '<' || input[i] == ' ' || (input[i] == '$' && input[i + 1] && input[i + 1] == '$'))) // added dollar sign - init_op_token
+			|| input[i] == '<' || input[i] == ' '))
 				flag = init_op_token(input, &i, &general->tok_lst);
 		else
 		{
@@ -141,21 +133,29 @@ short	init_tokens(char *input, t_shell *general, int i)
 	printf("****\n");
 	print_tokens(general->tok_lst);
 	printf("****\n");
+	// testtttt
+	// testtttt
+	general->tok_lst = remove_extra_quotes(general);
+	// testtttt
+	// testtttt
+	printf("__****\n");
+	print_tokens(general->tok_lst);
+	printf("__****\n");
 	return (0);
 }
-
 
 int init_op_token(char *input, int *i, t_token **token_list)
 {
 	if (!input || !token_list)
 		return -1;
 	// Check for '$' character
-	if (input[*i] && input[*i] == '$')
-	{
-		if (input[*i + 1] && input[*i + 1] == '$')
-			add_token_list(token_list, my_substr(input, *i, 2), 4);
-		(*i)++;
-	}
+	// deleted this part (it doesn;t make token with $$ it should just open them)
+	// if (input[*i] && input[*i] == '$')
+	// {
+	// 	if (input[*i + 1] && input[*i + 1] == '$')
+	// 		add_token_list(token_list, my_substr(input, *i, 2), 4);
+	// 	(*i)++;
+	// }
 	// Check for '|' character
 	if (input[*i] && input[*i] == '|')
 	{
@@ -172,7 +172,6 @@ int init_op_token(char *input, int *i, t_token **token_list)
 		// Handle '>' and '>>' tokens
 		if (!input[*i + 1] || (input[*i + 1] != '<' && !input[*i + 2])) // Handle error
 			return (printf("minisHell: syntax error near unexpected token `newline'\n"), -1);
-		
 		if (input[*i + 1] && input[*i + 1] == '>')
 		{
 			if (input[*i + 2] && (input[*i + 2] == '>' || input[*i + 2] == '<' || input[*i + 2] == '|'))
@@ -190,7 +189,6 @@ int init_op_token(char *input, int *i, t_token **token_list)
 		// Handle '<' and '<<' tokens
 		if (!input[*i + 1] || (input[*i + 1] != '>' && !input[*i + 2])) // Handle error
 			return (printf("minisHell: syntax error near unexpected token `newline'\n"), -1);
-		
 		if (input[*i + 1] && input[*i + 1] == '<')
 		{
 			if (input[*i + 2] && (input[*i + 2] == '>' || input[*i + 2] == '<'))
@@ -201,7 +199,6 @@ int init_op_token(char *input, int *i, t_token **token_list)
 		else
 			add_token_list(token_list, my_substr(input, *i, 1), 2);
 	}
-
 	return (*i);
 }
 
@@ -211,10 +208,10 @@ int	create_env(char **env, t_shell *general)
 
 	general -> env_lst = init_env_nodes(env);
 	sorted = sort_env(env);
-	// add here $$ $? $0
-	general -> env_lst = add_env_dol("$");
-	general -> env_lst = add_env_dol("?");
-	general -> env_lst = add_env_dol("0");
+	general -> env_lst = add_env_dol(general, "$", general->name);
+	// ($?) Expands to the exit status of the most recently executed foreground pipeline.
+	general -> env_lst = add_env_dol(general, "?", "0");
+	general -> env_lst = add_env_dol(general, "0", "minishell");
 	general -> sorted_env_lst = init_env_nodes(sorted);
 	return (0);
 }
@@ -244,10 +241,8 @@ int	create_env(char **env, t_shell *general)
 // 	{
 // 		if (!input[*i + 1] || (input[*i + 1] != '|' && !input[*i + 2])) // Syntax error
 // 			return (printf("minisHell: syntax error near unexpected token `newline'\n"), -1);
-
 // 		if (input[*i + 1] == '|') // Handle `||` error
 // 			return (printf("minisHell: syntax error near unexpected token `||'\n"), -1);
-
 // 		add_token_list(token_list, my_substr(input, *i, 1), 1);
 // 		return 1;
 // 	}
@@ -304,19 +299,14 @@ int	create_env(char **env, t_shell *general)
 // {
 // 	if (!input || !token_list)
 // 		return -1; // Return error if input or token_list is invalid
-
 // 	// Check for specific tokens
 // 	if (check_dollar_sign(input, i, token_list) == -1)
 // 		return -1;
-
 // 	if (check_pipe_sign(input, i, token_list) == -1)
 // 		return -1;
-
 // 	if (check_greater_than_sign(input, i, token_list) == -1)
 // 		return -1;
-
 // 	if (check_less_than_sign(input, i, token_list) == -1)
 // 		return -1;
-
 // 	return (*i);
 // }

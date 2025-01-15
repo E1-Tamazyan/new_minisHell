@@ -17,6 +17,7 @@
 // ************************
 
 //5 ->6 functions already
+// dunno why 9 function
 
 int	put_key(t_env *node, char	*src)
 {
@@ -189,17 +190,23 @@ void	print_env(t_env *new, int flag)
 	{
 		if (flag == 1)
 		{
-			if (lst -> value == NULL)
-				printf("declare -x %s\n", lst -> key);
-			else
-				printf("declare -x %s=\"%s\"\n", lst -> key, lst -> value);
+			// check here if (lst->is_print == 1)
+			// {
+				if (lst -> value == NULL)
+					printf("declare -x %s\n", lst -> key);
+				else
+					printf("declare -x %s=\"%s\"\n", lst -> key, lst -> value);
+			// }
 		}
 		else
 		{
-			if (lst -> value == NULL)
-				printf("%s\n", lst -> key);
-			else
-				printf("%s=%s\n", lst -> key, lst -> value);
+			// check here if (lst->is_print == 1)
+			// {
+				if (lst -> value == NULL)
+					printf("%s\n", lst -> key);
+				else
+					printf("%s=%s\n", lst -> key, lst -> value);
+			// }
 		}
 		lst = lst->next;
 	}

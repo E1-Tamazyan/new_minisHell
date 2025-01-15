@@ -27,7 +27,7 @@ uname -v = #1 SMP Tue Nov 5 00:21:55 UTC 2024
 /usr/bin/oslevel       = unknown
 /bin/universe          = unknown
 
-PATH: /home/elen_t13/.vscode-server/bin/f1a4fb101478ce6ec82fe9627c43efbf9e98c813/bin/remote-cli/
+PATH: /home/elen_t13/.vscode-server/bin/fabdb6a30b49f79a7aba0f2ad9df9b399473380f/bin/remote-cli/
 PATH: /usr/local/sbin/
 PATH: /usr/local/bin/
 PATH: /usr/sbin/
@@ -1959,7 +1959,7 @@ configure:7048: $? = 0
 configure:7048: result: yes
 configure:7074: checking for tgetent
 configure:7074: gcc -o conftest -g -O2   conftest.c  >&5
-/usr/bin/ld: /tmp/cc7yUQWU.o: in function `main':
+/usr/bin/ld: /tmp/ccB3jBuq.o: in function `main':
 /home/elen_t13/projects/new_minisHell/libraries/readline-8.2/conftest.c:123: undefined reference to `tgetent'
 collect2: error: ld returned 1 exit status
 configure:7074: $? = 1
@@ -2254,7 +2254,7 @@ configure:7414: $? = 0
 configure:7414: result: yes
 configure:7421: checking for mbscasecmp
 configure:7421: gcc -o conftest -g -O2   conftest.c  >&5
-/usr/bin/ld: /tmp/ccBzM1ua.o: in function `main':
+/usr/bin/ld: /tmp/ccLfLVr9.o: in function `main':
 /home/elen_t13/projects/new_minisHell/libraries/readline-8.2/conftest.c:128: undefined reference to `mbscasecmp'
 collect2: error: ld returned 1 exit status
 configure:7421: $? = 1
@@ -2393,7 +2393,7 @@ configure: failed program was:
 configure:7421: result: no
 configure:7428: checking for mbscmp
 configure:7428: gcc -o conftest -g -O2   conftest.c  >&5
-/usr/bin/ld: /tmp/ccXtsuXe.o: in function `main':
+/usr/bin/ld: /tmp/ccGzKX2S.o: in function `main':
 /home/elen_t13/projects/new_minisHell/libraries/readline-8.2/conftest.c:128: undefined reference to `mbscmp'
 collect2: error: ld returned 1 exit status
 configure:7428: $? = 1
@@ -2540,7 +2540,7 @@ configure:7442: $? = 0
 configure:7442: result: yes
 configure:7450: checking for mbschr
 configure:7450: gcc -o conftest -g -O2   conftest.c  >&5
-/usr/bin/ld: /tmp/ccDrauPr.o: in function `main':
+/usr/bin/ld: /tmp/cckBpaof.o: in function `main':
 /home/elen_t13/projects/new_minisHell/libraries/readline-8.2/conftest.c:130: undefined reference to `mbschr'
 collect2: error: ld returned 1 exit status
 configure:7450: $? = 1
