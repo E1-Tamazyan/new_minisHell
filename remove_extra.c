@@ -20,11 +20,12 @@ static char *remove_quoted_positions(char *str, int *indexes, int index_count, i
 		k = 0;
 		while (k < index_count)
 		{
-			if (indexes[k] == i && k++)
+			if (indexes[k] == i)
 			{
 				skip = 1;
 				break;
 			}
+			k++;
 		}
 		if (!skip)
 			res[j++] = str[i];
@@ -32,7 +33,7 @@ static char *remove_quoted_positions(char *str, int *indexes, int index_count, i
 	}
 	res[j] = '\0';
 	free(str);
-	return res;
+	return (res);
 }
 
 

@@ -6,13 +6,16 @@
 /*   By: elen_t13 <elen_t13@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/06 11:50:05 by etamazya          #+#    #+#             */
-/*   Updated: 2025/01/14 01:15:56 by elen_t13         ###   ########.fr       */
+/*   Updated: 2025/01/17 11:07:48 by elen_t13         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-// 4 functionsss
+// 4
+// ******************
+// ****** FULL ******
+// ******************
 
 // check_print
 char	*check_env_var(t_env *env_lst, const char *context)
@@ -56,4 +59,17 @@ void	clean_env_list(t_env **list)
 		temp = next;
 	}
 	*list = NULL;
+}
+
+int count_tokens(t_token *token_lst)
+{
+	int count;
+
+	count = 0;
+	while (token_lst && token_lst->type != 1)
+	{
+		count++;
+		token_lst = token_lst->next;
+	}
+	return (count);
 }

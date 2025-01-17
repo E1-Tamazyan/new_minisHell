@@ -6,14 +6,14 @@
 /*   By: elen_t13 <elen_t13@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/24 19:38:08 by algaboya          #+#    #+#             */
-/*   Updated: 2025/01/14 21:10:29 by elen_t13         ###   ########.fr       */
+/*   Updated: 2025/01/17 20:00:34 by elen_t13         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
 // only intiational functions
-// 5 functions already
+// 3 functions already
 
 // ***************************
 // ****** WARNING FULL *******
@@ -49,8 +49,6 @@ int	init_input(char *input, t_shell *general, char **env)
 			add_history(input);
 		general -> tok_lst = NULL;
 		init_tokens(input, general, 0);
-		create_print_cmd(general); // to print commands
-		//add check_heredocs
 		if (check_cmd(env, general)) // if 1 error
 			return (free(input), clean_list(&general->tok_lst), 1);
 		clean_list(&general->tok_lst);
@@ -58,46 +56,6 @@ int	init_input(char *input, t_shell *general, char **env)
 	}
 	return (printf("exit\n"), 0);
 } // echo ba"rev $USER$USER jan" vonc es
-
-t_env *init_env_nodes(char **env)
-{
-	t_env	*list_env;
-	t_env	*tmp;
-	t_env	*new_node;
-	int		i;
-
-	i = 0;
-	list_env = NULL;
-	tmp = NULL;
-	while (env[i] != NULL)
-	{
-		new_node = ft_lstnew(env[i], 1);
-		if (!new_node) 
-			return NULL;
-		if (list_env == NULL)
-		{
-			list_env = new_node;
-			tmp = list_env;
-		}
-		else
-			ft_lstadd_back(tmp, new_node);
-		i++;
-	}
-	return (list_env);
-}
-
-t_env *add_env_dol(t_shell *general, char *key, char *value)
-{
-	t_env	*new_node;
-	t_env	*tmp_env;
-
-	tmp_env = general->env_lst;
-	new_node = spec_lstnew(key, value, 0);
-	if (!new_node) 
-		return NULL;
-	ft_lstadd_back(general->env_lst, new_node);
-	return (tmp_env);
-}
 
 //the dollar sign should be oneend in tis function
 short	init_tokens(char *input, t_shell *general, int i)
@@ -133,180 +91,16 @@ short	init_tokens(char *input, t_shell *general, int i)
 	printf("****\n");
 	print_tokens(general->tok_lst);
 	printf("****\n");
-	// testtttt
-	// testtttt
 	general->tok_lst = remove_extra_quotes(general);
-	// testtttt
-	// testtttt
 	printf("__****\n");
 	print_tokens(general->tok_lst);
 	printf("__****\n");
-	return (0);
-}
-
-int init_op_token(char *input, int *i, t_token **token_list)
-{
-	if (!input || !token_list)
-		return -1;
-	// Check for '$' character
-	// deleted this part (it doesn;t make token with $$ it should just open them)
-	// if (input[*i] && input[*i] == '$')
-	// {
-	// 	if (input[*i + 1] && input[*i + 1] == '$')
-	// 		add_token_list(token_list, my_substr(input, *i, 2), 4);
-	// 	(*i)++;
-	// }
-	// Check for '|' character
-	if (input[*i] && input[*i] == '|')
-	{
-		if (!input[*i + 1] || (input[*i + 1] != '|' && !input[*i + 2])) // Handle syntax error
-			return (printf("minisHell: syntax error near unexpected token `newline'\n"), -1);
-
-		if (input[*i + 1] == '|')
-			return (printf("minisHell: syntax error near unexpected token `||'\n"), -1);
-
-		add_token_list(token_list, my_substr(input, *i, 1), 1);
-	}
-	else if (input[*i] && input[*i] == '>')
-	{
-		// Handle '>' and '>>' tokens
-		if (!input[*i + 1] || (input[*i + 1] != '<' && !input[*i + 2])) // Handle error
-			return (printf("minisHell: syntax error near unexpected token `newline'\n"), -1);
-		if (input[*i + 1] && input[*i + 1] == '>')
-		{
-			if (input[*i + 2] && (input[*i + 2] == '>' || input[*i + 2] == '<' || input[*i + 2] == '|'))
-				return (printf("minisHell: syntax error near unexpected token `%c%c'\n", input[*i + 2], input[*i + 3]), -1);
-			add_token_list(token_list, my_substr(input, *i, 2), 4);
-			(*i)++;
-		}
-		else if (input[*i + 1] && input[*i + 1] == '<')
-			return (printf("minisHell: syntax error near unexpected token `%c%c'\n", input[*i + 1], input[*i + 2]), -1); //Handle error for invalid combinations like '><' or '<|'
-		else
-			add_token_list(token_list, my_substr(input, *i, 1), 3);
-	}
-	else if (input[*i] && input[*i] == '<')
-	{
-		// Handle '<' and '<<' tokens
-		if (!input[*i + 1] || (input[*i + 1] != '>' && !input[*i + 2])) // Handle error
-			return (printf("minisHell: syntax error near unexpected token `newline'\n"), -1);
-		if (input[*i + 1] && input[*i + 1] == '<')
-		{
-			if (input[*i + 2] && (input[*i + 2] == '>' || input[*i + 2] == '<'))
-				return (printf("minisHell: syntax error near unexpected token `%c%c'\n", input[*i + 2], input[*i + 3]), -1);
-			add_token_list(token_list, my_substr(input, *i, 2), 5);
-			(*i)++;
-		}
-		else
-			add_token_list(token_list, my_substr(input, *i, 1), 2);
-	}
-	return (*i);
-}
-
-int	create_env(char **env, t_shell *general)
-{
-	char	**sorted;
-
-	general -> env_lst = init_env_nodes(env);
-	sorted = sort_env(env);
-	general -> env_lst = add_env_dol(general, "$", general->name);
-	// ($?) Expands to the exit status of the most recently executed foreground pipeline.
-	general -> env_lst = add_env_dol(general, "?", "0");
-	general -> env_lst = add_env_dol(general, "0", "minishell");
-	general -> sorted_env_lst = init_env_nodes(sorted);
+	printf("tokkkk = %s\n", general->tok_lst->context);
+	general->cmd_lst = create_cmd_lst(general->tok_lst);
+	print_cmd(general->cmd_lst);
 	return (0);
 }
 
 
-// *********************
-// ****** ARCHIVE ******
-// *********************
-
-// keep this in mind, mesto init_op_token
-
-// int check_dollar_sign(char *input, int *i, t_token **token_list)
-// {
-// 	if (input[*i] && input[*i] == '$')
-// 	{
-// 		if (input[*i + 1] && input[*i + 1] == '$')
-// 			add_token_list(token_list, my_substr(input, *i, 2), 4);
-// 		(*i)++;
-// 		return 1;
-// 	}
-// 	return 0;
-// }
-
-// int check_pipe_sign(char *input, int *i, t_token **token_list)
-// {
-// 	if (input[*i] && input[*i] == '|')
-// 	{
-// 		if (!input[*i + 1] || (input[*i + 1] != '|' && !input[*i + 2])) // Syntax error
-// 			return (printf("minisHell: syntax error near unexpected token `newline'\n"), -1);
-// 		if (input[*i + 1] == '|') // Handle `||` error
-// 			return (printf("minisHell: syntax error near unexpected token `||'\n"), -1);
-// 		add_token_list(token_list, my_substr(input, *i, 1), 1);
-// 		return 1;
-// 	}
-// 	return 0;
-// }
-
-// int check_greater_than_sign(char *input, int *i, t_token **token_list)
-// {
-// 	if (input[*i] && input[*i] == '>')
-// 	{
-// 		if (!input[*i + 1] || (input[*i + 1] != '<' && !input[*i + 2])) // Syntax error
-// 			return (printf("minisHell: syntax error near unexpected token `newline'\n"), -1);
-
-// 		if (input[*i + 1] && input[*i + 1] == '>')
-// 		{
-// 			if (input[*i + 2] && (input[*i + 2] == '>' || input[*i + 2] == '<' || input[*i + 2] == '|'))
-// 				return (printf("minisHell: syntax error near unexpected token `%c%c'\n", input[*i + 2], input[*i + 3]), -1);
-// 			add_token_list(token_list, my_substr(input, *i, 2), 4);
-// 			(*i)++;
-// 		}
-// 		else if (input[*i + 1] && input[*i + 1] == '<')
-// 		{
-// 			return (printf("minisHell: syntax error near unexpected token `%c%c'\n", input[*i + 1], input[*i + 2]), -1);
-// 		}
-// 		else
-// 			add_token_list(token_list, my_substr(input, *i, 1), 3);
-// 		return 1;
-// 	}
-// 	return 0;
-// }
-
-// int check_less_than_sign(char *input, int *i, t_token **token_list)
-// {
-// 	if (input[*i] && input[*i] == '<')
-// 	{
-// 		if (!input[*i + 1] || (input[*i + 1] != '>' && !input[*i + 2])) // Syntax error
-// 			return (printf("minisHell: syntax error near unexpected token `newline'\n"), -1);
-
-// 		if (input[*i + 1] && input[*i + 1] == '<')
-// 		{
-// 			if (input[*i + 2] && (input[*i + 2] == '>' || input[*i + 2] == '<'))
-// 				return (printf("minisHell: syntax error near unexpected token `%c%c'\n", input[*i + 2], input[*i + 3]), -1);
-// 			add_token_list(token_list, my_substr(input, *i, 2), 5);
-// 			(*i)++;
-// 		}
-// 		else
-// 			add_token_list(token_list, my_substr(input, *i, 1), 2);
-// 		return 1;
-// 	}
-// 	return 0;
-// }
-
-// int init_op_token(char *input, int *i, t_token **token_list)
-// {
-// 	if (!input || !token_list)
-// 		return -1; // Return error if input or token_list is invalid
-// 	// Check for specific tokens
-// 	if (check_dollar_sign(input, i, token_list) == -1)
-// 		return -1;
-// 	if (check_pipe_sign(input, i, token_list) == -1)
-// 		return -1;
-// 	if (check_greater_than_sign(input, i, token_list) == -1)
-// 		return -1;
-// 	if (check_less_than_sign(input, i, token_list) == -1)
-// 		return -1;
-// 	return (*i);
-// }
+//     #1 0x55dc39867010 in init_input /home/elen_t13/projects/new_minisHell/initialization.c:55
+    // #1 0x55dc3986c88f in expand_var /home/elen_t13/projects/new_minisHell/expand_dol.c:29

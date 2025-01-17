@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   unset.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: algaboya <algaboya@student.42yerevan.am    +#+  +:+       +#+        */
+/*   By: elen_t13 <elen_t13@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/28 19:32:50 by tumolabs          #+#    #+#             */
-/*   Updated: 2024/12/07 12:55:16 by algaboya         ###   ########.fr       */
+/*   Updated: 2025/01/17 11:03:50 by elen_t13         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,20 +71,4 @@ int	delete_exp_node(t_env **lst, t_env *nodik)
 		tmp = tmp->next;
 	}
 	return (SUCCESS_EXIT);
-}
-
-void	free_node(t_env *node)
-{
-	if (node->key)
-	{
-		free(node->key);
-		node->key = NULL;
-	}
-	if (node->value)
-	{
-		free(node->value);
-		node->value = NULL;
-	}
-	free(node);
-	node = NULL;
 }

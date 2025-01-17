@@ -6,7 +6,7 @@
 /*   By: elen_t13 <elen_t13@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/12 14:42:32 by etamazya          #+#    #+#             */
-/*   Updated: 2025/01/15 20:47:18 by elen_t13         ###   ########.fr       */
+/*   Updated: 2025/01/17 11:19:38 by elen_t13         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ typedef enum s_ttype
 typedef struct s_token
 {
 	char			*context;
-	t_ttype			type;
+	t_ttype			type; // remove this
 	struct s_token	*next;
 }					t_token;
 
@@ -166,7 +166,6 @@ char	*sgmnt_cpy(char *input, int *i);
 
 
 // Alla's
-void	create_print_cmd(t_shell *general);
 void	free_cmd_lst(t_cmd_lst *cmd_lst);
 // builtins
 // void	builin(t_token *token_list);
@@ -203,9 +202,14 @@ int		exit_builtin(t_shell *general);
 int		is_valid(char **args, int count);
 long	ft_atol(char *str);
 int		count_args(char **args);
+void	print_cmd(t_cmd_lst	*cmd_lst);
+// t_cmd_lst *create_cmds(t_token *token_lst);
+t_cmd_lst *create_cmd_lst(t_token *token_lst);
+int		count_tokens(t_token *token_lst);
 
 // archive
 char	*ft_substr(char const *s, unsigned int start, int len);
 void	check_malloc(void *str);
+
 
 #endif
