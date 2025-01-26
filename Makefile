@@ -41,7 +41,7 @@ SRCS_NAME =	main.c mini_utils.c \
 			error_handle.c expand_dol.c\
 			itoa.c remove_extra.c env.c \
 			tokens.c free_allocs.c \
-			redirections.c
+			redirections.c lib_utils_4.c
 
 OBJS = $(addprefix $(OBJS_DIR), $(OBJS_NAME))
 OBJS_NAME = $(SRCS_NAME:.c=.o)

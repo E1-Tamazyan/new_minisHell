@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   initialization.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: elen_t13 <elen_t13@student.42.fr>          +#+  +:+       +#+        */
+/*   By: etamazya <etamazya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/24 19:38:08 by algaboya          #+#    #+#             */
-/*   Updated: 2025/01/26 15:19:50 by elen_t13         ###   ########.fr       */
+/*   Updated: 2025/01/26 21:11:23 by etamazya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,24 @@ int	init_input(char *input, t_shell *general, char **env)
 	}
 	return (printf("exit\n"), 0);
 } // echo ba"rev $USER$USER jan" vonc es
+void	check_heredoc_syntax(t_token *head)
+{
+	while (head)
+	{
+		if(head->type == 5)
+		{
+			head = head->next;
+			if (head->type == 1 || head->type == 2 \
+			|| head->type == 3 || head->type == 4 \
+			|| head->type == 5)
+			{
+				printf("\nsyntax error unexpected token %s\n", head->context);
+				exit(2); // waiting for Alla's exit status
+			}
+		}
+		head = head->next;
+	}
+}
 void	check_heredoc_limit(t_shell *general)
 {
 	t_token	*head;
@@ -56,6 +74,7 @@ void	check_heredoc_limit(t_shell *general)
 
 	count = 0;
 	head = general->tok_lst;
+	
 	while (head)
 	{
 		if (head->type == 5)
@@ -64,10 +83,12 @@ void	check_heredoc_limit(t_shell *general)
 	}
 	if (count > 16)
 	{
-		printf("maximum here-document count exceeded\n"); // check later pleaseee. SIGSEGV
+		printf("minisHell: maximum here-document count exceeded\n"); // check later pleaseee. SIGSEGV
 		// waiting for Alla's cleaning function, general for this
-		exit(1);
+		exit(2);
 	}
+	head = general->tok_lst;
+	check_heredoc_syntax(head);
 }
 //the dollar sign should be oneend in tis function
 short	init_tokens_cmds(char *input, t_shell *general, int i)
@@ -101,11 +122,11 @@ short	init_tokens_cmds(char *input, t_shell *general, int i)
 			i++;
 	}
 	general->tok_lst = remove_extra_quotes(general);
-	// print_tokens(general->tok_lst); // print
 	// printf("hajordiv handle redir\n");
 	check_heredoc_limit(general);
 	// printf("hajordiv create cmd\n");
 	create_cmd_lst(general);
+	print_tokens(general->tok_lst); // print
 	print_cmd(general->curr_cmd);	// print
 	clean_list(&general->tok_lst);
 	return (0);
@@ -114,3 +135,22 @@ short	init_tokens_cmds(char *input, t_shell *general, int i)
 // double free
 //     #1 0x55dc39867010 in init_input /home/elen_t13/projects/new_minisHell/initialization.c:55
     // #1 0x55dc3986c88f in expand_var /home/elen_t13/projects/new_minisHell/expand_dol.c:29
+
+
+t_cmd_lst	*initialize_new_cmd()
+{
+	t_cmd_lst	*new_cmd;
+
+	new_cmd = (t_cmd_lst	*)malloc(sizeof(t_cmd_lst));
+	check_malloc(new_cmd);
+	new_cmd->cmd = NULL;
+	new_cmd->args = NULL;
+	new_cmd->next = NULL;
+	new_cmd->heredoc = NULL;
+	new_cmd->red_in = NULL;
+	new_cmd->red_out = NULL;
+	new_cmd->red_append = NULL;
+	new_cmd->std_in = -2;
+	new_cmd->std_out = -2;
+	return (new_cmd);
+}

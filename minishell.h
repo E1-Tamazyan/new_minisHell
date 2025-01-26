@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: elen_t13 <elen_t13@student.42.fr>          +#+  +:+       +#+        */
+/*   By: etamazya <etamazya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/12 14:42:32 by etamazya          #+#    #+#             */
-/*   Updated: 2025/01/26 14:28:37 by elen_t13         ###   ########.fr       */
+/*   Updated: 2025/01/26 21:22:39 by etamazya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@
 #include <sys/resource.h>	   // (struct rusage *rusage),
 #include <signal.h>			   //signal(),
 #include <limits.h>
+#include <fcntl.h>
 
 typedef enum s_ttype
 {
@@ -58,6 +59,10 @@ typedef struct			s_cmd_lst
 	char				*cmd;
 	char				**args;
 	struct s_cmd_lst	*next;
+	char				*heredoc;
+	char				*red_in;
+	char				*red_out;
+	char				*red_append;
 	int					std_in; // fd
 	int					std_out; // fd
 }						t_cmd_lst;
@@ -91,6 +96,18 @@ typedef struct	s_shell
 }			t_shell;
 
 // Elena's
+t_token		*ft_lst_delone(t_token **lst, t_token *node);
+void		list_add_back_cmd(t_cmd_lst **lst, t_cmd_lst *new);
+int			heredoc_init(t_shell *g, t_cmd_lst **cmd, t_token *tok);
+int			open_redir_2(t_shell *g);
+int			open_redir(t_shell *g);
+int			redirs_management(t_shell *g);
+void		fill_commands(t_shell *general);
+int			check_fill_commands(t_shell *g, int i, int j);
+void		check_heredoc_syntax(t_token *head);
+t_cmd_lst	*initialize_new_cmd();
+
+// just separated
 char	*get_pid(void);
 char	*ft_itoa(int n); 
 void	expand_var(char **input, t_shell *general, int *start, int *i);
@@ -100,12 +117,11 @@ int		check_inp_quotes(t_shell *general, char *input, int i, int start);
 t_env	*add_env_dol(t_shell *general, char *context, char *value);
 t_env	*spec_lstnew(char *context, char *value, int printable);
 void	check_heredoc_limit(t_shell *general);
+
 // ***_____main_functions_____***
 void	init_general(t_shell *general);
 int		init_input(char *input, t_shell *gen, char **env);
-// int		check_cmd(char **env, t_shell *general);
 t_env	*init_env_nodes(char **env);
-// int		manage_redirs(t_shell *g, t_token *tok);
 int	count_commands(t_token *token);
 
 
@@ -160,7 +176,6 @@ int		check_cut_quotes(t_shell *general, char **input,  int *i, int start);
 
 
 // **************
-// int		check_dollar_sign(char *input, int i, t_shell *general);
 int		open_dollar(t_shell *general, char *input, int *i, int start);
 char	*sgmnt_cpy(char *input, int *i);
 
@@ -168,10 +183,8 @@ char	*sgmnt_cpy(char *input, int *i);
 // Alla's
 void	free_cmd_lst(t_cmd_lst *cmd_lst);
 // builtins
-// void	builin(t_token *token_list);
 int		export_valid(t_token *token_list);
 int		pwd_builtin(t_shell *general);
-// int		echo_builtin(t_shell *general);
 int		cd_builtin(t_shell *general);
 int		export_builtin(t_shell *general, char *command);
 void	error_message(char *var);
@@ -203,7 +216,6 @@ int		is_valid(char **args, int count);
 long	ft_atol(char *str);
 int		count_args(char **args);
 void	print_cmd(t_cmd_lst	*cmd_lst);
-// t_cmd_lst *create_cmds(t_token *token_lst);
 int		create_cmd_lst(t_shell *g);
 int		count_tokens(t_token *token_lst);
 
