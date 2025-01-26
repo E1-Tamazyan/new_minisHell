@@ -6,7 +6,7 @@
 /*   By: elen_t13 <elen_t13@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/12 14:42:32 by etamazya          #+#    #+#             */
-/*   Updated: 2025/01/17 11:19:38 by elen_t13         ###   ########.fr       */
+/*   Updated: 2025/01/26 14:28:37 by elen_t13         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,18 +34,18 @@ typedef enum s_ttype
 	PIPE = 1,			// '|'
 	REDIR_IN = 2,		// '<'
 	REDIR_OUT = 3,	 	// '>'
-	REDIR_APPEND = 4,	// '>>'
+	APPEND_OUT = 4,		// '>>'
 	REDIR_HEREDOC = 5,	// '<<'
 }			t_ttype;
 
-typedef struct s_token
+typedef struct		s_token
 {
 	char			*context;
 	t_ttype			type; // remove this
 	struct s_token	*next;
 }					t_token;
 
-typedef struct s_env
+typedef struct		s_env
 {
 	char			*key;
 	char			*value;
@@ -53,22 +53,16 @@ typedef struct s_env
 	struct s_env	*next;
 }					t_env;
 
-typedef struct s_cmd_lst
+typedef struct			s_cmd_lst
 {
 	char				*cmd;
 	char				**args;
 	struct s_cmd_lst	*next;
-	// int		std_in; // fd
-	// int		std_out; // fd
-	//Gaya's vers.
-	// char	*pipe;
-	// char	*redir_in;
-	// char	*redir_out;
-	// char	*append_in;
-	// char	*append_out;
-}			t_cmd_lst;
+	int					std_in; // fd
+	int					std_out; // fd
+}						t_cmd_lst;
 
-typedef struct s_dollar
+typedef struct		s_dollar
 {
 	char			*u_key;
 	char			*value;
@@ -77,19 +71,23 @@ typedef struct s_dollar
 
 }	t_dollar;
 
-typedef struct s_shell
+typedef struct	s_shell
 {
 	t_token		*tok_lst;
 	t_env		*env_lst;
 	t_cmd_lst	*cmd_lst;
 	t_dollar	*doll_lst;
 	t_env		*sorted_env_lst;
-	int			shlvl;		     // check
+	t_token		*curr_tok;
+	t_cmd_lst	*curr_cmd;
 	int			sg_quote;
 	int			db_quote;
+	int			pipe_count;
+	int			tok_count;
 	char		*name;
-	// char		pwd; // check
-	// char		*oldpwd; // check
+	int			shlvl;		// check
+	char		pwd; // check
+	char		*oldpwd; // check
 }			t_shell;
 
 // Elena's
@@ -101,12 +99,14 @@ int		spec_len(char *input, int start);
 int		check_inp_quotes(t_shell *general, char *input, int i, int start);
 t_env	*add_env_dol(t_shell *general, char *context, char *value);
 t_env	*spec_lstnew(char *context, char *value, int printable);
-
+void	check_heredoc_limit(t_shell *general);
 // ***_____main_functions_____***
 void	init_general(t_shell *general);
 int		init_input(char *input, t_shell *gen, char **env);
-int		check_cmd(char **env, t_shell *general);
+// int		check_cmd(char **env, t_shell *general);
 t_env	*init_env_nodes(char **env);
+// int		manage_redirs(t_shell *g, t_token *tok);
+int	count_commands(t_token *token);
 
 
 // ***____env_sorting_____***
@@ -146,7 +146,7 @@ int		ft_isalnum(int arg);
 t_token *remove_extra_quotes(t_shell *general);
 
 // ***_____tokenization_____***
-short	init_tokens(char *input, t_shell *general, int i);
+short	init_tokens_cmds(char *input, t_shell *general, int i);
 int		init_op_token(char *input, int *i, t_token **token_list);
 void	add_token_list(t_token **list, char *content, t_ttype type);
 t_token	*create_token(char *content, t_ttype type);
@@ -171,7 +171,7 @@ void	free_cmd_lst(t_cmd_lst *cmd_lst);
 // void	builin(t_token *token_list);
 int		export_valid(t_token *token_list);
 int		pwd_builtin(t_shell *general);
-int		echo_builtin(t_shell *general);
+// int		echo_builtin(t_shell *general);
 int		cd_builtin(t_shell *general);
 int		export_builtin(t_shell *general, char *command);
 void	error_message(char *var);
@@ -204,7 +204,7 @@ long	ft_atol(char *str);
 int		count_args(char **args);
 void	print_cmd(t_cmd_lst	*cmd_lst);
 // t_cmd_lst *create_cmds(t_token *token_lst);
-t_cmd_lst *create_cmd_lst(t_token *token_lst);
+int		create_cmd_lst(t_shell *g);
 int		count_tokens(t_token *token_lst);
 
 // archive

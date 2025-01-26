@@ -6,7 +6,7 @@
 /*   By: elen_t13 <elen_t13@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/16 21:46:57 by elen_t13          #+#    #+#             */
-/*   Updated: 2025/01/16 21:47:31 by elen_t13         ###   ########.fr       */
+/*   Updated: 2025/01/18 18:49:20 by elen_t13         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,23 +16,13 @@ int init_op_token(char *input, int *i, t_token **token_list)
 {
 	if (!input || !token_list)
 		return -1;
-	// Check for '$' character
-	// deleted this part (it doesn;t make token with $$ it should just open them)
-	// if (input[*i] && input[*i] == '$')
-	// {
-	// 	if (input[*i + 1] && input[*i + 1] == '$')
-	// 		add_token_list(token_list, my_substr(input, *i, 2), 4);
-	// 	(*i)++;
-	// }
 	// Check for '|' character
 	if (input[*i] && input[*i] == '|')
 	{
 		if (!input[*i + 1] || (input[*i + 1] != '|' && !input[*i + 2])) // Handle syntax error
 			return (printf("minisHell: syntax error near unexpected token `newline'\n"), -1);
-
 		if (input[*i + 1] == '|')
 			return (printf("minisHell: syntax error near unexpected token `||'\n"), -1);
-
 		add_token_list(token_list, my_substr(input, *i, 1), 1);
 	}
 	else if (input[*i] && input[*i] == '>')

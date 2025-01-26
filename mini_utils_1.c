@@ -6,7 +6,7 @@
 /*   By: elen_t13 <elen_t13@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/06 11:50:05 by etamazya          #+#    #+#             */
-/*   Updated: 2025/01/17 11:07:48 by elen_t13         ###   ########.fr       */
+/*   Updated: 2025/01/18 20:29:22 by elen_t13         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,7 @@ void	clean_env_list(t_env **list)
 	*list = NULL;
 }
 
+// do I need this?
 int count_tokens(t_token *token_lst)
 {
 	int count;

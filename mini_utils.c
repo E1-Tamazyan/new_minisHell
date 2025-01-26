@@ -92,11 +92,13 @@ void	print_tokens(t_token *head)
 	t_token *current; 
 
 	current = head;
+	printf("****\n");
 	while (current != NULL)
 	{
 		printf("context: %s\n type: %d\n", current->context, current->type);
 		current = current->next;
 	}
+	printf("****\n");
 } 
 
 int	print_export(char *new)
@@ -104,7 +106,6 @@ int	print_export(char *new)
 	int		j;
 
 	j = 0;
-	// printf("sxtorik\n");
 	printf("declare -x ");
 	while (new[j++] != '=')
 	{
@@ -113,13 +114,7 @@ int	print_export(char *new)
 		j++;
 	}
 	if (new[j] == '\0')
-	{
-		// if (k == 0)
-			printf("\n");
-		// else
-		// 	printf("=\n");
-		return (1);
-	}
+		return (write(1, "\n", 1), 1);
 	printf("=\"");
 	j--;
 	while (new[j++] != '\0')

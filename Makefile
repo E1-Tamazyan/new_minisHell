@@ -40,7 +40,8 @@ SRCS_NAME =	main.c mini_utils.c \
 			exit.c exit_utils.c lib_utils_3.c \
 			error_handle.c expand_dol.c\
 			itoa.c remove_extra.c env.c \
-			tokens.c free_allocs.c
+			tokens.c free_allocs.c \
+			redirections.c
 
 OBJS = $(addprefix $(OBJS_DIR), $(OBJS_NAME))
 OBJS_NAME = $(SRCS_NAME:.c=.o)
@@ -71,6 +72,6 @@ fclean: clean
 	@rm -rf $(OBJS_DIR)
 	@make -s clean -C $(LIBS_DIR)/readline-8.2 
 
-re: fclean all
+re: clean all
 
 .PHONY: all clean fclean re

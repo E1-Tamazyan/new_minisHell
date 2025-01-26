@@ -6,7 +6,7 @@
 /*   By: elen_t13 <elen_t13@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/17 13:18:10 by elen_t13          #+#    #+#             */
-/*   Updated: 2025/01/13 22:07:30 by elen_t13         ###   ########.fr       */
+/*   Updated: 2025/01/23 14:51:28 by elen_t13         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,33 +16,6 @@
 // *** CAUTION *** FULL ***
 // ************************
 // 4 function
-
-int check_cmd(char **env, t_shell *general)
-{
-	t_token *tmp;
-
-	tmp = general->tok_lst;
-	(void)env;
-	while (tmp)
-	{
-		if (ft_strcmp((const char *)tmp->context, "env") == 0)
-			return (export_builtin(general, tmp->context), 0);
-		else if (ft_strcmp((const char *)tmp->context, "export") == 0)
-			return (export_builtin(general, tmp->context), 0); // 1 error
-		else if (ft_strcmp((const char *)tmp->context, "pwd") == 0)
-			return (pwd_builtin(general), 0);
-		else if (ft_strcmp((const char *)tmp->context, "cd") == 0)
-			return (cd_builtin(general), 0);
-		else if (ft_strcmp((const char *)tmp->context, "unset") == 0)
-			return (unset_builtin(general), 0);
-		// else if (ft_strcmp((const char *)tmp->context, "echo") == 0)
-		// 	return (echo_builtin(general), 0);
-		else if (ft_strcmp((const char *)tmp->context, "exit") == 0)
-			return (exit_builtin(general), 0);
-		tmp = tmp->next;
-	}
-	return (0);
-}
 
 char* sgmnt_cpy(char* input, int* i)
 {
@@ -101,11 +74,11 @@ char *get_pid(void)
 
 int	open_dollar(t_shell *general, char *input, int *i, int start)
 {
+	general->doll_lst = (t_dollar *)malloc(sizeof(t_dollar)); // changed this line here
 	(void)start;
 	if (input[*i] && input[*i] == '$')
 	{
 		general->doll_lst->u_key = sgmnt_cpy(input, i);
-		printf("*************\n");
 		if (general->doll_lst->u_key == NULL)
 			general->doll_lst->value = NULL;
 		else if (!general->doll_lst->u_key[0])

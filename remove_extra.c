@@ -76,7 +76,7 @@ t_token *remove_extra_quotes(t_shell *general)
 	while (general->tok_lst != NULL)
 	{
 		general->tok_lst->context = remove_outer_quotes(general, general->tok_lst->context, 0, 0);
-		printf("Token context after removing quotes: -->%s<--\n", general->tok_lst->context);
+		// printf("Token context after removing quotes: -->%s<--\n", general->tok_lst->context);
 		general->tok_lst = general->tok_lst->next;
 	}
 	general->tok_lst = head;

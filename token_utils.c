@@ -6,7 +6,7 @@
 /*   By: elen_t13 <elen_t13@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/06 16:18:12 by etamazya          #+#    #+#             */
-/*   Updated: 2024/12/22 17:48:40 by elen_t13         ###   ########.fr       */
+/*   Updated: 2025/01/18 20:15:41 by elen_t13         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,7 +82,6 @@ t_token	*create_token(char *value, t_ttype type)
 	new->next = NULL;
 	return (new);
 }
-
 int	check_sgl_quote(char *input, int *i)
 {
 	if (input[*i] == '\'')

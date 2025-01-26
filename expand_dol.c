@@ -6,7 +6,7 @@
 /*   By: elen_t13 <elen_t13@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/22 17:13:47 by elen_t13          #+#    #+#             */
-/*   Updated: 2025/01/13 22:35:40 by elen_t13         ###   ########.fr       */
+/*   Updated: 2025/01/23 14:53:16 by elen_t13         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ char *countcpy_len(char *input, int start, int *l, t_shell *general)
 	if (input[start] && input[start] == '$' && (input[start + 1] && (input[++start] == '$' || input[start] == '?' || input[start] == '0')))
 		len++;
 	*l = len + ft_strlen(general->doll_lst->u_key);
-	val_len = ft_strlen(general->doll_lst->value);	
+	val_len = ft_strlen(general->doll_lst->value);
 	copy = (char *)malloc(sizeof(char) * (val_len + len + spec_len(input, *l) + 1));
 	check_malloc(copy);
 	ft_strcpy(copy, input, i, len);
@@ -79,6 +79,7 @@ int	check_cut_quotes(t_shell *general, char **input, int *i, int start)
 		else if (input[0][*i] == '$' && !general->sg_quote)
 		{
 			// segfault $? $$ $0 again, new one, dunno why look later
+			// echo ba"rev $USER' $USERecho ba"rev $USER' $USER 'jan"$USER"
 			open_dollar(general, input[0], i, start);
 			expand_var(input, general, &start, i);
 		}
@@ -90,7 +91,6 @@ int	check_cut_quotes(t_shell *general, char **input, int *i, int start)
 	add_token_list(&general->tok_lst, my_substr(*input, start, (*i - start)), 0);
 	return (0);
 } // echo ba"rev $USER jan" vonc es
-
 
 // check leaks
 // valgrind --leak-check=full ./your_program

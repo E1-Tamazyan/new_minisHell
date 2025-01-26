@@ -6,25 +6,20 @@
 /*   By: elen_t13 <elen_t13@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/24 19:38:08 by algaboya          #+#    #+#             */
-/*   Updated: 2025/01/17 20:00:34 by elen_t13         ###   ########.fr       */
+/*   Updated: 2025/01/26 15:19:50 by elen_t13         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-// only intiational functions
 // 3 functions already
-
-// ***************************
-// ****** WARNING FULL *******
-// ***************************
 
 void init_general(t_shell *general)
 {
 	general->tok_lst = NULL;
 	general->env_lst = NULL;
 	general->cmd_lst = NULL;
-	general->doll_lst = (t_dollar *)malloc(sizeof(t_dollar)); // check this later
+	general->doll_lst = NULL; // check this later
 	general->sorted_env_lst = NULL;
 	general->shlvl = -1;
 	general->sg_quote = 0; //no quote
@@ -48,17 +43,34 @@ int	init_input(char *input, t_shell *general, char **env)
 		if (input[0] != '\0')
 			add_history(input);
 		general -> tok_lst = NULL;
-		init_tokens(input, general, 0);
-		if (check_cmd(env, general)) // if 1 error
-			return (free(input), clean_list(&general->tok_lst), 1);
+		init_tokens_cmds(input, general, 0);
 		clean_list(&general->tok_lst);
 		// free(input);
 	}
 	return (printf("exit\n"), 0);
 } // echo ba"rev $USER$USER jan" vonc es
+void	check_heredoc_limit(t_shell *general)
+{
+	t_token	*head;
+	int	count;
 
+	count = 0;
+	head = general->tok_lst;
+	while (head)
+	{
+		if (head->type == 5)
+			count++;
+		head = head->next;
+	}
+	if (count > 16)
+	{
+		printf("maximum here-document count exceeded\n"); // check later pleaseee. SIGSEGV
+		// waiting for Alla's cleaning function, general for this
+		exit(1);
+	}
+}
 //the dollar sign should be oneend in tis function
-short	init_tokens(char *input, t_shell *general, int i)
+short	init_tokens_cmds(char *input, t_shell *general, int i)
 {
 	int	start;
 	int flag;
@@ -88,19 +100,17 @@ short	init_tokens(char *input, t_shell *general, int i)
 		if (input[i])
 			i++;
 	}
-	printf("****\n");
-	print_tokens(general->tok_lst);
-	printf("****\n");
 	general->tok_lst = remove_extra_quotes(general);
-	printf("__****\n");
-	print_tokens(general->tok_lst);
-	printf("__****\n");
-	printf("tokkkk = %s\n", general->tok_lst->context);
-	general->cmd_lst = create_cmd_lst(general->tok_lst);
-	print_cmd(general->cmd_lst);
+	// print_tokens(general->tok_lst); // print
+	// printf("hajordiv handle redir\n");
+	check_heredoc_limit(general);
+	// printf("hajordiv create cmd\n");
+	create_cmd_lst(general);
+	print_cmd(general->curr_cmd);	// print
+	clean_list(&general->tok_lst);
 	return (0);
 }
 
-
+// double free
 //     #1 0x55dc39867010 in init_input /home/elen_t13/projects/new_minisHell/initialization.c:55
     // #1 0x55dc3986c88f in expand_var /home/elen_t13/projects/new_minisHell/expand_dol.c:29
