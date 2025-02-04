@@ -6,7 +6,7 @@
 /*   By: algaboya <algaboya@student.42yerevan.am    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/21 18:24:16 by etamazya          #+#    #+#             */
-/*   Updated: 2024/12/09 20:06:29 by algaboya         ###   ########.fr       */
+/*   Updated: 2025/02/02 03:18:45 by algaboya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,8 +76,7 @@ char	**sort_env(char **env)
 		{
 			while (j > 0)
 				free(env_clone[--j]);
-			free(env_clone);
-			return (NULL);
+			return (free(env_clone), NULL);
 		}
 		j++;
 	}
@@ -86,7 +85,8 @@ char	**sort_env(char **env)
 	return (env_clone);
 }
 
-// if will be need for the previous (sort_env) function to make clone for env param
+// if will be need for the previous (sort_env) 
+// function to make clone for env param
 // char **clone_env(char **env)
 // {
 //     int i;

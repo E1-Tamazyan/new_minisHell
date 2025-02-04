@@ -3,19 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   lib_utils_1.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: elen_t13 <elen_t13@student.42.fr>          +#+  +:+       +#+        */
+/*   By: etamazya <el.tamazyan03@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/06 16:11:43 by etamazya          #+#    #+#             */
-/*   Updated: 2025/01/17 11:06:28 by elen_t13         ###   ########.fr       */
+/*   Updated: 2025/02/03 20:41:56 by etamazya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-// 5
-// ******************
-// ****** FULL ******
-// ******************
 
 int	ft_strlen(const char *str)
 {
@@ -25,10 +20,7 @@ int	ft_strlen(const char *str)
 	if (!str)
 		return (-1);
 	while (str[i])
-	{
-		// printf("str[i] = %c\n", str[i]);	
 		i++;
-	}
 	return (i);
 }
 
@@ -37,14 +29,11 @@ char	*my_substr(const char *s, unsigned int start, int len)
 	int		i;
 	char	*ptr;
 
-	if (!s)
-		return (NULL);
 	if (len > ft_strlen(s))
 		len = ft_strlen(s);
 	ptr = malloc(sizeof(char) * (len + 1));
-	check_malloc(ptr);
-	// if (!ptr)
-	// 	return (NULL);
+	if (!ptr)
+		return (NULL);
 	i = 0;
 	while (len)
 	{
@@ -85,7 +74,8 @@ char	*ft_substr(char const *s, unsigned int start, int len)
 		sub = (char *)malloc(count);
 	else
 		sub = (char *)malloc(len + 1);
-	check_malloc(sub);
+	if (!sub)
+		return (NULL);
 	i = 0;
 	while (i < (unsigned int)len && s[start] != '\0')
 	{
@@ -104,13 +94,13 @@ char	*ft_strdup(const char *s1)
 
 	i = 0;
 	s1_dup = (char *)malloc(ft_strlen(s1) + 1);
-	check_malloc(s1_dup);
+	if (!s1_dup)
+		return (NULL);
 	while (s1[i] != '\0')
 	{
 		s1_dup[i] = s1[i];
 		i++;
 	}
 	s1_dup[i] = '\0';
-	// printf("ft_strdup, s1_dup = %s, s1[0] = %c\n", s1_dup, s1_dup[0]);
 	return ((char *)s1_dup);
 }

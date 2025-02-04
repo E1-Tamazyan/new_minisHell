@@ -3,146 +3,113 @@
 /*                                                        :::      ::::::::   */
 /*   initialization.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: etamazya <etamazya@student.42.fr>          +#+  +:+       +#+        */
+/*   By: etamazya <el.tamazyan03@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/24 19:38:08 by algaboya          #+#    #+#             */
-/*   Updated: 2025/01/26 21:11:23 by etamazya         ###   ########.fr       */
+/*   Updated: 2025/02/04 14:22:51 by etamazya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-// 3 functions already
-
-void init_general(t_shell *general)
+void	init_general(t_shell *general)
 {
 	general->tok_lst = NULL;
 	general->env_lst = NULL;
 	general->cmd_lst = NULL;
-	general->doll_lst = NULL; // check this later
+	general->doll_lst = (t_dollar *)malloc(sizeof(t_dollar));
 	general->sorted_env_lst = NULL;
-	general->shlvl = -1;
-	general->sg_quote = 0; //no quote
-	general->db_quote = 0; // no quote
+	general->sg_quote = 0;
+	general->db_quote = 0;
+	general->pipe_index = 0;
+	general->pipe_count = 0;
+	general -> original_stdin = dup(STDIN_FILENO);
+	general -> original_stdout = dup(STDOUT_FILENO);
 }
 
-int	init_input(char *input, t_shell *general, char **env)
+int	init_input(char *input, t_shell *general)
 {
-	input = "";
-	general->name = get_pid();
-	init_general(general); // give every value of struct to it's corresponding one
-	create_env(env, general);
-	while (input)
+	static int	index;
+
+	while (1)
 	{
-		input = readline("\033[38;5;51m\033[48;5;16mminisHell:\033[0m "); //neon
-		// input = readline("\033[38;5;175m\033[48;5;153m minisHell:\033[0m "); // Pastel Theme
-		// input = readline("\033[38;5;129m\033[48;5;233m minisShell:\033[38;5;81m\033[0m "); //bright purples and blues with a dark background 
-		// input = readline("\033[38;5;51m\033[48;5;16m minisShell:\033[0m "); // cyan neon
-		if (!input)
-			exit (1); // change later with exit status
-		if (input[0] != '\0')
-			add_history(input);
-		general -> tok_lst = NULL;
-		init_tokens_cmds(input, general, 0);
-		clean_list(&general->tok_lst);
-		// free(input);
-	}
-	return (printf("exit\n"), 0);
-} // echo ba"rev $USER$USER jan" vonc es
-void	check_heredoc_syntax(t_token *head)
-{
-	while (head)
-	{
-		if(head->type == 5)
+		index = 0;
+		init_signal(1);
+		input = readline("\033[38;5;51m\033[48;5;16mminisHell:\033[0m ");
+		if (input && input[0] != '\0')
 		{
-			head = head->next;
-			if (head->type == 1 || head->type == 2 \
-			|| head->type == 3 || head->type == 4 \
-			|| head->type == 5)
+			add_history(input);
+			if (init_tokens_cmds(input, general, 0, 0) == 0)
 			{
-				printf("\nsyntax error unexpected token %s\n", head->context);
-				exit(2); // waiting for Alla's exit status
+				execution(general, index);
+				cmd_free(general);
+				close_pipes(general->fd, general->pipe_count);
 			}
-		}
-		head = head->next;
+			free(input);
+		} 
+		else if (input && input[0] == '\0')
+			free(input);
+		else if (!input)
+			clean_gen_exit(general, get_exit_status(), 0, 1);
+		free_fd(general);
+		// init_general(general); // check this later
 	}
+	return (free(input), get_exit_status());
 }
-void	check_heredoc_limit(t_shell *general)
-{
-	t_token	*head;
-	int	count;
 
-	count = 0;
-	head = general->tok_lst;
-	
-	while (head)
-	{
-		if (head->type == 5)
-			count++;
-		head = head->next;
-	}
-	if (count > 16)
-	{
-		printf("minisHell: maximum here-document count exceeded\n"); // check later pleaseee. SIGSEGV
-		// waiting for Alla's cleaning function, general for this
-		exit(2);
-	}
-	head = general->tok_lst;
-	check_heredoc_syntax(head);
-}
-//the dollar sign should be oneend in tis function
-short	init_tokens_cmds(char *input, t_shell *general, int i)
+void	print_tokens(t_token *head)
 {
-	int	start;
-	int flag;
+	t_token *current; 
 
-	flag = 0;
-	while ((input[i] >= 9 && input[i] <= 13) || input[i] == 32)
-		i++;
+	current = head;
+	while (current != NULL)
+	{
+		printf("context: %s\n type: %d\n", current->context, current->type);
+		current = current->next;
+	}
+} 
+
+int	init_tokens_cmds(char *input, t_shell *g, int i, int flag)
+{
+	int	st;
+
+	st = 0;
+	skip_whitespace(input, &i);
 	while (flag >= 0 && input[i] != '\0')
 	{
-		if (flag >= 0 && input[i] && (input[i] == '|' || input[i] == '>'
-			|| input[i] == '<' || input[i] == ' '))
-				flag = init_op_token(input, &i, &general->tok_lst);
+		if (st == 0)
+			if (check_inp_quotes(g, *input, i, st) == -1)
+				return (-1);
+		if (flag >= 0 && input[i] && (is_not_symbol(input[i], 1) == 1))
+			flag = init_op_token(input, &i, &g->tok_lst);
 		else
 		{
-			start = i;
-			while (flag >= 0 && input[i] && input[i] != '|' && input[i] != '>' && input[i] != '<'
-				&& input[i] != ' ' && input[i] != '$' && input[i] != 34 && input[i] != 39)
+			st = i;				
+			while (flag >= 0 && input[i] && (is_not_symbol(input[i], 0) == 1))
 				i++;
 			if (input[i] && flag >= 0)
-				flag = check_cut_quotes(general, &input, &i, start); // and added dollar sign here check_cut_quotes
-			else if (i > start)
-				add_token_list(&general->tok_lst, my_substr((const char *)input, start, i - start), 0);
+				flag = check_cut_quotes(g, &input, &i, st);
+			else if (i > st)
+				add_token_list(&g->tok_lst, my_substr(input, st, i - st), 0);
+
 			i--;
 		}
-		if(flag < 0)
-			return (clean_list(&general->tok_lst), -1);
+		if (flag < 0)
+			return (clean_list(&g->tok_lst), -1);
 		if (input[i])
 			i++;
+		if (input[i] && flag != -1)
+			++i;
 	}
-	general->tok_lst = remove_extra_quotes(general);
-	// printf("hajordiv handle redir\n");
-	check_heredoc_limit(general);
-	// printf("hajordiv create cmd\n");
-	create_cmd_lst(general);
-	print_tokens(general->tok_lst); // print
-	print_cmd(general->curr_cmd);	// print
-	clean_list(&general->tok_lst);
+	cmd_stuff(g);
 	return (0);
 }
 
-// double free
-//     #1 0x55dc39867010 in init_input /home/elen_t13/projects/new_minisHell/initialization.c:55
-    // #1 0x55dc3986c88f in expand_var /home/elen_t13/projects/new_minisHell/expand_dol.c:29
-
-
-t_cmd_lst	*initialize_new_cmd()
+t_cmd_lst	*initialize_new_cmd(void)
 {
 	t_cmd_lst	*new_cmd;
 
-	new_cmd = (t_cmd_lst	*)malloc(sizeof(t_cmd_lst));
-	check_malloc(new_cmd);
+	new_cmd = (t_cmd_lst *)malloc(sizeof(t_cmd_lst));
 	new_cmd->cmd = NULL;
 	new_cmd->args = NULL;
 	new_cmd->next = NULL;

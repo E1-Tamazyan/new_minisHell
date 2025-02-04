@@ -32,7 +32,7 @@ datarootdir = ${prefix}/share
 srcdir = .
 VPATH = ..
 topdir = ..
-BUILD_DIR = /Users/etamazya/Desktop/new_minisHell/libraries/readline-8.2
+BUILD_DIR = /Users/etamazya/Desktop/joined_minishell/libraries/readline-8.2
 
 INSTALL = /usr/bin/install -c
 INSTALL_PROGRAM = ${INSTALL}
@@ -52,7 +52,7 @@ SHELL = /bin/sh
 host_os = darwin18.7.0
 host_vendor = apple
 
-prefix = /Users/etamazya/Desktop/new_minisHell/libraries/readline
+prefix = /Users/etamazya/Desktop/joined_minishell/libraries/readline
 exec_prefix = ${prefix}
 includedir = ${prefix}/include
 bindir = ${exec_prefix}/bin
@@ -63,10 +63,10 @@ localedir = ${datarootdir}/locale
 # Support an alternate destination root directory for package building
 DESTDIR =
 
-CFLAGS = -g -O2 -Wno-parentheses -Wno-format-security -Wno-tautological-constant-out-of-range-compare
+CFLAGS = -g 
 LOCAL_CFLAGS =  -DRL_LIBRARY_VERSION='"$(RL_LIBRARY_VERSION)"' -DBRACKETED_PASTE_DEFAULT=1
 CPPFLAGS = 
-LDFLAGS =   -g -O2 -Wno-parentheses -Wno-format-security -Wno-tautological-constant-out-of-range-compare
+LDFLAGS =   -g 
 
 DEFS = -DHAVE_CONFIG_H 
 LOCAL_DEFS = 

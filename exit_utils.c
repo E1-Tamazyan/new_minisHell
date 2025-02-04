@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exit_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: algaboya <algaboya@student.42yerevan.am    +#+  +:+       +#+        */
+/*   By: etamazya <etamazya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/08 21:27:06 by algaboya          #+#    #+#             */
-/*   Updated: 2024/12/09 19:56:54 by algaboya         ###   ########.fr       */
+/*   Updated: 2025/02/02 19:13:49 by etamazya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,15 +48,13 @@ int	is_valid(char **args, int count)
 {
 	if (!args)
 		return (FAILURE_EXIT);
-	if (count > 1 && is_num(args[1]) == FAILURE_EXIT)
+	if (count > 1 && (is_num(args[1]) == FAILURE_EXIT
+			|| ft_strlen(args[1]) > 20))
 	{
-		write(1, "$\n", 2);
-		printf("minishell: exit: %s: numeric argument required\n", args[1]);
-		return (FAILURE_EXIT);
-	}
-	if (count > 1 && ft_strlen(args[1]) > 20)
-	{
-		printf("minishell: exit: %s: numeric argument required\n", args[1]);
+		ft_putstr_fd("minisHell: exit: ", 2);
+		ft_putstr_fd(args[1], 2);
+		ft_putstr_fd(": numeric argument required\n", 2);
+		set_exit_status(255);
 		return (FAILURE_EXIT);
 	}
 	return (SUCCESS_EXIT);

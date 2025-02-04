@@ -31,7 +31,7 @@ PACKAGE_TARNAME = readline
 srcdir = .
 
 top_srcdir = .
-BUILD_DIR = /Users/etamazya/Desktop/new_minisHell/libraries/readline-8.2
+BUILD_DIR = /Users/etamazya/Desktop/joined_minishell/libraries/readline-8.2
 
 INSTALL = /usr/bin/install -c
 INSTALL_PROGRAM = ${INSTALL}
@@ -48,7 +48,7 @@ MV = mv
 
 SHELL = /bin/sh
 
-prefix = /Users/etamazya/Desktop/new_minisHell/libraries/readline
+prefix = /Users/etamazya/Desktop/joined_minishell/libraries/readline
 exec_prefix = ${prefix}
 
 datarootdir = ${prefix}/share
@@ -74,7 +74,7 @@ DESTDIR =
 ETAGS = etags
 CTAGS = ctags -w
 
-CFLAGS = -g -O2 -Wno-parentheses -Wno-format-security -Wno-tautological-constant-out-of-range-compare
+CFLAGS = -g 
 LOCAL_CFLAGS =  -DRL_LIBRARY_VERSION='"$(RL_LIBRARY_VERSION)"' -DBRACKETED_PASTE_DEFAULT=1
 CPPFLAGS = 
 
@@ -93,7 +93,7 @@ CCFLAGS = $(XCCFLAGS) $(LOCAL_CFLAGS) $(CFLAGS)
 GCC_LINT_FLAGS = -ansi -Wall -Wshadow -Wpointer-arith -Wcast-qual \
 		 -Wwrite-strings -Wstrict-prototypes \
 		 -Wmissing-prototypes -Wno-implicit -pedantic
-GCC_LINT_CFLAGS = $(XCCFLAGS) $(GCC_LINT_FLAGS) -g -O2 -Wno-parentheses -Wno-format-security -Wno-tautological-constant-out-of-range-compare 
+GCC_LINT_CFLAGS = $(XCCFLAGS) $(GCC_LINT_FLAGS) -g  
 
 ASAN_XCFLAGS = -fsanitize=address -fno-omit-frame-pointer
 ASAN_XLDFLAGS = -fsanitize=address

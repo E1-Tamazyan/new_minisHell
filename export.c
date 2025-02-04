@@ -3,60 +3,69 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: elen_t13 <elen_t13@student.42.fr>          +#+  +:+       +#+        */
+/*   By: algaboya <algaboya@student.42yerevan.am    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/10 16:35:06 by algaboya          #+#    #+#             */
-/*   Updated: 2024/12/29 17:14:39 by elen_t13         ###   ########.fr       */
+/*   Updated: 2025/02/02 05:07:31 by algaboya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	export_builtin(t_shell *general, char *command)
+static int	process_export_args(t_shell *general, t_cmd_lst *tmp_cmd_lst)
+{
+	int	i;
+	int	j;
+
+	i = 1;
+	j = 1;
+	while (tmp_cmd_lst->args[j])
+	{
+		if (export_valid(tmp_cmd_lst->args[j]) == FAILURE_EXIT)
+		{
+			if (!tmp_cmd_lst->args[j + 1])
+				return (export_error(FAILURE_EXIT, "export",
+						tmp_cmd_lst->args[j]), FAILURE_EXIT);
+			else
+				j++;
+		}
+		if (ft_strchr(tmp_cmd_lst->args[j], '=') >= 0)
+		{
+			i = ft_strchr(tmp_cmd_lst->args[j], '=');
+			add_env_lst_var(tmp_cmd_lst->args[j], general, i);
+		}
+		else
+			add_env_no_var(tmp_cmd_lst->args[j], general);
+		j++;
+	}
+	return (EXIT_SUCCESS);
+}
+
+int	export_builtin(t_shell *general, t_cmd_lst *tmp_cmd_lst)
+{
+	if (ft_strcmp(tmp_cmd_lst->cmd, "env") == 0 && !tmp_cmd_lst->args[1])
+		return (print_env(general->sorted_env_lst, 0), EXIT_SUCCESS);
+	if (ft_strcmp(tmp_cmd_lst->cmd, "export") == 0 && !tmp_cmd_lst->args[1])
+		return (print_env(general->env_lst, 1), EXIT_SUCCESS);
+	return (process_export_args(general, tmp_cmd_lst));
+}
+
+int	export_valid(char *arg)
 {
 	int	i;
 
-	if (ft_strcmp(command, "env") == 0 && !general->tok_lst->next)
+	if (!arg)
+		return (EXIT_FAILURE);
+	if (arg[0] && !ft_isalpha(arg[0]) && arg[0] != '_')
+		return (EXIT_FAILURE);
+	i = 1;
+	while (arg[i] && arg[i] != '=')
 	{
-		// printf("sxtor\n");
-		return (print_env(general->sorted_env_lst, 0), 0);
+		if (arg[i] != '_' && !ft_isalnum(arg[i]))
+			return (EXIT_FAILURE);
+		i++;
 	}
-	if (ft_strcmp(command, "export") == 0 && !general->tok_lst->next)
-	{
-		// printf("sxtor\n");
-		return (print_env(general->env_lst, 1), 0);
-	}
-	if (export_valid(general->tok_lst->next) == FAILURE_EXIT)
-	{
-		printf("val err\n");
-		return (FAILURE_EXIT);
-	}
-	else if (ft_strchr(general->tok_lst->next->context, '=') >= 0)
-	{
-		i = ft_strchr(general->tok_lst->next->context, '=');
-		add_env_lst_var(*general->tok_lst->next, general, i);
-	}
-	else
-		add_env_no_var(general->tok_lst->next->context, general);
-	return (SUCCESS_EXIT);
-}
-
-int	export_valid(t_token *token_list)
-{
-	int	exit_status;
-
-	exit_status = 0;
-	while (token_list)
-	{
-		if (!ft_isalpha(token_list->context[0])
-			|| ft_isdigit(token_list->context[0]))
-		{
-			error_message(token_list->context);
-			exit_status = 1;
-		}
-		token_list = token_list->next;
-	}
-	return (exit_status);
+	return (EXIT_SUCCESS);
 }
 
 t_env	**add_env_no_var(char *context, t_shell *general)
@@ -69,17 +78,20 @@ t_env	**add_env_no_var(char *context, t_shell *general)
 	{
 		if (ft_strcmp(tmp->key, context) == 0)
 		{
-			lol = my_lstnew(context, NULL);
+			free(tmp->value);
+			tmp->value = NULL;
 			return (NULL);
 		}
 		tmp = tmp->next;
 	}
 	lol = my_lstnew(context, NULL);
+	if (!lol)
+		return (NULL);
 	ft_lstadd_back(general->env_lst, lol);
-	return (NULL);
+	return (EXIT_SUCCESS);
 }
 
-t_env	**add_env_lst_var(t_token cur_node, t_shell *general, int i)
+t_env	**add_env_lst_var(char *context, t_shell *general, int i)
 {
 	char	*val;
 	char	*key;
@@ -87,8 +99,8 @@ t_env	**add_env_lst_var(t_token cur_node, t_shell *general, int i)
 	t_env	*lol;
 
 	tmp = general->env_lst;
-	key = my_substr(cur_node.context, 0, i);
-	val = my_substr(cur_node.context, i + 1, ft_strlen(cur_node.context) - i);
+	key = my_substr(context, 0, i);
+	val = my_substr(context, i + 1, ft_strlen(context) - i);
 	while (tmp)
 	{
 		if (ft_strcmp(tmp->key, key) == 0)
@@ -105,81 +117,5 @@ t_env	**add_env_lst_var(t_token cur_node, t_shell *general, int i)
 		return (NULL);
 	ft_lstadd_back(general->env_lst, lol);
 	ft_lstadd_back(general->sorted_env_lst, lol);
-	return (NULL);
+	return (EXIT_SUCCESS);
 }
-
-char	**list_to_array(t_env *env)
-{
-	int		i;
-	int		len;
-	char	*tmp;
-	char	**str;
-	t_env	*env_temp;
-
-	len = count_lst_len(env);
-	str = (char **)malloc(sizeof(char *) * (len + 1));
-	if (!str)
-		return (NULL);
-	i = 0;
-	env_temp = env;
-	while (env_temp)
-	{
-		tmp = str_join(env_temp->key, "=");
-		str[i] = str_join(tmp, env_temp->value);
-		free(tmp);
-		if (!str[i])
-			return (free_array(str), NULL);
-		i++;
-		env_temp = env_temp->next;
-	}
-	str[i] = NULL;
-	return (str);
-}
-
-int	count_lst_len(t_env *env_lst)
-{
-	int		i;
-	t_env	*tmp;
-
-	i = 0;
-	tmp = env_lst;
-	while (tmp)
-	{
-		i++;
-		tmp = tmp->next;
-	}
-	return (i);
-}
-
-// int	is_same_key(t_env *env_lst, char *key)
-// {
-	// t_env	*tmp;
-
-	// tmp = env_lst;
-	// while (tmp)
-	// {
-	// 	if (ft_strcmp(tmp->key, key) == 0)
-	// 		return (0);
-	// 	tmp = tmp->next;
-	// }
-// 	return (1);
-// }
-
-// t_env	** remove_node(t_shell *general, t_env *tmp)
-// {
-// 	t_env	*temp;
-
-// 	temp = general->env_lst;
-// 	while (temp)
-// 	{
-// 		if (ft_strcmp(temp->key, tmp->key) == 0)
-// 		{
-// 			free(temp->key);
-// 			free(temp->value);
-// 			free(temp);
-// 			return (NULL);
-// 		}
-// 		temp = temp->next;
-// 	}
-// 	return (NULL);
-// }
