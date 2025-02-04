@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_utils_2.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: etamazya <etamazya@student.42.fr>          +#+  +:+       +#+        */
+/*   By: algaboya <algaboya@student.42yerevan.am    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/19 21:07:27 by tumolabs          #+#    #+#             */
-/*   Updated: 2025/02/02 14:06:25 by etamazya         ###   ########.fr       */
+/*   Updated: 2025/02/05 00:24:01 by algaboya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ char	*the_path(char **splitted, char *cmd)
 	char	*temp;
 
 	tmp = splitted;
-	while (*tmp)
+	while (splitted && *tmp)
 	{
 		temp = ft_strjoin(*tmp, "/");
 		joined = ft_strjoin(temp, cmd);

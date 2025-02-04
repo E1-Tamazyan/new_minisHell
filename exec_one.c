@@ -6,7 +6,7 @@
 /*   By: algaboya <algaboya@student.42yerevan.am    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/02 01:00:31 by algaboya          #+#    #+#             */
-/*   Updated: 2025/02/02 01:03:02 by algaboya         ###   ########.fr       */
+/*   Updated: 2025/02/05 00:24:10 by algaboya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ int	exec_one_cmd(t_shell *general, t_cmd_lst *tmp_cmd_lst)
 		else if (general->cmd_lst->pid > 0)
 			waiting(general->cmd_lst->pid, &status);
 		else
-			perror("fork");
+			ft_putstr_fd("fork", 2);
 	}
 	return (get_exit_status());
 }
@@ -89,7 +89,7 @@ void	split_and_run(t_shell *general, t_cmd_lst *tmp_cmd_lst)
 	char	**env;
 	char	**splitted;
 
-	path = getenv("PATH");
+	path = get_value(general, "PATH");
 	splitted = ft_split(path, ':');
 	path = the_path(splitted, tmp_cmd_lst->cmd);
 	free_array(splitted);

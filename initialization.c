@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   initialization.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: etamazya <el.tamazyan03@gmail.com>         +#+  +:+       +#+        */
+/*   By: algaboya <algaboya@student.42yerevan.am    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/24 19:38:08 by algaboya          #+#    #+#             */
-/*   Updated: 2025/02/04 19:34:45 by etamazya         ###   ########.fr       */
+/*   Updated: 2025/02/04 23:03:09 by algaboya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,20 +46,19 @@ int	init_input(char *input, t_shell *general)
 				close_pipes(general->fd, general->pipe_count);
 			}
 			free(input);
-		} 
+		}
 		else if (input && input[0] == '\0')
 			free(input);
 		else if (!input)
 			clean_gen_exit(general, get_exit_status(), 0, 1);
 		free_fd(general);
-		// init_general(general); // check this later
 	}
 	return (free(input), get_exit_status());
 }
 
 void	print_tokens(t_token *head)
 {
-	t_token *current; 
+	t_token	*current;
 
 	current = head;
 	while (current != NULL)
@@ -67,15 +66,14 @@ void	print_tokens(t_token *head)
 		printf("context: %s\n type: %d\n", current->context, current->type);
 		current = current->next;
 	}
-} 
+}
 
 int	init_tokens_cmds(char *input, t_shell *g, int i, int flag)
 {
 	int	st;
 
 	st = 0;
-	skip_whitespace(input, &i);
-	if (check_inp_quotes(g, input, i) == -1)
+	if (process_input_validation(g, input, &i) == -1)
 		return (-1);
 	while (flag >= 0 && input[i] != '\0')
 	{
@@ -93,13 +91,10 @@ int	init_tokens_cmds(char *input, t_shell *g, int i, int flag)
 			if (i > 0)
 				i--;
 		}
-		if (flag < 0)
-			return (clean_list(&g->tok_lst), -1);
-		if (input[i])
-			i++;
+		if (check_flag_incr_input(g, input, &i, flag) == -1)
+			return (-1);
 	}
-	cmd_stuff(g);
-	return (0);
+	return (cmd_stuff(g), 0);
 }
 
 t_cmd_lst	*initialize_new_cmd(void)

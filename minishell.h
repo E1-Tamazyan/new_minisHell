@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: etamazya <el.tamazyan03@gmail.com>         +#+  +:+       +#+        */
+/*   By: algaboya <algaboya@student.42yerevan.am    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/12 14:42:32 by etamazya          #+#    #+#             */
-/*   Updated: 2025/02/04 15:53:05 by etamazya         ###   ########.fr       */
+/*   Updated: 2025/02/05 01:01:41 by algaboya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -176,7 +176,7 @@ void		clean_env_list(t_env **list);
 short		del_t_node(t_token *lst);
 int			check_cut_quotes(t_shell *general, char **input, int *i, int start);
 void		error_msg(int status, char *command_name);
-char		*sgmnt_cpy(char *input, int *i);
+char		*sgmnt_cpy(char *input, int *i, int *s_i);
 
 // Alla's
 void		free_args(t_cmd_lst *tmp_cmd_lst);
@@ -206,7 +206,7 @@ int			change_env_value(t_env *lst, char *keyik, char *valik);
 int			change_prev_dir(t_shell *general);
 int			change_dir(char *dir);
 int			unset_builtin(t_shell *general);
-int			unset_exp_var(t_shell *general, char *n_new);
+int			unset_exp_var(t_env *lst, char *n_new);
 int			delete_exp_node(t_env **lst, t_env *nodik);
 void		free_node(t_env *node);
 int			exit_builtin(t_shell *general);
@@ -223,6 +223,8 @@ void		cmd_free(t_shell *general);
 void		cmd_stuff(t_shell *general);
 void		skip_whitespace(char *input, int *i);
 int			is_not_symbol(char c, int flag);
+int			process_input_validation(t_shell *g, char *input, int *i);
+int			check_flag_incr_input(t_shell *g, char *input, int *i, int flag);
 
 // execution
 void		execution(t_shell *general, int index);
@@ -277,7 +279,7 @@ int			redir_dups(t_cmd_lst *lst);
 int			out_redir(t_cmd_lst *lst);
 int			in_redir(t_cmd_lst *lst);
 int			open_infile(t_shell *general, char *name);
-char		*open_dollar(t_shell *general, char *input, int *i);
+char		*open_dollar(t_shell *general, char *input, int *i, int *s_i);
 
 //redirs
 void		handle_out_redirection(t_shell *g);
@@ -287,5 +289,9 @@ void		handle_heredoc_redirection(t_shell *g);
 void		handle_redirection(t_shell *g, t_ttype type);
 int			count_commands(t_token *token);
 void		check_redir(char *redir);
+
+t_env		*create_env_node(char *key, char *value);
+int			update_existing_env(t_env *env_list, char *key, char *value);
+int			add_to_env_lists(t_shell *general, char *key, char *value);
 
 #endif

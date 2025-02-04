@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expand_dol.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: etamazya <el.tamazyan03@gmail.com>         +#+  +:+       +#+        */
+/*   By: algaboya <algaboya@student.42yerevan.am    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/22 17:13:47 by elen_t13          #+#    #+#             */
-/*   Updated: 2025/02/04 19:16:02 by etamazya         ###   ########.fr       */
+/*   Updated: 2025/02/05 01:03:52 by algaboya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,6 +67,9 @@ char	*countcpy_len(char *input, int start, int *l, t_shell *general)
 
 int	check_cut_quotes(t_shell *g, char **input, int *i, int start)
 {
+	int	s_i;
+
+	s_i = 0;
 	while (input[0] && input[0][*i])
 	{
 		if (!g->sg_quote && input[0][*i] == '\"')
@@ -75,19 +78,18 @@ int	check_cut_quotes(t_shell *g, char **input, int *i, int start)
 			g->sg_quote = !g->sg_quote;
 		else if (input[0][*i] == '$' && !g->sg_quote)
 		{
-			if (open_dollar(g, *input, i) != NULL)
+			if (open_dollar(g, *input, i, &s_i) != NULL)
 				expand_var(input, g, &start, i);
 		}
 		else if ((input[0][*i] == ' ' || input[0][*i] == '|'
 			|| input[0][*i] == '>' || input[0][*i] == '<')
 				&& !g->db_quote && !g->sg_quote)
-				break ;
+			break ;
 		if (input[0] && input[0][(*i)])
 			(*i)++;
 	}
-	printf("num = %d\n", (*i - start));
-	add_token_list(&g->tok_lst, my_substr(*input, start,
-		(*i - start)), 0);
+	add_token_list(&g->tok_lst, my_substr(*input, start, \
+					(*i - start)), 0);
 	return (0);
 }
 //segfault

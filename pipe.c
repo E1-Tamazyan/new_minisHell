@@ -6,7 +6,7 @@
 /*   By: algaboya <algaboya@student.42yerevan.am    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/11 21:15:45 by tumolabs          #+#    #+#             */
-/*   Updated: 2025/02/02 02:59:49 by algaboya         ###   ########.fr       */
+/*   Updated: 2025/02/05 00:05:57 by algaboya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ int	create_pipe(t_shell *general)
 				close(fd[i--][1]);
 			}
 			free(fd);
-			return (perror("Pipe Error\n"), -1);
+			return (ft_putstr_fd("Pipe Error\n", 2), -1);
 		}
 	}
 	general->fd = fd;
