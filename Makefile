@@ -19,7 +19,7 @@ LIBS_DIR = libraries
 
 INC_DIRS = -I./includes -I./$(LIBS_DIR)/$(READLINE)/include
 
-CFLAGS = -g -Wall -Wextra -Werror $(INC_DIRS) #-g3 -fsanitize=address
+CFLAGS = -g -Wall -Wextra -Werror $(INC_DIRS) -g3 -fsanitize=address
 
 READLINE_LIB_PATH = $(LIBS_DIR)/readline/lib
 

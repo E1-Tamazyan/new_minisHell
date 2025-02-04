@@ -6,7 +6,7 @@
 /*   By: etamazya <el.tamazyan03@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/24 19:38:08 by algaboya          #+#    #+#             */
-/*   Updated: 2025/02/04 14:22:51 by etamazya         ###   ########.fr       */
+/*   Updated: 2025/02/04 19:34:45 by etamazya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,31 +75,28 @@ int	init_tokens_cmds(char *input, t_shell *g, int i, int flag)
 
 	st = 0;
 	skip_whitespace(input, &i);
+	if (check_inp_quotes(g, input, i) == -1)
+		return (-1);
 	while (flag >= 0 && input[i] != '\0')
 	{
-		if (st == 0)
-			if (check_inp_quotes(g, *input, i, st) == -1)
-				return (-1);
 		if (flag >= 0 && input[i] && (is_not_symbol(input[i], 1) == 1))
 			flag = init_op_token(input, &i, &g->tok_lst);
 		else
 		{
-			st = i;				
+			st = i;
 			while (flag >= 0 && input[i] && (is_not_symbol(input[i], 0) == 1))
 				i++;
 			if (input[i] && flag >= 0)
 				flag = check_cut_quotes(g, &input, &i, st);
 			else if (i > st)
 				add_token_list(&g->tok_lst, my_substr(input, st, i - st), 0);
-
-			i--;
+			if (i > 0)
+				i--;
 		}
 		if (flag < 0)
 			return (clean_list(&g->tok_lst), -1);
 		if (input[i])
 			i++;
-		if (input[i] && flag != -1)
-			++i;
 	}
 	cmd_stuff(g);
 	return (0);

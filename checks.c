@@ -6,7 +6,7 @@
 /*   By: etamazya <el.tamazyan03@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/17 13:18:10 by elen_t13          #+#    #+#             */
-/*   Updated: 2025/02/04 14:22:39 by etamazya         ###   ########.fr       */
+/*   Updated: 2025/02/04 19:02:13 by etamazya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ char	*sgmnt_cpy(char *input, int *i)
 
 	length = 0;
 	if (input[*i] == '?' || input[*i] == '$' || input[*i] == '0')
-		return(ft_strdup(&input[*i]));
+		return (ft_strdup(&input[*i]));
 	else
 	{
 		while (input[*i + length] && input[*i + length] != ' '
@@ -40,42 +40,38 @@ char	*sgmnt_cpy(char *input, int *i)
 	return (result);
 }
 
-char	*open_dollar(t_shell *general, char *input, int *i)
+char	*open_dollar(t_shell *gen, char *input, int *i)
 {
-	if (input[*i])
+	if (input[*i] && input[*i] == '$')
 	{
-		(*i)++;
-		if (input[*i] == '?' && input[*i + 1])
-			general->doll_lst->value = ft_itoa(get_exit_status());
-		general->doll_lst->u_key = sgmnt_cpy(input, i);
-		if (!general->doll_lst->u_key[0])
-			general->doll_lst->value = ft_strdup("$");
+			(*i)++;
+		if (input[*i] == '?')
+			gen->doll_lst->value = ft_itoa(get_exit_status());
+		gen->doll_lst->u_key = sgmnt_cpy(input, i);
+		printf("%d, %c.\n", *i, input[*i]);
+		if (!gen->doll_lst->u_key[0])
+			gen->doll_lst->value = ft_strdup("$");
 		else
-			general->doll_lst->value = check_env_var(general->env_lst, general->doll_lst->u_key);
-		if (!general->doll_lst->value)
+			gen->doll_lst->value = check_env_var(gen->env_lst, \
+			gen->doll_lst->u_key);
+		if (!gen->doll_lst->value)
 		{
-			general->doll_lst->value = (char *)malloc(sizeof(char) * 1);
-			check_malloc(general, general->doll_lst->value);
-			general->doll_lst->value[0] = '\0';
+			gen->doll_lst->value = (char *)malloc(sizeof(char) * 1);
+			check_malloc(gen, gen->doll_lst->value);
+			gen->doll_lst->value[0] = '\0';
 		}
 	}
-	printf("aaaa: %s\n", general->doll_lst->value);
-	printf("aaaa: %s\n", general->doll_lst->u_key);
-	
-	return (general->doll_lst->value);
+	// printf("key = %s\n", gen->doll_lst->u_key);
+	return (gen->doll_lst->value);
 }
 
-int	check_inp_quotes(t_shell *general, char *input, int i, int start)
+int	check_inp_quotes(t_shell *general, char *input, int i)
 {
 	general->sg_quote = 0;
 	general->db_quote = 0;
 	i = 0;
-	(void)general;
-	(void)start;
-	// printf("input[i] = %c\n", input[i]);
 	while (input[i])
 	{
-		printf("input[i] = %c\n", input[i]);
 		if (input[i] == '\"' && !general->sg_quote)
 			general->db_quote = !general->db_quote;
 		else if (input[i] == '\'' && !general->db_quote)

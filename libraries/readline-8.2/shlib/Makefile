@@ -63,10 +63,10 @@ localedir = ${datarootdir}/locale
 # Support an alternate destination root directory for package building
 DESTDIR =
 
-CFLAGS = -g 
+CFLAGS = -g -O2 -Wno-parentheses -Wno-format-security -Wno-tautological-constant-out-of-range-compare
 LOCAL_CFLAGS =  -DRL_LIBRARY_VERSION='"$(RL_LIBRARY_VERSION)"' -DBRACKETED_PASTE_DEFAULT=1
 CPPFLAGS = 
-LDFLAGS =   -g 
+LDFLAGS =   -g -O2 -Wno-parentheses -Wno-format-security -Wno-tautological-constant-out-of-range-compare
 
 DEFS = -DHAVE_CONFIG_H 
 LOCAL_DEFS = 

@@ -6,7 +6,7 @@
 /*   By: etamazya <el.tamazyan03@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/12 14:42:32 by etamazya          #+#    #+#             */
-/*   Updated: 2025/02/03 18:26:29 by etamazya         ###   ########.fr       */
+/*   Updated: 2025/02/04 15:53:05 by etamazya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -134,7 +134,7 @@ void		*ft_memset(void *str, int c, size_t n);
 void		expand_var(char **input, t_shell *general, int *start, int *i);
 char		*countcpy_len(char *input, int start, int *l, t_shell *general);
 int			spec_len(char *input, int start);
-int			check_inp_quotes(t_shell *general, char *input, int i, int start);
+int			check_inp_quotes(t_shell *general, char *input, int i);
 
 // ***_____main_functions_____***
 void		init_general(t_shell *general);

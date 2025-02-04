@@ -6,7 +6,7 @@
 /*   By: etamazya <el.tamazyan03@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/22 17:13:47 by elen_t13          #+#    #+#             */
-/*   Updated: 2025/02/04 14:21:17 by etamazya         ###   ########.fr       */
+/*   Updated: 2025/02/04 19:16:02 by etamazya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,8 @@ void	expand_var(char **input, t_shell *general, int *start, int *i)
 		check_malloc(general, *input);
 	*start = 0;
 	*i = len;
-	(--(*i));
+	if ((*i) > 0)
+		(--(*i));
 	return ;
 }
 
@@ -64,42 +65,30 @@ char	*countcpy_len(char *input, int start, int *l, t_shell *general)
 	return (copy);
 }
 
-
-
 int	check_cut_quotes(t_shell *g, char **input, int *i, int start)
 {
-	printf("kkk\n");
-
-	while (input[0] && input[0][*i] && (input[0][*i] != ' ' && !g->sg_quote && !g->db_quote))
+	while (input[0] && input[0][*i])
 	{
-		// printf("uuu: [%c]\n", input[0][*i]);
 		if (!g->sg_quote && input[0][*i] == '\"')
-		{
 			g->db_quote = !g->db_quote;
-			// printf("aaa\n");	
-		}
 		else if (!g->db_quote && input[0][*i] == '\'')
-		{
 			g->sg_quote = !g->sg_quote;
-			// printf("bbbbb\n");
-		}
 		else if (input[0][*i] == '$' && !g->sg_quote)
 		{
 			if (open_dollar(g, *input, i) != NULL)
-			{
-				// printf("hiiii\n0");
 				expand_var(input, g, &start, i);
-			}
 		}
 		else if ((input[0][*i] == ' ' || input[0][*i] == '|'
 			|| input[0][*i] == '>' || input[0][*i] == '<')
 				&& !g->db_quote && !g->sg_quote)
-			return (add_token_list(&g->tok_lst,
-					my_substr(*input, start, (*i - start)), 0), 0);
+				break ;
 		if (input[0] && input[0][(*i)])
 			(*i)++;
 	}
+	printf("num = %d\n", (*i - start));
 	add_token_list(&g->tok_lst, my_substr(*input, start,
-			(*i - start)), 0);
+		(*i - start)), 0);
 	return (0);
 }
+//segfault
+// echo $$, echo "$$", echo "$?", echo $0,  echo "$0"
